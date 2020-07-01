@@ -1,0 +1,128 @@
+<ul class="header-megamenu nav">
+  <li class="nav-item">
+    <button [ngbPopover]="footerPopover" [autoClose]="'outside'" placement="top-right" popoverClass="rm-max-width"
+      type="button" class="btn btn-link dropdown-toggle">
+      <span>
+        <i class="nav-link-icon pe-7s-gift"></i>
+        Gandaki Province Data
+      </span>
+    </button>
+  </li>
+  <!--<li class="nav-item">
+    <div class="btn-group" ngbDropdown placement="top-right">
+      <button type="button" class="btn btn-link dropdown-toggle-no-caret" ngbDropdownToggle>
+        <span>
+          Grid Menu
+        </span>
+      </button>
+      <div class="dropdown-menu-lg" ngbDropdownMenu>
+        <div class="dropdown-menu-header">
+          <div class="dropdown-menu-header-inner bg-tempting-azure">
+            <div class="menu-header-image dd-header-bg-1"></div>
+            <div class="menu-header-content text-dark">
+              <h5 class="menu-header-title">Two Column Grid</h5>
+              <h6 class="menu-header-subtitle">Easy grid navigation inside popovers</h6>
+            </div>
+          </div>
+        </div>
+        <div class="grid-menu grid-menu-2col">
+          <div class="no-gutters row">
+            <div class="col-sm-6">
+              <button class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-dark">
+                <i class="lnr-lighter text-dark opacity-7 btn-icon-wrapper mb-2"></i>Automation
+              </button>
+            </div>
+            <div class="col-sm-6">
+              <button class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-danger">
+                <i class="lnr-construction text-danger opacity-7 btn-icon-wrapper mb-2"></i>Reports
+              </button>
+            </div>
+            <div class="col-sm-6">
+              <button class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-success">
+                <i class="lnr-bus text-success opacity-7 btn-icon-wrapper mb-2"></i>Activity
+              </button>
+            </div>
+            <div class="col-sm-6">
+              <button class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-focus">
+                <i class="lnr-gift text-focus opacity-7 btn-icon-wrapper mb-2"></i>Settings
+              </button>
+            </div>
+          </div>
+        </div>
+        <ul class="nav flex-column">
+          <li class="nav-item-divider nav-item"></li>
+          <li class="nav-item-btn clearfix nav-item">
+            <div class="float-left">
+              <button class="btn btn-link btn-sm">Link Button</button>
+            </div>
+            <div class="float-right">
+              <button class="btn-shadow btn btn-info btn-sm">Info Button</button>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </li>-->
+</ul>
+<ng-template #footerPopover>
+  <div class="dropdown-mega-menu dropdown-mega-menu-sm">
+    <div class="grid-menu grid-menu-3col">
+      <div class="no-gutters row">
+        <div class="col-sm-6 col-xl-4">
+          <ul class="nav flex-column">
+            <li class="nav-item-header nav-item">Contact Us</li>
+            <li class="nav-item">
+              Gandaki Data
+            </li>
+            <li class="nav-item">
+              <i class="fa fa-phone"></i> : +977 9810101010 <br>
+            </li>
+            <li class="nav-item">
+              <i class="fa fa-envelope"></i> : mail@gandaki.gov.np
+            </li>
+            <li class="nav-item">
+              Pokhara, Gandaki, Nepal
+            </li>
+          </ul>
+        </div>
+        <div class="col-sm-6 col-xl-4">
+          <ul class="nav flex-column">
+            <li class="nav-item-header nav-item">Quick Links</li>
+            <li class="nav-item">
+              <a [routerLink]="" class="nav-link">Office of Prime Minister</a>
+            </li>
+            <li class="nav-item">
+              <a [routerLink]="" class="nav-link">National Planning Commission</a>
+            </li>
+            <li class="nav-item">
+              <a [routerLink]="" class="nav-link">Minister of finance
+                <!--<div class="ml-auto badge badge-warning">3</div>-->
+              </a>
+            </li>
+            <li class="nav-item">
+              <a [routerLink]="" class="nav-link">Nepal Rastra Bank</a>
+            </li>
+            <li class="nav-item">
+              <a [routerLink]="" class="nav-link">Other Links</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="col-sm-6 col-xl-4">
+          <ul class="nav flex-column">
+            <li class="nav-item-header nav-item">Join my mailing list</li>
+            <form>
+              <div id="exampleInputGroup2" role="group" class="form-group">
+                <div>
+                  <input id="exampleInputEmail1" type="email" placeholder="Enter email..." required="required"
+                         aria-required="true" class="form-control"  />
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary" style="width: 100%;">Subscribe</button>
+            </form>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
