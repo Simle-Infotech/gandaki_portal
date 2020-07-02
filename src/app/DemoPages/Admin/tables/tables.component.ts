@@ -50,7 +50,6 @@ export class TablesComponent implements OnInit {
       enableRowGroup: true,
       enablePivot: true,
       enableValue: true,
-      width: 140,
       sortable: true,
       resizable: true,
       filter: true,

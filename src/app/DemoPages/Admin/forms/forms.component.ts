@@ -34,6 +34,7 @@ export class FormsComponent implements OnInit {
   editType;
   private editingRowIndex;
   updatedData;
+  enableCharts;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -45,7 +46,6 @@ export class FormsComponent implements OnInit {
       enableRowGroup: true,
       enablePivot: true,
       enableValue: true,
-      width: 140,
       sortable: true,
       resizable: true,
       filter: true,
@@ -89,6 +89,7 @@ export class FormsComponent implements OnInit {
       newcolumn: ''
     });
     this.editType = 'fullRow';
+    this.enableCharts = true;
   }
 
   ngOnInit(): void {
