@@ -125,7 +125,13 @@ export class TableDataEntryComponent implements OnInit {
         this.colIds.push('_id');
 
         this.colData.push(
-            {headerName: this.row_headers.title, field: 'row'}
+          {headerName: 'group', field: 'group', pinned: 'left'}
+        )
+        this.colIds.push('group');
+
+
+        this.colData.push(
+            {headerName: this.row_headers.title, field: 'row', pinned: 'left'}
         )
         this.colIds.push(this.row_headers.title);
         this.indexIds.push('row');
@@ -206,13 +212,18 @@ export class TableDataEntryComponent implements OnInit {
       this.empty_table.forEach(row => {
         const rowValue = {};
         let currentRowValue = '';
+        let currentGroupValue = '';
         this.row_headers.indicators.forEach(indicator => {
           if (indicator.id == row.row) {
             currentRowValue = indicator.title;
+            currentGroupValue = indicator.group[0];
           }
         });
+        rowValue['group'] = currentGroupValue;
         rowValue['row'] = currentRowValue;
+
         const usedKeys = [];
+        usedKeys.push('group');
         usedKeys.push('row');
 
         const keys = Object.keys(row);
@@ -220,6 +231,11 @@ export class TableDataEntryComponent implements OnInit {
           if (key == 'row') {
             return;
           }
+
+          if(key == 'group'){
+            return;
+          }
+
           let indexValue = '';
           this.index_cols.forEach(index_col => {
             if (index_col.col_id == key) {
@@ -254,6 +270,9 @@ export class TableDataEntryComponent implements OnInit {
         })
         this.rowData.push(rowValue);
       })
+
+      console.log("Row data");
+      console.log(this.rowData);
 
 
       this.formService.getData(this.id).subscribe((dataResponse: DataResponse) => {
@@ -334,21 +353,30 @@ export class TableDataEntryComponent implements OnInit {
 
           const rowValue = {};
           currentRowValue = '';
+          let currentGroupValue = '';
           this.row_headers.indicators.forEach(indicator => {
             if (indicator.id == row.row) {
               currentRowValue = indicator.title;
+              currentGroupValue = indicator.group[0];
             }
           });
 
+          row['group'] = currentGroupValue;
           row['row'] = currentRowValue;
           //
           usedKeys = [];
+          usedKeys.push('group')
           usedKeys.push('row');
           //
           this.indexIds.forEach(key => {
             if (key == 'row') {
               return;
             }
+
+            if(key == 'group'){
+              return;
+            }
+
             let indexValue = '';
             this.index_cols.forEach(index_col => {
               if (index_col.col_id == key) {
