@@ -94,7 +94,7 @@ export class SidebarComponent implements OnInit {
         })
         this.menuItems.push({
           path: '/admin/',
-          title: value.name,
+          title: value.nepali_name,
           icon: 'list',
           class: '',
           subForms: value.sub_forms,

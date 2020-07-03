@@ -1,40 +1,41 @@
-<div style="margin-top: 20px;">
-  <div class="mb-3 card">
-    <div class="card-header-tab card-header">
-      <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
-        <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
-        Design tables from here
-      </div>
-      <div class="btn-actions-pane-right text-capitalize">
-        <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm" (click)="addNewRow()">Add new row</button>
-        <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm" (click)="onBtStopEditing()">Save data</button>
-      </div>
+<div class="card main-card mb-3">
+  <div class="card-header">
+    {{ pageTitle }}
+    <div class="btn-actions-pane-right text-capitalize">
+      <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm" (click)="addNewRow()">Add new row</button>
+      <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm" (click)="onBtStopEditing()">Save data</button>
     </div>
-    <div class="no-gutters row">
-      <div class="col-sm-12 col-md-12">
-        <ag-grid-angular
-          #agGrid
-          id="tableDesignerGrid"
-          style="width: auto; height: 600px;"
-          class="ag-theme-alpine"
-          [rowData]="rowData"
-          [autoGroupColumnDef]="autoGroupColumnDef"
-          [columnDefs]="colData"
-          [defaultColDef]="defaultColDef"
-          [animateRows]="true"
-          [sideBar]="sideBar"
-          [statusBar]="statusBar"
-          [enableRangeSelection]="true"
-          (cellClicked)="onCellClicked($event)"
-          (cellEditingStopped)="onCellEditingStopped($event)"
-          (rowEditingStopped)="onRowEditingStopped($event)"
-          (gridReady)="onGridReady($event)"
-          [enterMovesDown]="true"
-          [enterMovesDownAfterEdit]="true"
-          [editType]="editType"
-          [enableCharts]="true"
-        >
-        </ag-grid-angular>
+  </div>
+  <div class="card-body">
+    <div style="margin-top: 20px;">
+      <div class="mb-3 card">
+        <div class="no-gutters row">
+          <div class="col-sm-12 col-md-12">
+            <ag-grid-angular
+              #agGrid
+              id="tableDesignerGrid"
+              style="width: auto; height: 600px;"
+              class="ag-theme-alpine"
+              [rowData]="rowData"
+              [autoGroupColumnDef]="autoGroupColumnDef"
+              [columnDefs]="colData"
+              [defaultColDef]="defaultColDef"
+              [animateRows]="true"
+              [sideBar]="sideBar"
+              [statusBar]="statusBar"
+              [enableRangeSelection]="true"
+              (cellClicked)="onCellClicked($event)"
+              (cellEditingStopped)="onCellEditingStopped($event)"
+              (rowEditingStopped)="onRowEditingStopped($event)"
+              (gridReady)="onGridReady($event)"
+              [enterMovesDown]="true"
+              [enterMovesDownAfterEdit]="true"
+              [editType]="editType"
+              [enableCharts]="true"
+            >
+            </ag-grid-angular>
+          </div>
+        </div>
       </div>
     </div>
   </div>

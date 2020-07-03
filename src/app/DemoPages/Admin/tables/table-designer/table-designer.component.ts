@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormService} from "../../../../services/form.service";
-import {FormResponse, ListResponse} from "../../../../models/user";
+import {FormResponse, ListResponse, TableDetailsResponse} from "../../../../models/user";
+import {GeneralService} from "../../../../services/general.service";
 
 @Component({
   selector: 'app-table-designer',
@@ -36,12 +37,14 @@ export class TableDesignerComponent implements OnInit {
   updatedData;
   parentObject;
   subFormObjects;
+  pageTitle;
 
   constructor(
       private activatedRoute: ActivatedRoute,
       private formBuilder: FormBuilder,
       private formService: FormService,
-      private router: Router
+      private router: Router,
+      private generalService: GeneralService
   ) {
     this.autoGroupColumnDef = { minWidth: 200 };
     this.defaultColDef = {
@@ -97,6 +100,11 @@ export class TableDesignerComponent implements OnInit {
     this.activatedRoute.params.subscribe(paramsId => {
       this.id = paramsId.id;
     });
+
+    this.generalService.getTableDetails(this.id).subscribe((response: TableDetailsResponse) => {
+      this.pageTitle = response.data.nepali_name;
+      console.log(this.pageTitle);
+    })
 
     this.renderTable(true);
   }

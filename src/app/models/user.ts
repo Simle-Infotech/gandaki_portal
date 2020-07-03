@@ -43,10 +43,20 @@ export class SingleObjectResponse {
   data: {};
 }
 
+export class TableDetailsResponse {
+  method: {};
+  fields: [];
+  columns: [];
+  data: {
+    name: string,
+    nepali_name: string,
+  };
+}
+
 export class FormResponse {
   formats: string;
   data: {
-    id: number
+    id: string
   };
 }
 

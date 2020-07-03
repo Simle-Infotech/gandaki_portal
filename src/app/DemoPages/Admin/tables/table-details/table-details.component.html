@@ -1,23 +1,46 @@
 <div class="card main-card mb-3">
   <div class="card-header">
-    Data
+    {{ pageTitle }}
+    <div class="btn-actions-pane-right text-capitalize">
+      <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm" (click)="navigateToDesignTables()">Design Tables</button>
+      <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm {{ btnClass }}" (click)="onBtStopEditing()">{{ buttonText }}</button>
+    </div>
   </div>
   <div class="card-body">
-    <mat-card>
-      <mat-card-content>
-        <mat-tab-group class="demo-tab-group">
-          <mat-tab label="Table Data Entry">
-            <div class="demo-tab-content">
-              <app-table-data-entry></app-table-data-entry>
-            </div>
-          </mat-tab>
-          <mat-tab label="Table Data Designer">
-            <div class="demo-tab-content">
-              <app-table-designer></app-table-designer>
-            </div>
-          </mat-tab>
-        </mat-tab-group>
-      </mat-card-content>
-    </mat-card>
+    <div style="margin-top: 20px;">
+      <div class="mb-3 card">
+        <div class="no-gutters row">
+          <div class="col-sm-12 col-md-12">
+            <ag-grid-angular
+              #agGrid
+              id="tableDataEntryGrid"
+              style="width: auto; height: 600px;"
+              class="ag-theme-alpine"
+              [rowData]="rowData"
+              [autoGroupColumnDef]="autoGroupColumnDef"
+              [columnDefs]="colData"
+              [defaultColDef]="defaultColDef"
+              [animateRows]="true"
+              [sideBar]="sideBar"
+              [statusBar]="statusBar"
+              [enableRangeSelection]="true"
+              (cellClicked)="onCellClicked($event)"
+              (cellEditingStopped)="onCellEditingStopped($event)"
+              (rowEditingStopped)="onRowEditingStopped($event)"
+              (gridReady)="onGridReady($event)"
+              (columnResized)="onColumnResized($event)"
+              [enterMovesDown]="true"
+              [enterMovesDownAfterEdit]="true"
+              [editType]="editType"
+              [enableCharts]="true"
+            >
+            </ag-grid-angular>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
   </div>
 </div>

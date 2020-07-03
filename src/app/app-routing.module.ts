@@ -136,6 +136,7 @@ const routes: Routes = [
     {
       scrollPositionRestoration: 'enabled',
       anchorScrolling: 'enabled',
+      useHash: true
     })],
   exports: [RouterModule]
 })

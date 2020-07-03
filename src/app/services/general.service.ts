@@ -30,4 +30,10 @@ export class GeneralService {
     return this.httpClient.get(`${environment.apiUrl}/portal/form?name=forms&list&design=1`)
         .pipe(retry(3), catchError(this.handleError));
   }
+
+  getTableDetails(id) {
+    return this.httpClient.get(`${environment.apiUrl}/portal/form?name=tableGroup&design=1&id=`+id)
+      .pipe(retry(3), catchError(this.handleError));
+  }
+
 }

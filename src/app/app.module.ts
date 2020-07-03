@@ -106,6 +106,7 @@ import {ErrorInterceptor} from "./helpers/error.interceptor";
 import {AuthInterceptor} from "./helpers/auth.interceptor";
 import {AdminLayoutComponent} from "./Layout/admin-layout/admin-layout.component";
 import {AgGridModule} from "ag-grid-angular";
+import {RouterModule} from "@angular/router";
 
 // Angular Material
 

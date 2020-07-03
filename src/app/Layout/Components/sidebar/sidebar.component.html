@@ -21,7 +21,7 @@
               activeIds="{{extraParameter}}">
               <ngb-panel>
                 <ng-template ngbPanelHeader>
-                  <div class="vsm-header">Navigation</div>
+                  <div class="vsm-header">नेभिगेसन</div>
                 </ng-template>
               </ngb-panel>
 
@@ -29,7 +29,7 @@
                 <ng-template ngbPanelHeader>
                   <button ngbPanelToggle class="vsm-link">
                     <i class="vsm-icon pe-7s-rocket"></i>
-                    <span class="vsm-title">Links</span>
+                    <span class="vsm-title">लिंकहरू</span>
                     <i class="vsm-arrow"></i>
                   </button>
                 </ng-template>
@@ -38,12 +38,12 @@
                     <div class="vsm-list">
                       <div class="vsm-item">
                         <a routerLink="/dashboards/analytics" routerLinkActive="active-item" [routerLinkActiveOptions]="{exact: true}" class="vsm-link">
-                          <span class="vsm-title">Home</span>
+                          <span class="vsm-title">घर</span>
                         </a>
                       </div>
                       <div class="vsm-item" *ngIf="is_logged == true">
                         <a routerLink="/admin/forms" routerLinkActive="active-item" [routerLinkActiveOptions]="{exact: true}" class="vsm-link">
-                          <span class="vsm-title">Forms</span>
+                          <span class="vsm-title">फारामहरू</span>
                         </a>
                       </div>
                     </div>
@@ -65,12 +65,12 @@
                     <div class="vsm-list">
                       <div class="vsm-item" *ngFor="let menuSubForms of menuItem.subForms">
                         <a [routerLink]="menuSubForms.url" routerLinkActive="active-item" [routerLinkActiveOptions]="{exact: true}" class="vsm-link">
-                          <span class="vsm-title">{{menuSubForms.name }}</span>
+                          <span class="vsm-title">{{menuSubForms.nepali_name }}</span>
                         </a>
                       </div>
                       <div class="vsm-item" *ngFor="let menuTables of menuItem.tables">
                         <a [routerLink]="menuTables.url" routerLinkActive="active-item" [routerLinkActiveOptions]="{exact: true}" class="vsm-link">
-                          <span class="vsm-title">{{menuTables.name }}</span>
+                          <span class="vsm-title">{{menuTables.nepali_name }}</span>
                         </a>
                       </div>
                     </div>
