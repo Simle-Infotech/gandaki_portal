@@ -168,6 +168,7 @@ export class TableDetailsComponent implements OnInit {
                 field: value.col_id,
                 sortable: true,
                 filter: true,
+                editable: true,
                 cellEditor: 'agSelectCellEditor',
                 cellEditorParams: {
                   values: currentOptions,
@@ -180,6 +181,7 @@ export class TableDetailsComponent implements OnInit {
                 field: value.col_id,
                 sortable: true,
                 filter: true,
+                editable: true
               });
           }
           this.colIds.push(value.col_id);
@@ -434,6 +436,13 @@ export class TableDetailsComponent implements OnInit {
         })
         this.gridApi.setRowData([]);
         this.gridApi.setRowData(this.rowData);
+
+        var allColumnIds = [];
+        this.gridColumnApi.getAllColumns().forEach(function(column) {
+          allColumnIds.push(column.colId);
+        });
+        this.gridColumnApi.autoSizeColumns(allColumnIds, false);
+
       });
     })
   }

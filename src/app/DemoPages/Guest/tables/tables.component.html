@@ -1,0 +1,38 @@
+<div class="card main-card mb-3">
+  <div class="card-header">
+    {{ pageTitle }}
+  </div>
+  <div class="card-body">
+    <div style="margin-top: 20px;">
+      <div class="mb-3 card">
+        <div class="no-gutters row">
+          <div class="col-sm-12 col-md-12">
+            <ag-grid-angular
+              #agGrid
+              id="tableDataEntryGrid"
+              style="width: auto; height: 600px;"
+              class="ag-theme-alpine"
+              [rowData]="rowData"
+              [autoGroupColumnDef]="autoGroupColumnDef"
+              [columnDefs]="colData"
+              [defaultColDef]="defaultColDef"
+              [animateRows]="true"
+              [sideBar]="sideBar"
+              [statusBar]="statusBar"
+              [enableRangeSelection]="true"
+              (gridReady)="onGridReady($event)"
+              [enterMovesDown]="true"
+              [enterMovesDownAfterEdit]="true"
+              [editType]="editType"
+              [enableCharts]="true"
+            >
+            </ag-grid-angular>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+  </div>
+</div>
