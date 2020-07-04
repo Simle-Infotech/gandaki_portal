@@ -11,8 +11,7 @@ import {DataHeaderResponse, DataResponse, FormResponse, TableDetailsResponse} fr
   styles: []
 })
 export class TablesComponent implements OnInit {
-  toggleMobileSidebar: any;
-
+  gridId;
   id;
   private gridApi;
   private gridColumnApi;
@@ -112,12 +111,13 @@ export class TablesComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(paramsId => {
       this.id = paramsId.id;
-    });
+      this.gridId = '#agGridTable'+this.id;
 
-    this.generalService.getTableDetails(this.id).subscribe((response: TableDetailsResponse) => {
-      this.pageTitle = response.data.nepali_name;
-      console.log(this.pageTitle);
-    })
+      this.generalService.getTableDetails(this.id).subscribe((response: TableDetailsResponse) => {
+        this.pageTitle = response.data.nepali_name;
+      })
+      this.renderTable(true);
+    });
   }
 
   renderTable(isOnInit) {
@@ -131,6 +131,9 @@ export class TablesComponent implements OnInit {
       this.gridApi.setRowData([]);
 
       if (isOnInit == true) {
+        this.colData = [];
+        this.gridApi.setColumnDefs(this.colData);
+
         this.colData.push({
           headerName: '_id', value: '_id', hide: true, suppressToolPanel: true
         });
@@ -181,66 +184,14 @@ export class TablesComponent implements OnInit {
         })
 
         this.col_headers.forEach(items => {
-          const colHeaderData = {
-            headerName: '',
-            children: [
-
-            ]
-          };
-          const childrenColHeaderData = {
-            headerName: '',
-            children: [
-
-            ]
-          };
-
-          const mainHeaderData = {
-            headerName: items.title,
-            field: items.id,
-            sortable: true,
-            filter: true,
-          }
-
-          // for(let itemIndex = 0; itemIndex < items.group.length;itemIndex++){
-          //   console.log("Item index");
-          //   console.log(itemIndex);
-          //   if(itemIndex+1 == items.group.length){
-          //     colHeaderData.headerName = items.group[itemIndex];
-          //   }
-          //   else {
-          //     if (items.group[itemIndex] == " "){
-          //       childrenColHeaderData.children.push(mainHeaderData);
-          //     }
-          //     else{
-          //       let subChildren = childrenColHeaderData;
-          //       childrenColHeaderData.headerName = items.group[itemIndex];
-          //       childrenColHeaderData.children.push(subChildren);
-          //     }
-          //   }
-          // }
-          //
-          // colHeaderData.children.push(childrenColHeaderData);
-
-
-          items.group.reverse().forEach(value => {
-            if (colHeaderData.headerName == '') {
-              colHeaderData.headerName = value;
-            } else {
-              if (childrenColHeaderData.headerName == '') {
-                childrenColHeaderData.headerName = value;
-              }
-            }
-          })
-
-          childrenColHeaderData.children.push(mainHeaderData);
-          colHeaderData.children.push(childrenColHeaderData);
-          console.log("Column header data");
-          console.log(colHeaderData);
-          this.colData.push(colHeaderData)
-          this.colIds.push(items.id);
+          this.modifyColumnHeaders(items);
+          console.log("COlumn iems");
+          console.log(items);
+          this.colData.push(items)
         })
+        this.gridApi.setColumnDefs(this.colData);
       }
-      this.gridApi.setColumnDefs(this.colData);
+
 
       this.empty_table.forEach(row => {
         const rowValue = {};
@@ -438,11 +389,37 @@ export class TablesComponent implements OnInit {
     })
   }
 
-
   onGridReady(params) {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
-    this.renderTable(true);
+    this.gridApi.setColumnDefs([]);
+    this.renderTable(false);
+  }
+
+
+  modifyColumnHeaders(obj){
+    obj.editable = false;
+    if(obj.hasOwnProperty('children')){
+      let columnChildrens = obj.children;
+
+      columnChildrens.forEach(columnChildren => {
+        if(columnChildren.type == 'Select'){
+          const currentOptions = [];
+
+          columnChildren.options.forEach(option => {
+            currentOptions.push(option.nepali_name);
+          })
+
+          columnChildren.editable = false;
+          columnChildren.cellEditor =  'agSelectCellEditor';
+          columnChildren.cellEditorParams = {
+            values: currentOptions,
+          };
+        }
+        this.modifyColumnHeaders(columnChildren);
+      })
+    }
+    return null;
   }
 
 }

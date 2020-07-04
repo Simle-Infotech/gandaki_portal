@@ -139,6 +139,9 @@ export class TableDetailsComponent implements OnInit {
       this.gridApi.setRowData([]);
 
       if (isOnInit == true) {
+        this.colData = [];
+        this.gridApi.setColumnDefs(this.colData);
+
         this.colData.push({
           headerName: '_id', value: '_id', hide: true, suppressToolPanel: true
         });
@@ -198,21 +201,6 @@ export class TableDetailsComponent implements OnInit {
         })
         this.gridApi.setColumnDefs(this.colData);
       }
-      /*this.gridColumnApi.getAllGridColumns().forEach(column => {
-        let userColDef = column.userProvidedColDef;
-        if(userColDef.type == 'Select'){
-          const currentOptions = [];
-
-          userColDef.options.forEach(option => {
-            currentOptions.push(option.nepali_name);
-          })
-
-          userColDef.cellEditor =  'agSelectCellEditor';
-          userColDef.cellEditorParams = {
-            values: currentOptions,
-          };
-        }
-      });*/
 
 
       this.empty_table.forEach(row => {
@@ -419,6 +407,7 @@ export class TableDetailsComponent implements OnInit {
   onGridReady(params) {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
+    this.gridApi.setColumnDefs([]);
     this.renderTable(false);
   }
 
