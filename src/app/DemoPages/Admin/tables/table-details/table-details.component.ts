@@ -186,7 +186,6 @@ export class TableDetailsComponent implements OnInit {
                 field: value.col_id,
                 sortable: true,
                 filter: true,
-                editable: true,
                 cellEditor: 'agSelectCellEditor',
                 cellEditorParams: {
                   values: currentOptions,
@@ -199,7 +198,6 @@ export class TableDetailsComponent implements OnInit {
                 field: value.col_id,
                 sortable: true,
                 filter: true,
-                editable: true
               });
           }
           this.colIds.push(value.col_id);
@@ -449,10 +447,11 @@ export class TableDetailsComponent implements OnInit {
   onRowEditingStopped($event) {
     const row = $event.data;
     let saveColData = {};
+    console.log(row);
 
     this.gridColumnApi.getAllColumns().forEach(column => {
       let userColumnDef = column.getUserProvidedColDef();
-      console.log(userColumnDef);
+      // console.log(userColumnDef);
       if(userColumnDef.type == 'Select'){
         // userColumnDef.options.forEach(option => {
         //
@@ -474,7 +473,7 @@ export class TableDetailsComponent implements OnInit {
         saveColData[row_header_row] = indicator.id;
       }
     });
-    console.log(saveColData);
+    // console.log(saveColData);
 
     const currentData = {
       'data': saveColData
@@ -486,7 +485,6 @@ export class TableDetailsComponent implements OnInit {
       this.buttonText = 'Saved';
       this.btnClass = 'btn-success';
     })
-
 
     // console.log(this.gridColumnApi.getAllColumns());
 
@@ -596,4 +594,25 @@ export class TableDetailsComponent implements OnInit {
       .toString()
       .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
   }
+
+  saveTableConfiguration(){
+    let tableState = {};
+    tableState['tableId']   = this.id;
+    tableState['colState']  = this.gridColumnApi.getColumnState();
+    tableState['groupState'] = this.gridColumnApi.getColumnGroupState();
+    tableState['sortState']   = this.gridColumnApi.getSortModel;
+    tableState['filterState'] = this.gridColumnApi.getFilterModel;
+
+    console.log(tableState);
+  }
+  restoreState(tableState) {
+    this.gridColumnApi.setColumnState(tableState.colState);
+    this.gridColumnApi.setColumnGroupState(tableState.groupState);
+    this.gridColumnApi.setSortModel(tableState.sortState);
+    this.gridColumnApi.setFilterModel(tableState.filterState);
+    console.log('column state restored');
+  }
+
+
+
 }
