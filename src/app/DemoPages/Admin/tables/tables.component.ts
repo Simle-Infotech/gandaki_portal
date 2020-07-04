@@ -117,7 +117,7 @@ export class TablesComponent implements OnInit {
           headerName: 'Actions',
           field: 'id',
           cellRenderer: (invNum) => {
-            return  `<a href="/admin/tables/details/${invNum.value}" class="btn btn-sm">Details</a>`;
+            return  `<a href="/#/admin/tables/details/${invNum.value}" class="btn btn-sm">Details</a>`;
           }
         });
       }

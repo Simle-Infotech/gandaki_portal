@@ -119,7 +119,7 @@ export class FormsComponent implements OnInit {
           field: 'id',
           cellRenderer: (invNum) => {
             // console.log(params);
-            return  `<a href="/admin/sub_forms/${invNum.value}" class="btn btn-sm"> view</a>`;
+            return  `<a href="/#/admin/sub_forms/${invNum.value}" class="btn btn-sm"> view</a>`;
           }
         })
 
@@ -127,7 +127,7 @@ export class FormsComponent implements OnInit {
           headerName: 'tables',
           field: 'id',
           cellRenderer: (invNum) => {
-            return  `<a href="/admin/tables/${invNum.value}" class="btn btn-sm">view</a>`;
+            return  `<a href="/#/admin/tables/${invNum.value}" class="btn btn-sm">view</a>`;
           }
         });
       }
