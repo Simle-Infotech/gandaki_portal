@@ -12,6 +12,7 @@ import {
 import {GeneralService} from "../../../../services/general.service";
 import {main} from "@angular/compiler-cli/src/main";
 import {forEach} from "ag-grid-community/dist/lib/utils/array";
+import {save} from "ionicons/icons";
 
 @Component({
   selector: 'app-table-details',
@@ -155,7 +156,7 @@ export class TableDetailsComponent implements OnInit {
         this.gridApi.setColumnDefs(this.colData);
 
         this.colData.push({
-          headerName: '_id', value: '_id', hide: true, suppressToolPanel: true
+          headerName: '_id', value: '_id', hide: true, suppressToolPanel: true, 'field': '_id'
         });
         this.colIds.push('_id');
 
@@ -447,10 +448,49 @@ export class TableDetailsComponent implements OnInit {
 
   onRowEditingStopped($event) {
     const row = $event.data;
-    console.log('On sop');
-    console.log(row);
+    let saveColData = {};
 
-    const rowValue = {};
+    this.gridColumnApi.getAllColumns().forEach(column => {
+      let userColumnDef = column.getUserProvidedColDef();
+      console.log(userColumnDef);
+      if(userColumnDef.type == 'Select'){
+        // userColumnDef.options.forEach(option => {
+        //
+        // })
+      }
+      else {
+        if(row[userColumnDef.field]){
+          saveColData[userColumnDef.field] = row[userColumnDef.field];
+        } else{
+          saveColData[userColumnDef.field] = "";
+        }
+      }
+    })
+
+    let row_header_row = 'row';
+    let row_header_group = 'group';
+    this.row_headers.indicators.forEach(indicator => {
+      if (indicator.title == saveColData[row_header_row]) {
+        saveColData[row_header_row] = indicator.id;
+      }
+    });
+    console.log(saveColData);
+
+    const currentData = {
+      'data': saveColData
+    };
+    console.log(currentData);
+    this.formService.saveData(this.id, currentData).subscribe((response: FormResponse) => {
+      $event.data._id = response.data[0]._id;
+      // this.renderTable(false);
+      this.buttonText = 'Saved';
+      this.btnClass = 'btn-success';
+    })
+
+
+    // console.log(this.gridColumnApi.getAllColumns());
+
+    /*const rowValue = {};
     let currentRowValue = '';
     this.row_headers.indicators.forEach(indicator => {
       if (indicator.title == row.row) {
@@ -509,7 +549,7 @@ export class TableDetailsComponent implements OnInit {
       // this.renderTable(false);
       this.buttonText = 'Saved';
       this.btnClass = 'btn-success';
-    })
+    })*/
   }
 
   onColumnResized($event){
