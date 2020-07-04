@@ -21,13 +21,8 @@
   font-weight: bold;
 }
 
-
 .sick-days-warning {
   background-color: rgba(120, 175, 141, 0.4) !important;
-}
-
-.sick-days-breach {
-  background-color: lightcoral !important;
 }
 
 @font-face {
