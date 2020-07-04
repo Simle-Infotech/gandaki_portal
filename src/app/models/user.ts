@@ -63,3 +63,9 @@ export class FormResponse {
 export class DataResponse {
   data: [];
 }
+
+export class TableStateResponse {
+  data: {
+    _id: string
+  }
+}

@@ -7,7 +7,7 @@ import {
   DataResponse,
   FormResponse,
   SingleObjectResponse,
-  TableDetailsResponse
+  TableDetailsResponse, TableStateResponse
 } from "../../../../models/user";
 import {GeneralService} from "../../../../services/general.service";
 import {main} from "@angular/compiler-cli/src/main";
@@ -59,6 +59,7 @@ export class TableDetailsComponent implements OnInit {
   pageTitle;
   buttonText = 'Save Data';
   btnClass;
+  tableState;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -118,6 +119,7 @@ export class TableDetailsComponent implements OnInit {
     this.editType = 'fullRow';
     this.colIds = [];
     this.indexIds = [];
+    this.tableState = {};
 
     this.rowClassRules = {
       'sick-days-warning': function(params) {
@@ -139,6 +141,8 @@ export class TableDetailsComponent implements OnInit {
         this.pageTitle = response.data.nepali_name;
       })
       this.renderTable(true);
+
+      this.restoreState();
     });
   }
 
@@ -303,7 +307,6 @@ export class TableDetailsComponent implements OnInit {
 
           rowValue[key] = row[key];
         })
-        console.log(rowValue);
         this.rowData.push(rowValue);
       })
 
@@ -361,8 +364,6 @@ export class TableDetailsComponent implements OnInit {
 
             if (matchStatus == true) {
               const apiDataKeys = Object.keys(apiDatum);
-              console.log(apiDataKeys);
-              console.log(this.indexIds);
               apiDataKeys.forEach(apiDataKey => {
                 let isIndexKey = false;
                 this.indexIds.forEach(indexId => {
@@ -377,24 +378,6 @@ export class TableDetailsComponent implements OnInit {
                 if (isIndexKey == true) {
                   return;
                 }
-
-                /*this.gridColumnApi.getAllColumns().forEach(column => {
-                  let userDefinedColDefs = column.getUserProvidedColDef();
-                  if(apiDataKey == '_id' || apiDataKey == 'group'){
-                    return;
-                  }
-
-                  if(userDefinedColDefs.field == apiDataKey){
-                    if(userDefinedColDefs.type == 'Select'){
-                      console.log(userDefinedColDefs);
-                      console.log(apiDataKey);
-                    }
-                    else {
-
-                    }
-
-                  }
-                });*/
                 row[apiDataKey] = apiDatum[apiDataKey];
               })
             }
@@ -446,7 +429,6 @@ export class TableDetailsComponent implements OnInit {
 
           this.gridColumnApi.getAllColumns().forEach(column => {
             let userColDef = column.getUserProvidedColDef();
-            console.log("Index ids");
             if(this.indexIds.indexOf(userColDef.field) !== -1){
 
             }
@@ -466,10 +448,6 @@ export class TableDetailsComponent implements OnInit {
 
 
         })
-
-        console.log("Index ids");
-        console.log(this.indexIds);
-
         this.gridApi.setRowData([]);
         this.gridApi.setRowData(this.rowData);
 
@@ -626,21 +604,47 @@ export class TableDetailsComponent implements OnInit {
   }
 
   saveTableConfiguration(){
-    let tableState = {};
-    tableState['tableId']   = this.id;
-    tableState['colState']  = this.gridColumnApi.getColumnState();
-    tableState['groupState'] = this.gridColumnApi.getColumnGroupState();
-    tableState['sortState']   = this.gridColumnApi.getSortModel;
-    tableState['filterState'] = this.gridColumnApi.getFilterModel;
+    this.tableState.tableID   = this.id;
+    this.tableState.colState  = this.gridColumnApi.getColumnState();
+    this.tableState.groupState  = this.gridColumnApi.getColumnGroupState();
+    this.tableState.sortState   = this.gridApi.getSortModel();
+    this.tableState.filterState = this.gridApi.getFilterModel();
 
-    console.log(tableState);
+    const currentData = {
+      data: this.tableState
+    };
+    console.log(currentData);
+
+    this.generalService.saveTableState(currentData).subscribe((response: TableStateResponse) => {
+      this.tableState._id = response.data[0]._id;
+    })
   }
-  restoreState(tableState) {
-    this.gridColumnApi.setColumnState(tableState.colState);
-    this.gridColumnApi.setColumnGroupState(tableState.groupState);
-    this.gridColumnApi.setSortModel(tableState.sortState);
-    this.gridColumnApi.setFilterModel(tableState.filterState);
-    console.log('column state restored');
+
+  restoreState() {
+    this.generalService.getTableState(this.id).subscribe((response: TableStateResponse) => {
+      console.log(response);
+      if(response.data[0]){
+        this.tableState._id = response.data[0]._id;
+        this.tableState.tableID = response.data[0].tableID;
+        this.tableState.colState = response.data[0].colState;
+        this.tableState.groupState = response.data[0].groupState;
+        this.tableState.sortState = response.data[0].sortState;
+        this.tableState.filterState = response.data[0].filterState;
+
+        this.gridColumnApi.setColumnState(this.tableState.colState);
+        this.gridColumnApi.setColumnGroupState(this.tableState.groupState);
+        this.gridApi.setSortModel(this.tableState.sortState);
+        this.gridApi.setFilterModel(this.tableState.filterState);
+      }
+      else{
+        this.tableState.tableID   = this.id;
+        this.tableState.colState  = this.gridColumnApi.getColumnState();
+        this.tableState.groupState  = this.gridColumnApi.getColumnGroupState();
+        this.tableState.sortState   = this.gridApi.getSortModel();
+        this.tableState.filterState = this.gridApi.getFilterModel();
+      }
+
+    })
   }
 
 
