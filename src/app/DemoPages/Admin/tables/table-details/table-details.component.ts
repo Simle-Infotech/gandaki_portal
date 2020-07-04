@@ -446,45 +446,8 @@ export class TableDetailsComponent implements OnInit {
 
   onRowEditingStopped($event) {
     const row = $event.data;
-    let saveColData = {};
-    console.log(row);
+    $event.data._id = this.saveRowData(row);
 
-    this.gridColumnApi.getAllColumns().forEach(column => {
-      let userColumnDef = column.getUserProvidedColDef();
-      // console.log(userColumnDef);
-      if(userColumnDef.type == 'Select'){
-        // userColumnDef.options.forEach(option => {
-        //
-        // })
-      }
-      else {
-        if(row[userColumnDef.field]){
-          saveColData[userColumnDef.field] = row[userColumnDef.field];
-        } else{
-          saveColData[userColumnDef.field] = "";
-        }
-      }
-    })
-
-    let row_header_row = 'row';
-    let row_header_group = 'group';
-    this.row_headers.indicators.forEach(indicator => {
-      if (indicator.title == saveColData[row_header_row]) {
-        saveColData[row_header_row] = indicator.id;
-      }
-    });
-    // console.log(saveColData);
-
-    const currentData = {
-      'data': saveColData
-    };
-    console.log(currentData);
-    this.formService.saveData(this.id, currentData).subscribe((response: FormResponse) => {
-      $event.data._id = response.data[0]._id;
-      // this.renderTable(false);
-      this.buttonText = 'Saved';
-      this.btnClass = 'btn-success';
-    })
 
     // console.log(this.gridColumnApi.getAllColumns());
 
@@ -550,6 +513,13 @@ export class TableDetailsComponent implements OnInit {
     })*/
   }
 
+  onPasteEnd(params){
+    var self = this;
+    this.gridApi.forEachNode(function(node) {
+      node.data._id = self.saveRowData(node.data);
+    });
+  }
+
   onColumnResized($event){
     let columnDetails = $event.columns[0];
   }
@@ -593,6 +563,53 @@ export class TableDetailsComponent implements OnInit {
     return Math.floor(number)
       .toString()
       .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+  }
+
+  saveRowData(row){
+    let saveColData = {};
+    this.gridColumnApi.getAllColumns().forEach(column => {
+      let userColumnDef = column.getUserProvidedColDef();
+      // console.log(userColumnDef);
+      if(userColumnDef.type == 'Select'){
+        // userColumnDef.options.forEach(option => {
+        //
+        // })
+      }
+      else {
+        if(row[userColumnDef.field]){
+          saveColData[userColumnDef.field] = row[userColumnDef.field];
+        } else{
+          if(userColumnDef.field != '_id'){
+            saveColData[userColumnDef.field] = "";
+          }
+        }
+      }
+    })
+
+
+    let row_header_row = 'row';
+    let row_header_group = 'group';
+    this.row_headers.indicators.forEach(indicator => {
+      if (indicator.title == saveColData[row_header_row]) {
+        saveColData[row_header_row] = indicator.id;
+      }
+    });
+    // console.log(saveColData);
+
+    const currentData = {
+      'data': saveColData
+    };
+    console.log(currentData);
+
+    let responseId = '';
+
+    this.formService.saveData(this.id, currentData).subscribe((response: FormResponse) => {
+      responseId = response.data[0]._id;
+      this.buttonText = 'Saved';
+      this.btnClass = 'btn-success';
+
+      return responseId;
+    })
   }
 
   saveTableConfiguration(){

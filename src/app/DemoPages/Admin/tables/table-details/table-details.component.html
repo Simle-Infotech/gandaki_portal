@@ -35,6 +35,7 @@
               [editType]="editType"
               [enableCharts]="true"
               [rowClassRules]="rowClassRules"
+              (pasteEnd)="onPasteEnd($event)"
             >
             </ag-grid-angular>
           </div>
