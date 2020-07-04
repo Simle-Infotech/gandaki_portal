@@ -13,6 +13,8 @@ import {GeneralService} from "../../../../services/general.service";
 import {main} from "@angular/compiler-cli/src/main";
 import {forEach} from "ag-grid-community/dist/lib/utils/array";
 import {save} from "ionicons/icons";
+import {ToastrService} from "ngx-toastr";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-table-details',
@@ -66,7 +68,8 @@ export class TableDetailsComponent implements OnInit {
     private formBuilder: FormBuilder,
     private formService: FormService,
     private router: Router,
-    private generalService: GeneralService
+    private generalService: GeneralService,
+    public toastr: ToastrService,
   ) {
     this.autoGroupColumnDef = { minWidth: 200 };
     this.defaultColDef = {
@@ -598,7 +601,7 @@ export class TableDetailsComponent implements OnInit {
       responseId = response.data[0]._id;
       this.buttonText = 'Saved';
       this.btnClass = 'btn-success';
-
+      this.swalSuccess('Data saved successfully');
       return responseId;
     })
   }
@@ -607,7 +610,6 @@ export class TableDetailsComponent implements OnInit {
     this.tableState.tableID   = this.id;
     this.tableState.colState  = this.gridColumnApi.getColumnState();
     this.tableState.groupState  = this.gridColumnApi.getColumnGroupState();
-    this.tableState.sortState   = this.gridApi.getSortModel();
     this.tableState.filterState = this.gridApi.getFilterModel();
 
     const currentData = {
@@ -617,6 +619,8 @@ export class TableDetailsComponent implements OnInit {
 
     this.generalService.saveTableState(currentData).subscribe((response: TableStateResponse) => {
       this.tableState._id = response.data[0]._id;
+      this.swalSuccess('Data configuration saved successfully');
+
     })
   }
 
@@ -628,23 +632,29 @@ export class TableDetailsComponent implements OnInit {
         this.tableState.tableID = response.data[0].tableID;
         this.tableState.colState = response.data[0].colState;
         this.tableState.groupState = response.data[0].groupState;
-        this.tableState.sortState = response.data[0].sortState;
         this.tableState.filterState = response.data[0].filterState;
 
         this.gridColumnApi.setColumnState(this.tableState.colState);
         this.gridColumnApi.setColumnGroupState(this.tableState.groupState);
-        this.gridApi.setSortModel(this.tableState.sortState);
         this.gridApi.setFilterModel(this.tableState.filterState);
       }
       else{
         this.tableState.tableID   = this.id;
         this.tableState.colState  = this.gridColumnApi.getColumnState();
         this.tableState.groupState  = this.gridColumnApi.getColumnGroupState();
-        this.tableState.sortState   = this.gridApi.getSortModel();
         this.tableState.filterState = this.gridApi.getFilterModel();
       }
 
     })
+  }
+
+  swalSuccess(message) {
+    Swal.fire({
+      icon: 'success',
+      title: message,
+      showConfirmButton: false,
+      timer: 1500
+    });
   }
 
 
