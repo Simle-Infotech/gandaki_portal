@@ -191,13 +191,14 @@ export class TableDetailsComponent implements OnInit {
         })
 
         this.col_headers.forEach(items => {
+          this.modifyColumnHeaders(items);
+          console.log("COlumn iems");
+          console.log(items);
           this.colData.push(items)
-          //   this.colIds.push(items.id);
         })
+        this.gridApi.setColumnDefs(this.colData);
       }
-
-      this.gridApi.setColumnDefs(this.colData);
-      this.gridColumnApi.getAllGridColumns().forEach(column => {
+      /*this.gridColumnApi.getAllGridColumns().forEach(column => {
         let userColDef = column.userProvidedColDef;
         if(userColDef.type == 'Select'){
           const currentOptions = [];
@@ -211,7 +212,7 @@ export class TableDetailsComponent implements OnInit {
             values: currentOptions,
           };
         }
-      });
+      });*/
 
 
       this.empty_table.forEach(row => {
@@ -418,7 +419,7 @@ export class TableDetailsComponent implements OnInit {
   onGridReady(params) {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
-    this.renderTable(true);
+    this.renderTable(false);
   }
 
   onBtStopEditing() {
@@ -526,5 +527,28 @@ export class TableDetailsComponent implements OnInit {
     //
     // const colId = columnDetails.colId;
     // const
+  }
+
+  modifyColumnHeaders(obj){
+    if(obj.hasOwnProperty('children')){
+      let columnChildrens = obj.children;
+
+      columnChildrens.forEach(columnChildren => {
+        if(columnChildren.type == 'Select'){
+          const currentOptions = [];
+
+          columnChildren.options.forEach(option => {
+            currentOptions.push(option.nepali_name);
+          })
+
+          columnChildren.cellEditor =  'agSelectCellEditor';
+          columnChildren.cellEditorParams = {
+            values: currentOptions,
+          };
+        }
+        this.modifyColumnHeaders(columnChildren);
+      })
+    }
+    return null;
   }
 }
