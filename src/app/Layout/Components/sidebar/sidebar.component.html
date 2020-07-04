@@ -37,12 +37,15 @@
                   <div class="vsm-dropdown">
                     <div class="vsm-list">
                       <div class="vsm-item">
-                        <a routerLink="/#/admin/dashboards/analytics" routerLinkActive="active-item" [routerLinkActiveOptions]="{exact: true}" class="vsm-link">
+                        <a *ngIf="is_logged == false" routerLink="/guest/analytics" routerLinkActive="active-item" [routerLinkActiveOptions]="{exact: true}" class="vsm-link">
+                          <span class="vsm-title">घर</span>
+                        </a>
+                        <a *ngIf="is_logged == true" routerLink="/admin/dashboard" routerLinkActive="active-item" [routerLinkActiveOptions]="{exact: true}" class="vsm-link">
                           <span class="vsm-title">घर</span>
                         </a>
                       </div>
                       <div class="vsm-item" *ngIf="is_logged == true">
-                        <a routerLink="#/admin/forms" routerLinkActive="active-item" [routerLinkActiveOptions]="{exact: true}" class="vsm-link">
+                        <a routerLink="/admin/forms" routerLinkActive="active-item" [routerLinkActiveOptions]="{exact: true}" class="vsm-link">
                           <span class="vsm-title">फारामहरू</span>
                         </a>
                       </div>
