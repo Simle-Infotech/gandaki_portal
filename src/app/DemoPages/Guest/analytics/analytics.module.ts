@@ -28,7 +28,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     AnalyticsRoutingModule,
     AngularFontAwesomeModule,
     SlickCarouselModule,
-    ChartsModule, NgApexchartsModule, PerfectScrollbarModule, TrendModule, PageTitleModule, DynamicModule
+    ChartsModule, NgApexchartsModule, PerfectScrollbarModule, TrendModule, PageTitleModule, DynamicModule, SlickCarouselModule, NgbModule,
   ],
   declarations: [AnalyticsComponent],
   providers: [

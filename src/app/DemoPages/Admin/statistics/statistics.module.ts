@@ -9,6 +9,8 @@ import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { StatisticsComponent } from './statistics.component';
 import { StatisticsRoutingModule } from './statistics-routing.module';
 import { PageTitleModule } from '../../../Layout/Components/page-title/page-title.module';
+import {SlickCarouselModule} from "ngx-slick-carousel";
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -17,7 +19,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 @NgModule({
   imports: [
     CommonModule, AngularFontAwesomeModule, ChartsModule, PerfectScrollbarModule,
-    StatisticsRoutingModule, PageTitleModule, NgApexchartsModule,
+    StatisticsRoutingModule, PageTitleModule, NgApexchartsModule,SlickCarouselModule, NgbModule,
   ],
   declarations: [StatisticsComponent],
   providers: [
