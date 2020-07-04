@@ -125,13 +125,13 @@ export class TableDetailsComponent implements OnInit {
     this.tableState = {};
 
     this.rowClassRules = {
-      'sick-days-warning': function(params) {
+      /*'sick-days-warning': function(params) {
         console.log(params);
         if (params.node.rowIndex % 2 === 0) {
           return true;
         }
         return false;
-      },
+      },*/
       '.align-text-center' : function (params) {
         return true;
       }
