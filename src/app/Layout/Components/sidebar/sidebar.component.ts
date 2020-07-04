@@ -103,7 +103,6 @@ export class SidebarComponent implements OnInit {
           id: value.id
         }) ;
       });
-      console.log(this.menuItems);
     });
   }
 

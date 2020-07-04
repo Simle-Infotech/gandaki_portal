@@ -23,6 +23,8 @@ export class TableDetailsComponent implements OnInit {
   id;
   private gridApi;
   private gridColumnApi;
+  rowClassRules;
+  colClassRules;
   defaultColDef;
   sideBar;
   statusBar;
@@ -72,6 +74,7 @@ export class TableDetailsComponent implements OnInit {
       sortable: true,
       resizable: true,
       filter: true,
+      // valueFormatter: 'currencyDollarFormatter'
     };
     this.sideBar = {
       toolPanels: [
@@ -114,6 +117,16 @@ export class TableDetailsComponent implements OnInit {
     this.editType = 'fullRow';
     this.colIds = [];
     this.indexIds = [];
+
+    this.rowClassRules = {
+      'sick-days-warning': function(params) {
+        if (params.node.rowIndex % 2 === 0) {
+          return true;
+        }
+        return false;
+      },
+    };
+
   }
 
   ngOnInit(): void {
@@ -130,7 +143,6 @@ export class TableDetailsComponent implements OnInit {
 
   renderTable(isOnInit) {
     this.formService.getDataHeaders(this.id).subscribe((response: DataHeaderResponse) => {
-      console.log(response);
       this.row_headers = response.rows_headers;
       this.col_headers = response.col_headers;
       this.index_cols = response.index_cols;
@@ -148,13 +160,13 @@ export class TableDetailsComponent implements OnInit {
         this.colIds.push('_id');
 
         this.colData.push(
-          {headerName: 'group', field: 'group', pinned: 'left'}
+          {headerName: '', field: 'group', pinned: 'left',  cellStyle: {color: 'white', 'background-color': '#1c77b9'}}
         )
         this.colIds.push('group');
 
 
         this.colData.push(
-          {headerName: this.row_headers.title, field: 'row', pinned: 'left'}
+          {headerName: this.row_headers.title, field: 'row', pinned: 'left', cellStyle: {color: 'white', 'background-color': '#1c77b9'}}
         )
         this.colIds.push(this.row_headers.title);
         this.indexIds.push('row');
@@ -195,11 +207,10 @@ export class TableDetailsComponent implements OnInit {
 
         this.col_headers.forEach(items => {
           this.modifyColumnHeaders(items);
-          console.log("COlumn iems");
-          console.log(items);
           this.colData.push(items)
         })
         this.gridApi.setColumnDefs(this.colData);
+        this.gridApi.setHeaderHeight(50);
       }
 
 
@@ -264,9 +275,6 @@ export class TableDetailsComponent implements OnInit {
         })
         this.rowData.push(rowValue);
       })
-
-      console.log("Row data");
-      console.log(this.rowData);
 
 
       this.formService.getData(this.id).subscribe((dataResponse: DataResponse) => {
@@ -339,7 +347,6 @@ export class TableDetailsComponent implements OnInit {
 
                 row[apiDataKey] = apiDatum[apiDataKey];
               })
-              console.log(row);
             }
           })
 
@@ -406,7 +413,7 @@ export class TableDetailsComponent implements OnInit {
 
   onGridReady(params) {
     this.gridApi = params.api;
-    this.gridColumnApi = params.columnApi;
+    this.gridColumnApi  = params.columnApi;
     this.gridApi.setColumnDefs([]);
     this.renderTable(false);
   }
@@ -507,15 +514,6 @@ export class TableDetailsComponent implements OnInit {
 
   onColumnResized($event){
     let columnDetails = $event.columns[0];
-
-    // const currentData = {
-    //   'data':{
-    //
-    //   }
-    // }
-    //
-    // const colId = columnDetails.colId;
-    // const
   }
 
   modifyColumnHeaders(obj){
@@ -535,9 +533,27 @@ export class TableDetailsComponent implements OnInit {
             values: currentOptions,
           };
         }
+        else if(columnChildren.type == 'Number'){
+          columnChildren.cellStyle = {'text-align': 'right', 'font-family': 'PCS Nepali'};
+        }
         this.modifyColumnHeaders(columnChildren);
       })
     }
     return null;
+  }
+
+
+  curencyNepaliRupeesFormtter(params){
+    return 'रू' + this.formatNumber(params.value);
+  }
+
+  currencyDollarFormatter(params) {
+    console.log(params);
+  }
+
+  formatNumber(number) {
+    return Math.floor(number)
+      .toString()
+      .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
   }
 }

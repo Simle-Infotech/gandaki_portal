@@ -6,3 +6,33 @@
 .ag-column-hover {
   background-color: #dfffdf;
 }
+
+.ag-pivot-off .ag-header-group-cell {
+  font-size: 18px;
+  color: white;
+  font-weight: bold;
+  background: #1c77b9;
+  text-align: center;
+}
+
+.ag-pivot-on .ag-header-group-cell {
+  font-size: 18px;
+  color: green;
+  font-weight: bold;
+}
+
+
+.sick-days-warning {
+  background-color: sandybrown !important;
+}
+
+.sick-days-breach {
+  background-color: lightcoral !important;
+}
+
+@font-face {
+  font-family: "himali";
+  src: url("./assets/fonts/HIMALI_2.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
