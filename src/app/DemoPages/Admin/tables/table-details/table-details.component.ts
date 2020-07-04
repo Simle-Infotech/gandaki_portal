@@ -165,7 +165,6 @@ export class TableDetailsComponent implements OnInit {
         )
         this.colIds.push('group');
 
-
         this.colData.push(
           {headerName: this.row_headers.title, field: 'row', pinned: 'left', cellStyle: {color: 'white', 'background-color': '#1c77b9'}}
         )
@@ -190,6 +189,8 @@ export class TableDetailsComponent implements OnInit {
                 cellEditorParams: {
                   values: currentOptions,
                 },
+                type: 'Select',
+                options: value.options
               });
           } else {
             this.colData.push(
@@ -211,6 +212,36 @@ export class TableDetailsComponent implements OnInit {
         this.gridApi.setColumnDefs(this.colData);
         this.gridApi.setHeaderHeight(50);
       }
+
+      /*this.empty_table.forEach(row => {
+        console.log("Before column defs");
+        console.log(row);
+        this.gridColumnApi.getAllColumns().forEach(columnDefinitions => {
+          let userDefinedColumnDefinitions = columnDefinitions.getUserProvidedColDef();
+          if(!row[userDefinedColumnDefinitions.field]){
+            row[userDefinedColumnDefinitions.field] = '';
+          }
+        })
+        this.rowData.push(row);
+      });
+
+      this.formService.getData(this.id).subscribe((dataResponse: DataResponse) => {
+        this.apiData = dataResponse.data;
+        this.apiData.forEach(apiDatum => {
+          this.rowData.forEach(row => {
+            if(row.row == apiDatum.row){
+              this.gridColumnApi.getAllColumns().forEach(columnDefinitions => {
+                let userDefinedColumnDefinitions = columnDefinitions.getUserProvidedColDef();
+                row[userDefinedColumnDefinitions.field] = apiDatum[userDefinedColumnDefinitions.field];
+              })
+            }
+          })
+        })
+        console.log("After mapping with the api data");
+        console.log(this.rowData);
+
+      });*/
+
 
 
       this.empty_table.forEach(row => {
@@ -272,9 +303,9 @@ export class TableDetailsComponent implements OnInit {
 
           rowValue[key] = row[key];
         })
+        console.log(rowValue);
         this.rowData.push(rowValue);
       })
-
 
       this.formService.getData(this.id).subscribe((dataResponse: DataResponse) => {
         this.apiData = dataResponse.data;
@@ -314,6 +345,7 @@ export class TableDetailsComponent implements OnInit {
 
 
           this.apiData.forEach(apiDatum => {
+
             let matchStatus = true;
             this.indexIds.forEach(indexId => {
               if (matchStatus ==  false) {
@@ -329,6 +361,8 @@ export class TableDetailsComponent implements OnInit {
 
             if (matchStatus == true) {
               const apiDataKeys = Object.keys(apiDatum);
+              console.log(apiDataKeys);
+              console.log(this.indexIds);
               apiDataKeys.forEach(apiDataKey => {
                 let isIndexKey = false;
                 this.indexIds.forEach(indexId => {
@@ -344,6 +378,23 @@ export class TableDetailsComponent implements OnInit {
                   return;
                 }
 
+                /*this.gridColumnApi.getAllColumns().forEach(column => {
+                  let userDefinedColDefs = column.getUserProvidedColDef();
+                  if(apiDataKey == '_id' || apiDataKey == 'group'){
+                    return;
+                  }
+
+                  if(userDefinedColDefs.field == apiDataKey){
+                    if(userDefinedColDefs.type == 'Select'){
+                      console.log(userDefinedColDefs);
+                      console.log(apiDataKey);
+                    }
+                    else {
+
+                    }
+
+                  }
+                });*/
                 row[apiDataKey] = apiDatum[apiDataKey];
               })
             }
@@ -365,6 +416,7 @@ export class TableDetailsComponent implements OnInit {
           row['row'] = currentRowValue;
           //
           usedKeys = [];
+          usedKeys.push('_id');
           usedKeys.push('group')
           usedKeys.push('row');
           //
@@ -391,7 +443,33 @@ export class TableDetailsComponent implements OnInit {
 
             row[key] = indexValue;
           })
+
+          this.gridColumnApi.getAllColumns().forEach(column => {
+            let userColDef = column.getUserProvidedColDef();
+            console.log("Index ids");
+            if(this.indexIds.indexOf(userColDef.field) !== -1){
+
+            }
+            else{
+              if(userColDef.field == '_id' || userColDef.field == 'group'){
+                return;
+              }
+              if(userColDef.type == 'Select'){
+                userColDef.options.forEach(option => {
+                  if(option.id == row[userColDef.field]){
+                    row[userColDef.field] = option.nepali_name;
+                  }
+                })
+              }
+            }
+          })
+
+
         })
+
+        console.log("Index ids");
+        console.log(this.indexIds);
+
         this.gridApi.setRowData([]);
         this.gridApi.setRowData(this.rowData);
 
@@ -402,6 +480,7 @@ export class TableDetailsComponent implements OnInit {
         this.gridColumnApi.autoSizeColumns(allColumnIds, false);
 
       });
+
     })
   }
 
@@ -447,70 +526,6 @@ export class TableDetailsComponent implements OnInit {
   onRowEditingStopped($event) {
     const row = $event.data;
     $event.data._id = this.saveRowData(row);
-
-
-    // console.log(this.gridColumnApi.getAllColumns());
-
-    /*const rowValue = {};
-    let currentRowValue = '';
-    this.row_headers.indicators.forEach(indicator => {
-      if (indicator.title == row.row) {
-        currentRowValue = indicator.id;
-      }
-    });
-    rowValue['row'] = currentRowValue;
-
-    const usedKeys = [];
-    usedKeys.push('row');
-
-    const keys = Object.keys(row);
-    keys.forEach(key => {
-      if (key == 'row') {
-        return;
-      }
-      let indexValue = '';
-      this.index_cols.forEach(index_col => {
-        if (index_col.col_id == key) {
-          index_col.options.forEach(option => {
-            if (option.nepali_name == row[key]) {
-              indexValue = option.id;
-              usedKeys.push(key);
-            }
-          })
-        }
-      })
-
-      rowValue[key] = indexValue;
-    })
-
-    keys.forEach(key => {
-      let keyStatus = false;
-      usedKeys.forEach(usedKey => {
-        if (usedKey == key) {
-          keyStatus = true;
-          return;
-        }
-      })
-
-      // tslint:disable-next-line:triple-equals
-      // @ts-ignore
-      if (keyStatus == true) {
-        return;
-      }
-
-      rowValue[key] = row[key];
-    });
-
-    const currentData = {
-      'data': rowValue
-    };
-    console.log(currentData);
-    this.formService.saveData(this.id, currentData).subscribe((response: FormResponse) => {
-      $event.data._id = response.data[0]._id;
-      // this.renderTable(false);
-      this.buttonText = 'Saved';
-      this.btnClass = 'btn-success';
-    })*/
   }
 
   onPasteEnd(params){
@@ -569,11 +584,13 @@ export class TableDetailsComponent implements OnInit {
     let saveColData = {};
     this.gridColumnApi.getAllColumns().forEach(column => {
       let userColumnDef = column.getUserProvidedColDef();
-      // console.log(userColumnDef);
       if(userColumnDef.type == 'Select'){
-        // userColumnDef.options.forEach(option => {
-        //
-        // })
+        // console.log(userColumnDef);
+        userColumnDef.options.forEach(option => {
+          if(option.nepali_name == row[userColumnDef.field]){
+            saveColData[userColumnDef.field] = option.id;
+          }
+        })
       }
       else {
         if(row[userColumnDef.field]){
@@ -588,19 +605,15 @@ export class TableDetailsComponent implements OnInit {
 
 
     let row_header_row = 'row';
-    let row_header_group = 'group';
     this.row_headers.indicators.forEach(indicator => {
       if (indicator.title == saveColData[row_header_row]) {
         saveColData[row_header_row] = indicator.id;
       }
     });
-    // console.log(saveColData);
 
     const currentData = {
       'data': saveColData
     };
-    console.log(currentData);
-
     let responseId = '';
 
     this.formService.saveData(this.id, currentData).subscribe((response: FormResponse) => {
