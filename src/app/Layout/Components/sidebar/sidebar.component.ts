@@ -2,7 +2,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { ThemeOptions } from '../../../theme-options';
 import { select } from '@angular-redux/store';
 import { Observable } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {GeneralService} from "../../../services/general.service";
 import {ListResponse} from "../../../models/user";
 import {AuthenticationService} from "../../../services/authentication.service";
@@ -37,7 +37,8 @@ export class SidebarComponent implements OnInit {
     public globals: ThemeOptions,
     private activatedRoute: ActivatedRoute,
     private generalService: GeneralService,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private router: Router
   ) {
 
   }
@@ -116,5 +117,13 @@ export class SidebarComponent implements OnInit {
       this.globals.toggleSidebar = false;
     }
 
+  }
+
+  navigateToTable(tableId){
+    if(this.is_logged == true){
+      this.router.navigate(['/admin/tables/details/'+tableId]);
+    } else{
+      this.router.navigate(['/guest/tables/details/'+tableId]);
+    }
   }
 }

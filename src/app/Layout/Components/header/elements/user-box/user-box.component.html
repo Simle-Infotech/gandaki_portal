@@ -27,7 +27,7 @@
                           <div class="widget-subheading opacity-8">Description</div>
                         </div>-->
                         <div class="widget-content-right mr-2">
-                          <a href="login" *ngIf="isLoggedIn == false">
+                          <a href="/#/login" *ngIf="isLoggedIn == false" (click)="login()">
                             <button class="btn-pill btn-shadow btn-shine btn btn-focus">Login</button>
                           </a>
 

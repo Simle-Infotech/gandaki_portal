@@ -37,12 +37,12 @@
                   <div class="vsm-dropdown">
                     <div class="vsm-list">
                       <div class="vsm-item">
-                        <a routerLink="/dashboards/analytics" routerLinkActive="active-item" [routerLinkActiveOptions]="{exact: true}" class="vsm-link">
+                        <a routerLink="/#/admin/dashboards/analytics" routerLinkActive="active-item" [routerLinkActiveOptions]="{exact: true}" class="vsm-link">
                           <span class="vsm-title">घर</span>
                         </a>
                       </div>
                       <div class="vsm-item" *ngIf="is_logged == true">
-                        <a routerLink="/admin/forms" routerLinkActive="active-item" [routerLinkActiveOptions]="{exact: true}" class="vsm-link">
+                        <a routerLink="#/admin/forms" routerLinkActive="active-item" [routerLinkActiveOptions]="{exact: true}" class="vsm-link">
                           <span class="vsm-title">फारामहरू</span>
                         </a>
                       </div>
@@ -69,7 +69,7 @@
                         </a>
                       </div>
                       <div class="vsm-item" *ngFor="let menuTables of menuItem.tables">
-                        <a [routerLink]="menuTables.url" routerLinkActive="active-item" [routerLinkActiveOptions]="{exact: true}" class="vsm-link">
+                        <a (click)="navigateToTable(menuTables.id)" routerLinkActive="active-item" [routerLinkActiveOptions]="{exact: true}" class="vsm-link">
                           <span class="vsm-title">{{menuTables.nepali_name }}</span>
                         </a>
                       </div>

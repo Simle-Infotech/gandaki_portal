@@ -11,6 +11,7 @@ import {
 } from "../../../../models/user";
 import {GeneralService} from "../../../../services/general.service";
 import {main} from "@angular/compiler-cli/src/main";
+import {forEach} from "ag-grid-community/dist/lib/utils/array";
 
 @Component({
   selector: 'app-table-details',
@@ -18,7 +19,7 @@ import {main} from "@angular/compiler-cli/src/main";
   styleUrls: ['./table-details.component.css']
 })
 export class TableDetailsComponent implements OnInit {
-
+  gridId;
   id;
   private gridApi;
   private gridColumnApi;
@@ -118,12 +119,13 @@ export class TableDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(paramsId => {
       this.id = paramsId.id;
-    });
+      this.gridId = '#agGridTable'+this.id;
 
-    this.generalService.getTableDetails(this.id).subscribe((response: TableDetailsResponse) => {
-      this.pageTitle = response.data.nepali_name;
-      console.log(this.pageTitle);
-    })
+      this.generalService.getTableDetails(this.id).subscribe((response: TableDetailsResponse) => {
+        this.pageTitle = response.data.nepali_name;
+      })
+      this.renderTable(true);
+    });
   }
 
   renderTable(isOnInit) {
@@ -189,67 +191,28 @@ export class TableDetailsComponent implements OnInit {
         })
 
         this.col_headers.forEach(items => {
-          const colHeaderData = {
-            headerName: '',
-            children: [
-
-            ]
-          };
-          const childrenColHeaderData = {
-            headerName: '',
-            children: [
-
-            ]
-          };
-
-          const mainHeaderData = {
-            headerName: items.title,
-            field: items.id,
-            sortable: true,
-            filter: true,
-            editable: true
-          }
-
-          // for(let itemIndex = 0; itemIndex < items.group.length;itemIndex++){
-          //   console.log("Item index");
-          //   console.log(itemIndex);
-          //   if(itemIndex+1 == items.group.length){
-          //     colHeaderData.headerName = items.group[itemIndex];
-          //   }
-          //   else {
-          //     if (items.group[itemIndex] == " "){
-          //       childrenColHeaderData.children.push(mainHeaderData);
-          //     }
-          //     else{
-          //       let subChildren = childrenColHeaderData;
-          //       childrenColHeaderData.headerName = items.group[itemIndex];
-          //       childrenColHeaderData.children.push(subChildren);
-          //     }
-          //   }
-          // }
-          //
-          // colHeaderData.children.push(childrenColHeaderData);
-
-
-          items.group.reverse().forEach(value => {
-            if (colHeaderData.headerName == '') {
-              colHeaderData.headerName = value;
-            } else {
-              if (childrenColHeaderData.headerName == '') {
-                childrenColHeaderData.headerName = value;
-              }
-            }
-          })
-
-          childrenColHeaderData.children.push(mainHeaderData);
-          colHeaderData.children.push(childrenColHeaderData);
-          console.log("Column header data");
-          console.log(colHeaderData);
-          this.colData.push(colHeaderData)
-          this.colIds.push(items.id);
+          this.colData.push(items)
+          //   this.colIds.push(items.id);
         })
       }
+
       this.gridApi.setColumnDefs(this.colData);
+      this.gridColumnApi.getAllGridColumns().forEach(column => {
+        let userColDef = column.userProvidedColDef;
+        if(userColDef.type == 'Select'){
+          const currentOptions = [];
+
+          userColDef.options.forEach(option => {
+            currentOptions.push(option.nepali_name);
+          })
+
+          userColDef.cellEditor =  'agSelectCellEditor';
+          userColDef.cellEditorParams = {
+            values: currentOptions,
+          };
+        }
+      });
+
 
       this.empty_table.forEach(row => {
         const rowValue = {};
