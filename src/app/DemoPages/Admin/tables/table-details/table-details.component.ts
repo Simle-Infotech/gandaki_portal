@@ -126,11 +126,16 @@ export class TableDetailsComponent implements OnInit {
 
     this.rowClassRules = {
       'sick-days-warning': function(params) {
+        console.log(params);
         if (params.node.rowIndex % 2 === 0) {
           return true;
         }
         return false;
       },
+      '.align-text-center' : function (params) {
+        return true;
+      }
+
     };
 
   }
@@ -446,6 +451,9 @@ export class TableDetailsComponent implements OnInit {
                   }
                 })
               }
+              else if(userColDef.type == 'Rupees'){
+                row[userColDef.field] = this.curencyNepaliRupeesFormatter(row[userColDef.field]);
+              }
             }
           })
 
@@ -547,8 +555,8 @@ export class TableDetailsComponent implements OnInit {
   }
 
 
-  curencyNepaliRupeesFormtter(params){
-    return 'रू' + this.formatNumber(params.value);
+  curencyNepaliRupeesFormatter(params){
+    return this.formatNumber(params);
   }
 
   currencyDollarFormatter(params) {
@@ -556,9 +564,12 @@ export class TableDetailsComponent implements OnInit {
   }
 
   formatNumber(number) {
-    return Math.floor(number)
-      .toString()
-      .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+    const formatter = new Intl.NumberFormat('np-NP', {
+      style: 'currency',
+      currency: 'NPR',
+      minimumFractionDigits: 2
+    })
+    return formatter.format(number);
   }
 
   saveRowData(row){
