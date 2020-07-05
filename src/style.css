@@ -48,3 +48,7 @@
 .right-text {
   justify-content: right;
 }
+
+.ag-header-cell-label .ag-header-cell-text {
+  white-space: normal !important;
+}

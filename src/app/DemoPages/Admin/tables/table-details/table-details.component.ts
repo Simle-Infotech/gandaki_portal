@@ -546,7 +546,13 @@ export class TableDetailsComponent implements OnInit {
           };
         }
         else if(columnChildren.type == 'Number'){
-          columnChildren.cellStyle = {'text-align': 'right', 'font-family': 'PCS Nepali'};
+          columnChildren.cellStyle = {'text-align': 'right', 'font-family': 'Fontasy Himali'};
+        }
+        else if(columnChildren.type == 'Rupees'){
+          columnChildren.cellStyle = {'text-align': 'right', 'font-family': 'Fontasy Himali'};
+        }
+        else if(columnChildren.type == 'Float'){
+          columnChildren.cellStyle = {'text-align': 'right', 'font-family': 'Fontasy Himali'};
         }
         this.modifyColumnHeaders(columnChildren);
       })
@@ -556,17 +562,19 @@ export class TableDetailsComponent implements OnInit {
 
 
   curencyNepaliRupeesFormatter(params){
-    return this.formatNumber(params);
+    return (Math.round(params * 100) / 100).toFixed(2);
+    // return this.formatNumber(params);
   }
 
   currencyDollarFormatter(params) {
-    console.log(params);
+    // console.log(params);
+
   }
 
   formatNumber(number) {
     const formatter = new Intl.NumberFormat('np-NP', {
       style: 'currency',
-      currency: 'NPR',
+      currency: 'रु ',
       minimumFractionDigits: 2
     })
     return formatter.format(number);
@@ -630,7 +638,7 @@ export class TableDetailsComponent implements OnInit {
 
     this.generalService.saveTableState(currentData).subscribe((response: TableStateResponse) => {
       this.tableState._id = response.data[0]._id;
-      this.swalSuccess('Data configuration saved successfully');
+      // this.swalSuccess('Data configuration saved successfully');
 
     })
   }
