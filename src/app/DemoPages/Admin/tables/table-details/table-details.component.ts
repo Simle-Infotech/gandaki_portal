@@ -554,6 +554,9 @@ export class TableDetailsComponent implements OnInit {
         else if(columnChildren.type == 'Float'){
           columnChildren.cellStyle = {'text-align': 'right', 'font-family': 'Fontasy Himali'};
         }
+        else if(columnChildren.type == 'Percentage'){
+          columnChildren.cellStyle = {'text-align': 'right', 'font-family': 'Fontasy Himali'};
+        }
         this.modifyColumnHeaders(columnChildren);
       })
     }
