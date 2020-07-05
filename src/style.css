@@ -1,3 +1,8 @@
+@font-face {
+  font-family: "Fontasy Himali";
+  src: url("./assets/fonts/fontasy.ttf") format("truetype");
+}
+
 .ag-row-hover {
   /* putting in !important so it overrides the theme's styling as it hovers the row also */
   background-color: #dfdfff !important;
