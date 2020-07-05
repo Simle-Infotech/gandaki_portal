@@ -46,4 +46,10 @@ export class GeneralService {
       .pipe(retry(3), catchError(this.handleError));
   }
 
+  getSingleTableState(id) {
+    return this.httpClient.get(`${environment.apiUrl}/portal/extra/TabStates?query={"tableID":"` + id + `"}&single=1`)
+      .pipe(retry(3), catchError(this.handleError));
+  }
+
+
 }

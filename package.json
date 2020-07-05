@@ -89,6 +89,7 @@
     "rxjs-compat": "^6.5.2",
     "slick-carousel": "^1.8.1",
     "sweetalert2": "^9.5.4",
+    "tabulator-tables": "^4.7.1",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"
   },

@@ -1,9 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {FormBuilder} from "@angular/forms";
 import {FormService} from "../../../services/form.service";
 import {GeneralService} from "../../../services/general.service";
-import {DataHeaderResponse, DataResponse, FormResponse, TableDetailsResponse} from "../../../models/user";
+import {
+  DataHeaderResponse,
+  DataResponse,
+  FormResponse,
+  singleTableStateResponse,
+  TableDetailsResponse
+} from "../../../models/user";
+import Tabulator from 'tabulator-tables';
 
 @Component({
   selector: 'app-tables',
@@ -48,6 +55,19 @@ export class TablesComponent implements OnInit {
   pageTitle;
   buttonText = 'Save Data';
   btnClass;
+  colState;
+  groupState;
+  sortState;
+  filterState;
+
+  @Input() tableData: any[] = [
+  ];
+  @Input() columnNames: any[] = [ //Define Table Columns
+  ];
+
+  @Input() height: string = '311px';
+
+  tab = document.createElement('div');
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -115,9 +135,44 @@ export class TablesComponent implements OnInit {
 
       this.generalService.getTableDetails(this.id).subscribe((response: TableDetailsResponse) => {
         this.pageTitle = response.data.nepali_name;
+
+        this.generalService.getSingleTableState(this.id).subscribe((response: singleTableStateResponse) => {
+          this.colState = response.data.colState;
+          this.groupState = response.data.groupState;
+          this.sortState = response.data.sortState;
+          this.filterState = response.data.filterState;
+        })
       })
+
       this.renderTable(true);
     });
+  }
+
+  private drawTable(): void {
+    this.columnNames.forEach(columnName => {
+      this.handleVisibility(columnName);
+    })
+
+    const table = new Tabulator("#my-tabular-table", {
+      data:this.rowData,           //load row data from array
+      layout:"fitColumns",      //fit columns to width of table
+      responsiveLayout:"hide",  //hide columns that dont fit on the table
+      tooltips:true,            //show tool tips on cells
+      addRowPos:"top",          //when adding a new row, add it to the top of the table
+      history:true,             //allow undo and redo actions on the table
+      movableColumns:true,      //allow column order to be changed
+      resizableRows:true,
+      groupBy:"group",
+      columnVertAlign: "bottom", //allow row order to be changed
+      initialSort:[             //set the initial sort order of the data
+        {column:"name", dir:"asc"},
+      ],
+      columns:this.columnNames,
+    });
+    table.redraw();
+
+    console.log("Columns");
+    console.log(this.columnNames);
   }
 
   renderTable(isOnInit) {
@@ -128,25 +183,25 @@ export class TablesComponent implements OnInit {
       this.index_cols = response.index_cols;
       this.empty_table = response.empty_table;
       this.rowData = [];
-      this.gridApi.setRowData([]);
+      // this.gridApi.setRowData([]);
 
       if (isOnInit == true) {
         this.colData = [];
-        this.gridApi.setColumnDefs(this.colData);
+        // this.gridApi.setColumnDefs(this.colData);
 
         this.colData.push({
-          headerName: '_id', value: '_id', hide: true, suppressToolPanel: true
+          headerName: '_id', value: '_id',title: '_id', field: '_id', hide: true, suppressToolPanel: true
         });
         this.colIds.push('_id');
 
         this.colData.push(
-          {headerName: 'group', field: 'group', pinned: 'left'}
+          {headerName: 'group', field: 'group', title: 'group', pinned: 'left', visible: false}
         )
         this.colIds.push('group');
 
 
         this.colData.push(
-          {headerName: this.row_headers.title, field: 'row', pinned: 'left'}
+          {headerName: this.row_headers.title, field: 'row', title: this.row_headers.title, pinned: 'left'}
         )
         this.colIds.push(this.row_headers.title);
         this.indexIds.push('row');
@@ -165,6 +220,7 @@ export class TablesComponent implements OnInit {
                 field: value.col_id,
                 sortable: true,
                 filter: true,
+                title: value.title,
                 cellEditor: 'agSelectCellEditor',
                 cellEditorParams: {
                   values: currentOptions,
@@ -177,6 +233,7 @@ export class TablesComponent implements OnInit {
                 field: value.col_id,
                 sortable: true,
                 filter: true,
+                title: value.title
               });
           }
           this.colIds.push(value.col_id);
@@ -185,11 +242,11 @@ export class TablesComponent implements OnInit {
 
         this.col_headers.forEach(items => {
           this.modifyColumnHeaders(items);
-          console.log("COlumn iems");
-          console.log(items);
+          this.modifyColumnHeadersForTabulator(items);
           this.colData.push(items)
         })
-        this.gridApi.setColumnDefs(this.colData);
+        this.columnNames = this.colData;
+        // this.gridApi.setColumnDefs(this.colData);
       }
 
 
@@ -329,7 +386,7 @@ export class TablesComponent implements OnInit {
 
                 row[apiDataKey] = apiDatum[apiDataKey];
               })
-              console.log(row);
+              // console.log(row);
             }
           })
 
@@ -376,15 +433,15 @@ export class TablesComponent implements OnInit {
             row[key] = indexValue;
           })
         })
-        this.gridApi.setRowData([]);
+        /*this.gridApi.setRowData([]);
         this.gridApi.setRowData(this.rowData);
 
         var allColumnIds = [];
         this.gridColumnApi.getAllColumns().forEach(function(column) {
           allColumnIds.push(column.colId);
         });
-        this.gridColumnApi.autoSizeColumns(allColumnIds, false);
-
+        this.gridColumnApi.autoSizeColumns(allColumnIds, false);*/
+        this.drawTable();
       });
     })
   }
@@ -399,6 +456,7 @@ export class TablesComponent implements OnInit {
 
   modifyColumnHeaders(obj){
     obj.editable = false;
+    obj.title = obj.headerName;
     if(obj.hasOwnProperty('children')){
       let columnChildrens = obj.children;
 
@@ -419,6 +477,65 @@ export class TablesComponent implements OnInit {
         this.modifyColumnHeaders(columnChildren);
       })
     }
+    return null;
+  }
+
+  modifyColumnHeadersForTabulator(obj){
+    if(obj.hasOwnProperty('children')){
+      obj.columns = obj.children;
+      obj.children.forEach(child => {
+        this.modifyColumnHeadersForTabulator(child);
+      })
+    }
+    return null;
+  }
+
+  handleVisibility(obj){
+    console.log("Object");
+    console.log(obj);
+    obj.formatter = function (cell, formatterParams, onRendered) {
+      if(obj.type == 'Rupees'){
+        obj.align = "right";
+        return "<span style='font-family: Fontasy Himali;float:right'>"+ 'रू '+ cell.getValue() +"</span>";
+      }
+      else if(obj.type == 'Dollars'){
+        obj.align = "right";
+        return "<span style='float:right'>"+ '$ '+ cell.getValue() +"</span>";
+      }
+      else if(obj.type == 'Select'){
+        console.log("Select values");
+        console.log(obj);
+        console.log(cell.getValue());
+
+        let value = cell.getValue();
+        obj.options.forEach(option => {
+          if(option.id == value){
+            value = option.nepali_name;
+          }
+        });
+        return value;
+      }
+      else{
+        return cell.getValue();
+      }
+    }
+
+    if(this.colState){
+      this.colState.forEach(col => {
+        if(col.colId == obj.field){
+          if(col.hide == true){
+            obj.visible = false;
+          }
+        }
+      });
+    }
+
+    if(obj.hasOwnProperty('columns')){
+      obj.columns.forEach(column =>{
+        this.handleVisibility(column);
+      })
+    }
+
     return null;
   }
 

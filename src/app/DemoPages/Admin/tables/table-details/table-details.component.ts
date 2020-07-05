@@ -59,8 +59,8 @@ export class TableDetailsComponent implements OnInit {
   empty_table;
   indexIds;
   pageTitle;
-  buttonText = 'Save Data';
-  btnClass;
+  buttonText = 'Saved';
+  btnClass = 'btn-success';
   tableState;
 
   constructor(
@@ -153,7 +153,16 @@ export class TableDetailsComponent implements OnInit {
 
       this.restoreState();
     });
+    window.addEventListener('scroll', this.scroll, true);
   }
+
+  ngOnDestroy() {
+    window.removeEventListener('scroll', this.scroll, true);
+  }
+
+  scroll = (event): void => {
+    event.preventDefault();
+  };
 
   renderTable(isOnInit) {
     this.formService.getDataHeaders(this.id).subscribe((response: DataHeaderResponse) => {
@@ -226,36 +235,6 @@ export class TableDetailsComponent implements OnInit {
         this.gridApi.setHeaderHeight(50);
         this.restoreState();
       }
-
-      /*this.empty_table.forEach(row => {
-        console.log("Before column defs");
-        console.log(row);
-        this.gridColumnApi.getAllColumns().forEach(columnDefinitions => {
-          let userDefinedColumnDefinitions = columnDefinitions.getUserProvidedColDef();
-          if(!row[userDefinedColumnDefinitions.field]){
-            row[userDefinedColumnDefinitions.field] = '';
-          }
-        })
-        this.rowData.push(row);
-      });
-
-      this.formService.getData(this.id).subscribe((dataResponse: DataResponse) => {
-        this.apiData = dataResponse.data;
-        this.apiData.forEach(apiDatum => {
-          this.rowData.forEach(row => {
-            if(row.row == apiDatum.row){
-              this.gridColumnApi.getAllColumns().forEach(columnDefinitions => {
-                let userDefinedColumnDefinitions = columnDefinitions.getUserProvidedColDef();
-                row[userDefinedColumnDefinitions.field] = apiDatum[userDefinedColumnDefinitions.field];
-              })
-            }
-          })
-        })
-        console.log("After mapping with the api data");
-        console.log(this.rowData);
-
-      });*/
-
 
 
       this.empty_table.forEach(row => {
@@ -468,7 +447,6 @@ export class TableDetailsComponent implements OnInit {
         this.gridColumnApi.getAllColumns().forEach(function(column) {
           allColumnIds.push(column.colId);
         });
-        this.gridColumnApi.autoSizeColumns(allColumnIds, false);
 
       });
 
@@ -514,15 +492,20 @@ export class TableDetailsComponent implements OnInit {
     this.updatedData = $event.data;
   }
 
-  onRowEditingStopped($event) {
+  onSaveButtonClicked(){
+    this.gridApi.stopEditing();
+    this.showAlert("Data saved successfully");
+  }
+
+  onRowEditingStopped($event, fromRow=true) {
     const row = $event.data;
-    $event.data._id = this.saveRowData(row);
+    $event.data._id = this.saveRowData(row, !fromRow);
   }
 
   onPasteEnd(params){
     var self = this;
     this.gridApi.forEachNode(function(node) {
-      node.data._id = self.saveRowData(node.data);
+      node.data._id = self.saveRowData(node.data, false);
     });
   }
 
@@ -585,7 +568,7 @@ export class TableDetailsComponent implements OnInit {
     return formatter.format(number);
   }
 
-  saveRowData(row){
+  saveRowData(row, showAlert=true){
     let saveColData = {};
     this.gridColumnApi.getAllColumns().forEach(column => {
       let userColumnDef = column.getUserProvidedColDef();
@@ -625,9 +608,12 @@ export class TableDetailsComponent implements OnInit {
       responseId = response.data[0]._id;
       this.buttonText = 'Saved';
       this.btnClass = 'btn-success';
-      this.swalSuccess('Data saved successfully');
       return responseId;
     })
+  }
+
+  showAlert(message){
+    this.swalSuccess(message);
   }
 
   saveTableConfiguration(){
@@ -643,8 +629,7 @@ export class TableDetailsComponent implements OnInit {
 
     this.generalService.saveTableState(currentData).subscribe((response: TableStateResponse) => {
       this.tableState._id = response.data[0]._id;
-      // this.swalSuccess('Data configuration saved successfully');
-
+      this.showAlert("Table configuration saved successfully");
     })
   }
 
