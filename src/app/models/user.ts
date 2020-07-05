@@ -69,3 +69,30 @@ export class TableStateResponse {
     _id: string
   }
 }
+
+export class singleTableStateResponse {
+  data:{
+    _id: String,
+    tableId: String,
+    colState: [
+      {
+        colId: String,
+        hide: boolean,
+        aggFunc: any,
+        width: Number,
+        pivotIndex: any,
+        pinned: any,
+        rowGroupIndex: any,
+        flex: number
+      }
+    ],
+    groupState: [
+      {
+        groupId: String,
+        open: boolean
+      }
+    ],
+    sortState: [],
+    filterState: [],
+  }
+}

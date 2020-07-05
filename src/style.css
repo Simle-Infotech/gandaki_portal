@@ -13,17 +13,10 @@
 }
 
 .ag-pivot-off .ag-header-group-cell {
-  font-size: 18px;
   color: white;
   font-weight: bold;
   background: #1c77b9;
   text-align: center;
-}
-
-.ag-pivot-on .ag-header-group-cell {
-  font-size: 18px;
-  color: green;
-  font-weight: bold;
 }
 
 .sick-days-warning {
@@ -57,3 +50,8 @@
 .ag-header-cell-label .ag-header-cell-text {
   white-space: normal !important;
 }
+
+.custom-class{
+  color: red;
+}
+

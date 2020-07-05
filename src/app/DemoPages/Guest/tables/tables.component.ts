@@ -1,9 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {FormBuilder} from "@angular/forms";
 import {FormService} from "../../../services/form.service";
 import {GeneralService} from "../../../services/general.service";
-import {DataHeaderResponse, DataResponse, FormResponse, TableDetailsResponse} from "../../../models/user";
+import {
+  DataHeaderResponse,
+  DataResponse,
+  FormResponse,
+  singleTableStateResponse,
+  TableDetailsResponse
+} from "../../../models/user";
+import Tabulator from 'tabulator-tables';
 
 @Component({
   selector: 'app-tables',
@@ -48,6 +55,21 @@ export class TablesComponent implements OnInit {
   pageTitle;
   buttonText = 'Save Data';
   btnClass;
+  colState;
+  groupState;
+  sortState;
+  filterState;
+  groups = [];
+  tabulatorTable : any;
+
+  @Input() tableData: any[] = [
+  ];
+  @Input() columnNames: any[] = [ //Define Table Columns
+  ];
+
+  @Input() height: string = '311px';
+
+  tab = document.createElement('div');
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -115,9 +137,44 @@ export class TablesComponent implements OnInit {
 
       this.generalService.getTableDetails(this.id).subscribe((response: TableDetailsResponse) => {
         this.pageTitle = response.data.nepali_name;
+
+        this.generalService.getSingleTableState(this.id).subscribe((response: singleTableStateResponse) => {
+          this.colState = response.data.colState;
+          this.groupState = response.data.groupState;
+          this.sortState = response.data.sortState;
+          this.filterState = response.data.filterState;
+        })
       })
+
       this.renderTable(true);
     });
+  }
+
+  private drawTable(): void {
+    this.columnNames.forEach(columnName => {
+      this.handleVisibility(columnName);
+    })
+
+    this.tabulatorTable = new Tabulator("#my-tabular-table", {
+      data:this.rowData,           //load row data from array
+      layout:"fitColumns",      //fit columns to width of table
+      responsiveLayout:"hide",  //hide columns that dont fit on the table
+      tooltips:true,            //show tool tips on cells
+      addRowPos:"top",          //when adding a new row, add it to the top of the table
+      history:true,             //allow undo and redo actions on the table
+      movableColumns:true,      //allow column order to be changed
+      resizableRows:true,
+      groupBy:this.groups,
+      columnVertAlign: "bottom", //allow row order to be changed
+      initialSort:[             //set the initial sort order of the data
+        {column:"name", dir:"asc"},
+      ],
+      columns:this.columnNames,
+    });
+    this.tabulatorTable.redraw();
+
+    console.log("Columns");
+    console.log(this.columnNames);
   }
 
   renderTable(isOnInit) {
@@ -128,25 +185,36 @@ export class TablesComponent implements OnInit {
       this.index_cols = response.index_cols;
       this.empty_table = response.empty_table;
       this.rowData = [];
-      this.gridApi.setRowData([]);
+      // this.gridApi.setRowData([]);
 
       if (isOnInit == true) {
         this.colData = [];
-        this.gridApi.setColumnDefs(this.colData);
+        this.groups = [];
+        // this.gridApi.setColumnDefs(this.colData);
 
         this.colData.push({
-          headerName: '_id', value: '_id', hide: true, suppressToolPanel: true
+          headerName: '_id', value: '_id',title: '_id', field: '_id', hide: true, suppressToolPanel: true
         });
         this.colIds.push('_id');
 
-        this.colData.push(
-          {headerName: 'group', field: 'group', pinned: 'left'}
+
+        for(let i = 0; i< this.row_headers.indicators[0].group.length; i++){
+          this.colData.push(
+            {headerName: 'group'+i, field: 'group'+i, title: 'group'+i, pinned: 'left', visible: false}
+          )
+          this.groups.push('group'+i);
+          this.colIds.push('group'+i);
+        }
+
+        console.log(this.groups);
+
+/*        this.colData.push(
+          {headerName: 'group', field: 'group', title: 'group', pinned: 'left', visible: false}
         )
-        this.colIds.push('group');
-
+        this.colIds.push('group');*/
 
         this.colData.push(
-          {headerName: this.row_headers.title, field: 'row', pinned: 'left'}
+          {headerName: this.row_headers.title, field: 'row', title: this.row_headers.title, pinned: 'left'}
         )
         this.colIds.push(this.row_headers.title);
         this.indexIds.push('row');
@@ -165,6 +233,7 @@ export class TablesComponent implements OnInit {
                 field: value.col_id,
                 sortable: true,
                 filter: true,
+                title: value.title,
                 cellEditor: 'agSelectCellEditor',
                 cellEditorParams: {
                   values: currentOptions,
@@ -177,6 +246,7 @@ export class TablesComponent implements OnInit {
                 field: value.col_id,
                 sortable: true,
                 filter: true,
+                title: value.title
               });
           }
           this.colIds.push(value.col_id);
@@ -185,11 +255,11 @@ export class TablesComponent implements OnInit {
 
         this.col_headers.forEach(items => {
           this.modifyColumnHeaders(items);
-          console.log("COlumn iems");
-          console.log(items);
+          this.modifyColumnHeadersForTabulator(items);
           this.colData.push(items)
         })
-        this.gridApi.setColumnDefs(this.colData);
+        this.columnNames = this.colData;
+        // this.gridApi.setColumnDefs(this.colData);
       }
 
 
@@ -197,17 +267,35 @@ export class TablesComponent implements OnInit {
         const rowValue = {};
         let currentRowValue = '';
         let currentGroupValue = '';
+        let usedKeys = [];
         this.row_headers.indicators.forEach(indicator => {
           if (indicator.id == row.row) {
             currentRowValue = indicator.title;
-            currentGroupValue = indicator.group[0];
+            for (let i =0; i<indicator.group.length;i++){
+              rowValue['group'+i] = indicator.group[i];
+              usedKeys.push('group'+i);
+            }
+            indicator.group.forEach(singleGroup => {
+              rowValue[singleGroup] = singleGroup;
+            })
+            // currentGroupValue = indicator.group[0];
           }
         });
-        rowValue['group'] = currentGroupValue;
+        // rowValue['group'] = currentGroupValue;
         rowValue['row'] = currentRowValue;
 
-        const usedKeys = [];
-        usedKeys.push('group');
+        let lookup = {};
+        let uniqueArr = [];
+        for(let i=0; i<usedKeys.length; i++) {
+          if(!lookup[usedKeys[i]]) {
+            lookup[usedKeys[i]] = true;
+            uniqueArr.push(usedKeys[i]);
+          }
+        }
+
+        usedKeys = uniqueArr;
+
+        // usedKeys.push('group');
         usedKeys.push('row');
 
         const keys = Object.keys(row);
@@ -216,9 +304,9 @@ export class TablesComponent implements OnInit {
             return;
           }
 
-          if(key == 'group'){
+          /*if(key == 'group'){
             return;
-          }
+          }*/
 
           let indexValue = '';
           this.index_cols.forEach(index_col => {
@@ -329,7 +417,7 @@ export class TablesComponent implements OnInit {
 
                 row[apiDataKey] = apiDatum[apiDataKey];
               })
-              console.log(row);
+              // console.log(row);
             }
           })
 
@@ -338,18 +426,38 @@ export class TablesComponent implements OnInit {
           const rowValue = {};
           currentRowValue = '';
           let currentGroupValue = '';
+          usedKeys = [];
           this.row_headers.indicators.forEach(indicator => {
             if (indicator.id == row.row) {
               currentRowValue = indicator.title;
-              currentGroupValue = indicator.group[0];
+              for(let i = 0;i<indicator.group.length; i++){
+                row['group'+i] = indicator.group[i];
+                usedKeys.push('group'+i);
+              }
+/*              indicator.group.forEach(singleGroup => {
+                row[singleGroup] = singleGroup;
+                usedKeys.push(singleGroup);
+              })*/
+              // currentGroupValue = indicator.group[0];
             }
           });
 
-          row['group'] = currentGroupValue;
+          // row['group'] = currentGroupValue;
           row['row'] = currentRowValue;
+          let lookup = {};
+          let uniqueArr = [];
+          for(let i=0; i<usedKeys.length; i++) {
+            if(!lookup[usedKeys[i]]) {
+              lookup[usedKeys[i]] = true;
+              uniqueArr.push(usedKeys[i]);
+            }
+          }
+
+          usedKeys = uniqueArr;
+
           //
-          usedKeys = [];
-          usedKeys.push('group')
+
+          // usedKeys.push('group')
           usedKeys.push('row');
           //
           this.indexIds.forEach(key => {
@@ -376,15 +484,15 @@ export class TablesComponent implements OnInit {
             row[key] = indexValue;
           })
         })
-        this.gridApi.setRowData([]);
+        /*this.gridApi.setRowData([]);
         this.gridApi.setRowData(this.rowData);
 
         var allColumnIds = [];
         this.gridColumnApi.getAllColumns().forEach(function(column) {
           allColumnIds.push(column.colId);
         });
-        this.gridColumnApi.autoSizeColumns(allColumnIds, false);
-
+        this.gridColumnApi.autoSizeColumns(allColumnIds, false);*/
+        this.drawTable();
       });
     })
   }
@@ -399,6 +507,7 @@ export class TablesComponent implements OnInit {
 
   modifyColumnHeaders(obj){
     obj.editable = false;
+    obj.title = obj.headerName;
     if(obj.hasOwnProperty('children')){
       let columnChildrens = obj.children;
 
@@ -420,6 +529,94 @@ export class TablesComponent implements OnInit {
       })
     }
     return null;
+  }
+
+  modifyColumnHeadersForTabulator(obj){
+    if(obj.hasOwnProperty('children')){
+      obj.columns = obj.children;
+      obj.children.forEach(child => {
+        this.modifyColumnHeadersForTabulator(child);
+      })
+    }
+    return null;
+  }
+
+  handleVisibility(obj){
+    console.log("Object");
+    console.log(obj);
+    if(obj.field == '_id'){
+      obj.visible = false;
+    }
+
+    obj.formatter = function (cell, formatterParams, onRendered) {
+      if(obj.type == 'Rupees'){
+        obj.align = "right";
+        if(cell.getValue() == ""){
+          return cell.getValue();
+        }
+        return "<span style='font-family: Fontasy Himali;float:right'>"+ 'रू '+ parseFloat(cell.getValue()).toFixed(2) +"</span>";
+      }
+      else if(obj.type == 'Number'){
+        if(cell.getValue() == ""){
+          return cell.getValue();
+        }
+        return "<span style='font-family: Fontasy Himali;float:right'>"+ parseFloat(cell.getValue()).toFixed(2) +"</span>";
+      }
+      else if(obj.type == 'Float'){
+        if(cell.getValue() == ""){
+          return cell.getValue();
+        }
+        return "<span style='font-family: Fontasy Himali;float:right'>"+ cell.getValue() +"</span>";
+      }
+      else if(obj.type == 'Dollars'){
+        obj.align = "right";
+        if(cell.getValue() == ""){
+          return cell.getValue();
+        }
+        return "<span style='float:right'>"+ '$ '+ cell.getValue() +"</span>";
+      }
+      else if(obj.type == 'Percentage'){
+        let percentageValue =  cell.getValue();
+        if(cell.getValue() == ""){
+          return cell.getValue();
+        }
+        return "<span style='font-family: Fontasy Himali;float:right'>"+ parseFloat(percentageValue).toFixed(2) + '% ' +"</span>";
+      }
+      else if(obj.type == 'Select'){
+        let value = cell.getValue();
+        obj.options.forEach(option => {
+          if(option.id == value){
+            value = option.nepali_name;
+          }
+        });
+        return value;
+      }
+      else{
+        return cell.getValue();
+      }
+    }
+
+    if(this.colState){
+      this.colState.forEach(col => {
+        if(col.colId == obj.field){
+          if(col.hide == true){
+            obj.visible = false;
+          }
+        }
+      });
+    }
+
+    if(obj.hasOwnProperty('columns')){
+      obj.columns.forEach(column =>{
+        this.handleVisibility(column);
+      })
+    }
+
+    return null;
+  }
+
+  exportTabulatorTable(){
+    this.tabulatorTable.download("xlsx", this.pageTitle+".xlsx", {sheetName:this.pageTitle});
   }
 
 }
