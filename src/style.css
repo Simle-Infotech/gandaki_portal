@@ -25,9 +25,26 @@
   /* background-color: rgba(120, 175, 141, 0.4) !important; */
 }
 
+.align-text-center {
+  text-align: center;
+  word-break: break-all;
+}
+
 @font-face {
   font-family: "himali";
   src: url("./assets/fonts/HIMALI_2.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
+}
+
+.ag-header-cell-label {
+  justify-content: center;
+}
+
+.ag-header-group-cell-label{
+  justify-content: center;
+}
+
+.right-text {
+  justify-content: right;
 }

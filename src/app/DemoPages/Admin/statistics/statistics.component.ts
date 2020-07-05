@@ -1,5 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { Color } from 'ng2-charts';
+import {ListResponse} from "../../../models/user";
+import {GeneralService} from "../../../services/general.service";
+import {Router} from "@angular/router";
+
+declare const $: any;
+declare interface RouteInfo {
+  path: string;
+  title: string;
+  icon: string;
+  class: string;
+  subForms: [];
+  tables: [];
+  id: string;
+}
+
+export const ROUTES: RouteInfo[] = [
+];
 
 @Component({
   selector: 'app-statistics',
@@ -7,84 +23,36 @@ import { Color } from 'ng2-charts';
   styles: []
 })
 export class StatisticsComponent implements OnInit {
+  images = [];
+  menuItems = [];
+  responseData;
 
-  heading = 'Statistics Panel';
-  subheading = 'This is an example dashboard created using build-in elements and components.';
-  icon = 'pe-7s-notebook icon-gradient bg-mixed-hopes';
-
-
-  public datasets2 = [
-    {
-      label: 'My First dataset',
-      data: [46, 55, 59, 80, 81, 38, 65, 59, 80],
-      datalabels: {
-        display: false,
-      },
-
-    }
-  ];
-
-  public lineChartColors2: Color[] = [
-    { // dark grey
-      backgroundColor: 'rgba(48, 177, 255, 0.2)',
-      borderColor: '#30b1ff',
-      borderCapStyle: 'round',
-      borderDash: [],
-      borderWidth: 4,
-      borderDashOffset: 0.0,
-      borderJoinStyle: 'round',
-      pointBorderColor: '#30b1ff',
-      pointBackgroundColor: '#ffffff',
-      pointHoverBorderWidth: 4,
-      pointRadius: 6,
-      pointBorderWidth: 5,
-      pointHoverRadius: 8,
-      pointHitRadius: 10,
-      pointHoverBackgroundColor: '#ffffff',
-      pointHoverBorderColor: '#30b1ff',
-    },
-  ];
-
-  public labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August'];
-
-  public options = {
-    layout: {
-      padding: {
-        left: 0,
-        right: 8,
-        top: 0,
-        bottom: 0
-      }
-    },
-    scales: {
-      yAxes: [{
-        ticks: {
-          display: false,
-          beginAtZero: true
-        },
-        gridLines: {
-          display: false
-        }
-      }],
-      xAxes: [{
-        ticks: {
-          display: false
-        },
-        gridLines: {
-          display: false
-        }
-      }]
-    },
-    legend: {
-      display: false
-    },
-    responsive: true,
-    maintainAspectRatio: false
-  };
-
-  constructor() { }
+  constructor(private generalService: GeneralService, private router: Router) { }
 
   ngOnInit() {
+    this.images.push(`http://202.45.146.221/media/1/6gandaki.jpg`);
+    this.generalService.getSidebar().subscribe((response: ListResponse) => {
+      this.responseData = response.data;
+      this.responseData.forEach(value => {
+        value.tables.forEach(table => {
+          table.url = '/admin/tables/details/'+table.id;
+        })
+        this.menuItems.push({
+          path: '/admin/',
+          title: value.nepali_name,
+          icon: 'list',
+          class: '',
+          subForms: value.sub_forms,
+          tables: value.tables,
+          id: value.id
+        }) ;
+      });
+    });
+
+  }
+
+  navigateToTable(tableId){
+    this.router.navigate(['/admin/tables/details/'+tableId]);
   }
 
 }

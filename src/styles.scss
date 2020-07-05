@@ -1,8 +1,8 @@
 @import "assets/base";
 
 @import "../node_modules/ag-grid-community/src/styles/ag-grid.scss";
-@import "../node_modules/ag-grid-community/src/styles/ag-theme-base/sass/ag-theme-base-mixin.scss";
+@import "../node_modules/ag-grid-community/src/styles/ag-theme-alpine/sass/ag-theme-alpine-mixin.scss";
 
 .ag-theme-alpine {
-  @include ag-theme-base();
+  @include ag-theme-alpine();
 }

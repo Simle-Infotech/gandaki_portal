@@ -4,6 +4,7 @@
     <div class="btn-actions-pane-right text-capitalize">
       <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm" (click)="navigateToDesignTables()">Design Tables</button>
       <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm {{ btnClass }}" (click)="onBtStopEditing()">{{ buttonText }}</button>
+      <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm" (click)="saveTableConfiguration()" >Save Table Configuration</button>
     </div>
   </div>
   <div class="card-body">
@@ -14,7 +15,7 @@
             <ag-grid-angular
               #agGrid
               id="{{ gridId }}"
-              style="width: auto; height: 600px;"
+              style="width: auto; height: 500px;"
               class="ag-theme-alpine"
               [rowData]="rowData"
               [autoGroupColumnDef]="autoGroupColumnDef"
@@ -34,6 +35,7 @@
               [editType]="editType"
               [enableCharts]="true"
               [rowClassRules]="rowClassRules"
+              (pasteEnd)="onPasteEnd($event)"
             >
             </ag-grid-angular>
           </div>
