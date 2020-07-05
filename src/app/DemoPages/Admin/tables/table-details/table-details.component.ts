@@ -79,6 +79,7 @@ export class TableDetailsComponent implements OnInit {
       sortable: true,
       resizable: true,
       filter: true,
+      filterParams: {newRowsAction: 'keep'}
       // valueFormatter: 'currencyDollarFormatter'
     };
     this.sideBar = {
@@ -223,6 +224,7 @@ export class TableDetailsComponent implements OnInit {
         })
         this.gridApi.setColumnDefs(this.colData);
         this.gridApi.setHeaderHeight(50);
+        this.restoreState();
       }
 
       /*this.empty_table.forEach(row => {
@@ -637,13 +639,14 @@ export class TableDetailsComponent implements OnInit {
 
   restoreState() {
     this.generalService.getTableState(this.id).subscribe((response: TableStateResponse) => {
-      console.log(response);
       if(response.data[0]){
+        console.log(response.data[0]);
         this.tableState._id = response.data[0]._id;
         this.tableState.tableID = response.data[0].tableID;
         this.tableState.colState = response.data[0].colState;
         this.tableState.groupState = response.data[0].groupState;
         this.tableState.filterState = response.data[0].filterState;
+        console.log(this.tableState.filterState);
 
         this.gridColumnApi.setColumnState(this.tableState.colState);
         this.gridColumnApi.setColumnGroupState(this.tableState.groupState);

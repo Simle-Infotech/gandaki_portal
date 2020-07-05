@@ -55,4 +55,6 @@ export class StatisticsComponent implements OnInit {
     this.router.navigate(['/admin/tables/details/'+tableId]);
   }
 
+
+
 }

@@ -7,27 +7,27 @@
             Dashboard
           </div>
           <div class="card-body">
-            <ngb-carousel *ngIf="images">
+            <!--<ngb-carousel *ngIf="images">
               <ng-template ngbSlide>
                 <img [src]="images[0]" width="100%" alt="Random first slide">
-                <!--<div class="carousel-caption">
+                &lt;!&ndash;<div class="carousel-caption">
                   <h3>Gandaki Province Data Admin Portal</h3>
                   <p>Add/Edit tables as well as perform data entry for tables from here.</p>
-                </div>-->
+                </div>&ndash;&gt;
               </ng-template>
-            </ngb-carousel>
+            </ngb-carousel>-->
           </div>
         </div>
       </div>
     </div>
 
     <div class="row">
-      <div class="col-md-12 col-lg-12 col-xl-12">
+      <div class="col-md-12 col-lg-6 col-xl-6">
         <div class="mb-3 card">
           <div class="card-header-tab card-header">
             <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
               <i class="header-icon lnr-dice mr-3 text-muted opacity-6"> </i>
-              Tables
+              तालिका
             </div>
 <!--            <div class="btn-actions-pane-right actions-icon-btn" ngbDropdown>
               <button class="btn btn-icon btn-icon-only btn-link" ngbDropdownToggle>
@@ -55,9 +55,8 @@
               <thead>
               <tr>
                 <th class="text-center">#</th>
-                <th>Name</th>
-                <th class="text-center">Nepali Name</th>
-                <th class="text-center">Actions</th>
+                <th class="text-center">तालिका सूची</th>
+                <th class="text-center">कार्यहरू</th>
               </tr>
               </thead>
               <tbody>
@@ -68,13 +67,10 @@
 
                 <tr *ngFor="let menuTable of menuItem.tables">
                   <td class="text-center text-muted">{{ menuTable.id }}</td>
-                  <td class="text-center text-muted">
-                   {{ menuTable.name }}
-                  </td>
                   <td class="text-center">{{ menuTable.nepali_name }}</td>
 
                   <td class="text-center">
-                    <button (click)="navigateToTable(menuTable.id)" type="button" class="btn btn-primary btn-sm">Details</button>
+                    <button (click)="navigateToTable(menuTable.id)" type="button" class="btn btn-primary btn-sm">विवरण</button>
                   </td>
                 </tr>
               </ng-container>
@@ -82,29 +78,54 @@
               </tbody>
             </table>
           </div>
-          <!--<div class="divider mb-0 mt-0"></div>
-          <div class="card-body clearfix">
-            <ul role="menubar" aria-disabled="false" aria-label="Pagination"
-                class="pagination float-right mb-0 b-pagination pagination-md">
-              <li aria-hidden="true" class="page-item disabled"><span class="page-link">«</span>
-              </li>
-              <li aria-hidden="true" class="page-item disabled"><span class="page-link">‹</span>
-              </li>
-              <li class="page-item active"><a [routerLink]="" class="page-link">1</a></li>
-              <li class="page-item"><a [routerLink]="" class="page-link">2</a>
-              </li>
-              <li class="page-item"><a [routerLink]="" class="page-link">3</a>
-              </li>
-              <li class="page-item bv-d-xs-down-none"><a [routerLink]="" class="page-link">4</a></li>
-              <li role="separator" class="page-item disabled bv-d-xs-down-none"><span class="page-link">…</span></li>
-              <li class="page-item"><a [routerLink]="" class="page-link">›</a></li>
-              <li class="page-item"><a [routerLink]="" class="page-link">»</a></li>
-            </ul>
+        </div>
+      </div>
+      <div class="col-md-12 col-lg-6 col-xl-6">
+        <div class="mb-3 card">
+          <div class="card-header-tab card-header">
+            <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
+              <i class="header-icon lnr-dice mr-3 text-muted opacity-6"> </i>
+
+              फारामहरू
+            </div>
+            <!--            <div class="btn-actions-pane-right actions-icon-btn" ngbDropdown>
+                          <button class="btn btn-icon btn-icon-only btn-link" ngbDropdownToggle>
+                            <fa name="th"></fa>
+                          </button>
+                          <div ngbDropdownMenu>
+                            <button type="button" tabindex="0" class="dropdown-item"><i class="dropdown-icon lnr-inbox">
+                            </i><span>Menus</span>
+                            </button>
+                            <button type="button" tabindex="0" class="dropdown-item"><i class="dropdown-icon lnr-file-empty">
+                            </i><span>Settings</span></button>
+                            <button type="button" tabindex="0" class="dropdown-item"><i class="dropdown-icon lnr-book">
+                            </i><span>Actions</span>
+                            </button>
+                            <div class="dropdown-divider"></div>
+                            <div class="p-1 text-right">
+                              <button class="mr-2 btn-shadow btn-sm btn btn-link">View Details</button>
+                              <button class="mr-2 btn-shadow btn-sm btn btn-primary">Action</button>
+                            </div>
+                          </div>
+                        </div>-->
           </div>
-          <div class="d-block text-center card-footer">
-            <button class="mr-2 btn btn-link btn-sm">Cancel</button>
-            <button class="btn btn-success btn-lg">Save</button>
-          </div>-->
+          <div class="table-responsive">
+            <table class="align-middle mb-0 table table-borderless table-striped table-hover">
+              <thead>
+              <tr>
+                <th class="text-center">#</th>
+                <th class="text-center">फाराम सूची</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let menuTable of menuItems">
+                <td class="text-center text-muted">{{ menuTable.id }}</td>
+                <td class="text-center">{{ menuTable.title }}</td>
+              </tr>
+
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
