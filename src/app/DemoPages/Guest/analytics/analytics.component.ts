@@ -27,6 +27,10 @@ export class AnalyticsComponent implements OnInit {
   images = [];
   menuItems = [];
   responseData;
+  forms_count = [];
+  tables_count = [];
+  public forms_length = 0;
+  public tables_length = 0;
 
   constructor(private generalService: GeneralService, private router: Router) { }
 
@@ -34,9 +38,12 @@ export class AnalyticsComponent implements OnInit {
     this.images.push(`http://202.45.146.221/media/1/6gandaki.jpg`);
     this.generalService.getSidebar().subscribe((response: ListResponse) => {
       this.responseData = response.data;
+      this.forms_length += 1;
       this.responseData.forEach(value => {
+
         value.tables.forEach(table => {
           table.url = '/guest/tables/details/'+table.id;
+          this.tables_length += 1;
         })
         this.menuItems.push({
           path: '/admin/',

@@ -2,9 +2,9 @@
   <div class="page-title-wrapper">
     <div class="page-title-heading">
       <div>
-        Gandaki State Province Data
+        गण्डकी प्रदेशको तथ्याङ्क पोर्टल
         <div class="page-title-subheading">
-
+          प्रदेश सरकारो नीति तथा योजना आयोगद्वारा निर्माणमा ल्याइएको यस प्रणालीमा विभिन्न विकस क्षेत्रहरुको आर्थिक, राजनैनितक, भोगोलिक, र अन्न सुचनाहरु समावेश गरिएको छ ।
         </div>
       </div>
     </div>
@@ -21,9 +21,9 @@
           <i class="lnr-database"></i>
         </div>
         <div class="widget-numbers">
-          <span>1</span>
+          <span>१</span>
         </div>
-        <div class="widget-subheading fsize-1 pt-2 opacity-10 text-warning font-weight-bold">Forms</div>
+        <div class="widget-subheading fsize-1 pt-2 opacity-10 text-warning font-weight-bold">जम्मा खण्डहरु</div>
       </div>
       <div class="widget-chart-wrapper">
       </div>
@@ -36,9 +36,9 @@
           <div class="icon-wrapper-bg bg-danger"></div>
           <i class="lnr-list text-danger"></i>
         </div>
-        <div class="widget-numbers"><span>2</span></div>
+        <div class="widget-numbers"><span>२</span></div>
         <div class="widget-subheading fsize-1 pt-2 opacity-10 text-danger font-weight-bold">
-          Tables
+          जम्मा तालिकाहरु
         </div>
       </div>
       <div class="widget-chart-wrapper">
@@ -52,8 +52,8 @@
           <div class="icon-wrapper-bg bg-info"></div>
           <i class="lnr-database"></i>
         </div>
-        <div class="widget-numbers text-danger"><span>20</span></div>
-        <div class="widget-subheading fsize-1 pt-2 opacity-10 text-info font-weight-bold">Entries</div>
+        <div class="widget-numbers text-danger"><span>४०</span></div>
+        <div class="widget-subheading fsize-1 pt-2 opacity-10 text-info font-weight-bold">सुचकहरुको संख्या</div>
       </div>
       <div class="widget-chart-wrapper">
       </div>
@@ -86,8 +86,8 @@
 
               </ng-container>
 
-              <tr *ngFor="let menuTable of menuItem.tables">
-                <td class="text-center text-muted">{{ menuTable.id }}</td>
+              <tr *ngFor="let menuTable of menuItem.tables; index as i">
+                <td class="text-center text-muted" style="font-family: 'Fontasy Himali'">{{i+1}}</td>
                 <td class="text-center">{{ menuTable.nepali_name }}</td>
 
                 <td class="text-center">
@@ -106,7 +106,7 @@
       <div class="mb-3 card" style="height: 300px;" >
         <div class="card-header-tab card-header">
           <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
-            फारामहरू
+            खण्ड सुची
           </div>
         </div>
         <div class="table-responsive">
@@ -114,18 +114,124 @@
             <thead>
             <tr>
               <th class="text-center">#</th>
-              <th class="text-center">फाराम सूची</th>
+              <th class="text-center">खण्ड</th>
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let menuTable of menuItems">
-              <td class="text-center text-muted">{{ menuTable.id }}</td>
+            <tr *ngFor="let menuTable of menuItems; index as i">
+              <td class="text-center text-muted" style="font-family: 'Fontasy Himali'">{{ i + 1 }}</td>
               <td class="text-center">{{ menuTable.title }}</td>
             </tr>
 
             </tbody>
           </table>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12 col-lg-6">
+      <div class="mb-3 card">
+        <div class="card-header-tab card-header">
+          <div class="card-header-title font-size-lg text-capitalize font-weight-normal">शैक्षिक कक्षा वितरण</div>
+          <div class="btn-actions-pane-right text-capitalize">
+            <button class="btn-wide btn-outline-2x btn btn-outline-focus btn-sm">View All</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <apx-chart [labels]="['Team A', 'Team B', 'Team C', 'Team D', 'Team E']" [dataLabels]="{
+            enabled: false
+          }" [colors]="['#16aaff', '#d92550']" [stroke]="{
+            show: true,
+            width: 1,
+            colors: ['#fff']
+          }" [grid]="{
+            xaxis: {
+              showLines: false
+            }
+          }" [xaxis]=" {
+                  categories: ['१-५', '६-८', '९-१०', '११-१२'],
+                  title: {
+                      text: 'Percent'
+                  }
+                }" [plotOptions]="{
+            bar: {
+              horizontal: true,
+              barHeight: '80%'
+            }
+          }" [chart]="{
+            height: 300,
+            type: 'bar',
+            stacked: true,
+            sparkline: {
+                enabled: true
+            }
+          }" [series]="[
+          {
+            name: 'छात्र',
+                    data: [162757, 97408, 54058, 35234]
+            },
+            {
+              name: 'छात्रा',
+                        data: [168294, 98714, 57435, 41177 ]
+            }
+
+          ]"></apx-chart>
+        </div>
+        <div class="p-0 d-block card-footer">
+          <div class="grid-menu grid-menu-2col">
+            <div class="no-gutters row">
+              <div class="p-2 col-sm-6">
+                <button
+                  class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-dark">
+                  <i class="lnr-apartment text-dark opacity-7 btn-icon-wrapper mb-2"> </i>
+                  Overview
+                </button>
+              </div>
+              <div class="p-2 col-sm-6">
+                <button
+                  class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-dark">
+                  <i class="lnr-database text-dark opacity-7 btn-icon-wrapper mb-2"> </i>
+                  Support
+                </button>
+              </div>
+              <div class="p-2 col-sm-6">
+                <button
+                  class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-dark">
+                  <i class="lnr-printer text-dark opacity-7 btn-icon-wrapper mb-2"> </i>
+                  Activities
+                </button>
+              </div>
+              <div class="p-2 col-sm-6">
+                <button
+                  class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-dark">
+                  <i class="lnr-store text-dark opacity-7 btn-icon-wrapper mb-2"> </i>
+                  Marketing
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-12 col-md-5 col-lg-4">
+      <div class="mb-4 card">
+      <div class="card-header-tab card-header">
+        <div class="card-header-title font-size-lg text-capitalize font-weight-normal">क्षेत्रफल</div>
+        <div class="btn-actions-pane-right text-capitalize actions-icon-btn">
+          <button class="btn btn-focus">View More</button>
+        </div>
+      </div>
+      <div class="p-0 card-body">
+        <apx-chart [series]="[3646, 1662, 1572, 1037, 2084, 2321, 3563, 2285, 542, 1836, 1426]" [legend]=false
+          [labels]="['गोरखा', 'लम्जुङ', 'तनहुँ', 'स्याङजा', 'कास्की', 'मनाङ', 'म्याग्दी', 'पर्वत', 'बाग्लुङ', 'नवलपुर']" [chart]="{
+                  width: 350,
+                  height: '350',
+                  type: 'pie'
+                }"></apx-chart>
+      </div>
       </div>
     </div>
   </div>
