@@ -17,86 +17,16 @@
           <div class="main-card mb-3 card">
             <div class="card-body">
               <h5>खण्डहरु</h5>
+              <ng-container *ngFor="let menuItem of menuItems">
               <div class="font-icon-wrapper float-left mr-3 mb-3">
                 <div class="loader-wrapper d-flex justify-content-center align-items-center">
                   <div class="loader">
-                    <img src="/assets/images/cbsicon/budget-01.png" alt="" width="80">
+                    <img src="{{menuItem.icon_path}}" alt="" width="80">
                   </div>
                 </div>
-                <p>आर्थिक</p>
+                <p>{{menuItem.nepali_name}}</p>
               </div>
-
-              <div class="font-icon-wrapper float-left mr-3 mb-3">
-                <div class="loader-wrapper d-flex justify-content-center align-items-center">
-                  <div class="loader">
-                    <img src="/assets/images/cbsicon/agriculture-01.png" alt="" width="80">
-                  </div>
-                </div>
-                <p>कृषि</p>
-              </div>
-
-              <div class="font-icon-wrapper float-left mr-3 mb-3">
-                <div class="loader-wrapper d-flex justify-content-center align-items-center">
-                  <div class="loader">
-                    <img src="/assets/images/cbsicon/census-01.png" alt="" width="80">
-                  </div>
-                </div>
-                <p>जनगणना</p>
-              </div>
-
-              <div class="font-icon-wrapper float-left mr-3 mb-3">
-                <div class="loader-wrapper d-flex justify-content-center align-items-center">
-                  <div class="loader">
-                    <img src="/assets/images/cbsicon/education-01.png" alt="" width="80">
-                  </div>
-                </div>
-                <p>शिक्षा</p>
-              </div>
-
-              <div class="font-icon-wrapper float-left mr-3 mb-3">
-                <div class="loader-wrapper d-flex justify-content-center align-items-center">
-                  <div class="loader">
-                    <img src="/assets/images/cbsicon/environment-01.png" alt="" width="80">
-                  </div>
-                </div>
-                <p>वातावरण</p>
-              </div>
-
-              <div class="font-icon-wrapper float-left mr-3 mb-3">
-                <div class="loader-wrapper d-flex justify-content-center align-items-center">
-                  <div class="loader">
-                    <img src="/assets/images/cbsicon/labour-01.png" alt="" width="80">
-                  </div>
-                </div>
-                <p>श्रम</p>
-              </div>
-
-              <div class="font-icon-wrapper float-left mr-3 mb-3">
-                <div class="loader-wrapper d-flex justify-content-center align-items-center">
-                  <div class="loader">
-                    <img src="/assets/images/cbsicon/poverty-01.png" alt="" width="80">
-                  </div>
-                </div>
-                <p>गरिबी</p>
-              </div>
-
-              <div class="font-icon-wrapper float-left mr-3 mb-3">
-                <div class="loader-wrapper d-flex justify-content-center align-items-center">
-                  <div class="loader">
-                    <img src="/assets/images/cbsicon/tourism-01.png" alt="" width="80">
-                  </div>
-                </div>
-                <p>पर्यटन</p>
-              </div>
-
-              <!-- <div class="font-icon-wrapper float-left mr-3 mb-3">
-                <div class="loader-wrapper d-flex justify-content-center align-items-center">
-                  <div class="loader">
-                    <img src="/assets/images/cbsicon/microecology-01.png" alt="" width="80">
-                  </div>
-                </div>
-                <p>अर्थ</p>
-              </div> -->
+              </ng-container>
 
             </div>
           </div>

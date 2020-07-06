@@ -52,7 +52,9 @@ export class AnalyticsComponent implements OnInit {
           class: '',
           subForms: value.sub_forms,
           tables: value.tables,
-          id: value.id
+          icon_path : value.icon_path,
+          id: value.id,
+          nepali_name: value.nepali_name,
         }) ;
       });
     });
