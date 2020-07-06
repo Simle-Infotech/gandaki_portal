@@ -96,3 +96,21 @@ export class singleTableStateResponse {
     filterState: [],
   }
 }
+
+
+export class CollectionResponse {
+  data:[
+    {
+      id: number,
+      icon_name: string,
+      icon_class: string,
+      icon_path: string,
+      icon_description: string,
+      name: string,
+      nepali_name: string,
+      ordering: number,
+      higher_collection: any,
+      related_table: any
+    }
+  ]
+}

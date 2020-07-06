@@ -73,4 +73,9 @@ export class FormService {
         return this.httpClient.post(`${environment.apiUrl}/portal/data?id=` + id, data)
             .pipe(retry(3), catchError(this.handleError));
     }
+
+  getCollectionList() {
+    return this.httpClient.get(`${environment.apiUrl}/portal/form?name=collection&list`)
+      .pipe(retry(3), catchError(this.handleError));
+  }
 }

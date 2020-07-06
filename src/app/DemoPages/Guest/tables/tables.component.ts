@@ -4,6 +4,7 @@ import {FormBuilder} from "@angular/forms";
 import {FormService} from "../../../services/form.service";
 import {GeneralService} from "../../../services/general.service";
 import {
+  CollectionResponse,
   DataHeaderResponse,
   DataResponse,
   FormResponse,
@@ -61,6 +62,7 @@ export class TablesComponent implements OnInit {
   filterState;
   groups = [];
   tabulatorTable : any;
+  collections;
 
   @Input() tableData: any[] = [
   ];
@@ -128,6 +130,7 @@ export class TablesComponent implements OnInit {
     this.editType = 'fullRow';
     this.colIds = [];
     this.indexIds = [];
+    this.collections = [];
   }
 
   ngOnInit(): void {
@@ -155,6 +158,14 @@ export class TablesComponent implements OnInit {
       this.handleVisibility(columnName);
     })
 
+    console.log(this.groups.length);
+    if(this.groups.length > 1){
+      this.formService.getCollectionList().subscribe((response: CollectionResponse) => {
+        this.collections = response.data;
+        console.log(this.collections);
+      })
+    }
+
     this.tabulatorTable = new Tabulator("#my-tabular-table", {
       data:this.rowData,           //load row data from array
       layout:"fitColumns",      //fit columns to width of table
@@ -172,14 +183,10 @@ export class TablesComponent implements OnInit {
       columns:this.columnNames,
     });
     this.tabulatorTable.redraw();
-
-    console.log("Columns");
-    console.log(this.columnNames);
   }
 
   renderTable(isOnInit) {
     this.formService.getDataHeaders(this.id).subscribe((response: DataHeaderResponse) => {
-      console.log(response);
       this.row_headers = response.rows_headers;
       this.col_headers = response.col_headers;
       this.index_cols = response.index_cols;
@@ -342,10 +349,6 @@ export class TablesComponent implements OnInit {
         })
         this.rowData.push(rowValue);
       })
-
-      console.log("Row data");
-      console.log(this.rowData);
-
 
       this.formService.getData(this.id).subscribe((dataResponse: DataResponse) => {
         this.apiData = dataResponse.data;
@@ -542,8 +545,6 @@ export class TablesComponent implements OnInit {
   }
 
   handleVisibility(obj){
-    console.log("Object");
-    console.log(obj);
     if(obj.field == '_id'){
       obj.visible = false;
     }
@@ -617,6 +618,15 @@ export class TablesComponent implements OnInit {
 
   exportTabulatorTable(){
     this.tabulatorTable.download("xlsx", this.pageTitle+".xlsx", {sheetName:this.pageTitle});
+  }
+
+  addFilterToTabulator(text){
+    this.tabulatorTable.clearFilter();
+    this.tabulatorTable.addFilter('group0', '=', text);
+  }
+
+  resetFilter(){
+    this.tabulatorTable.clearFilter();
   }
 
 }

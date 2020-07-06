@@ -1,8 +1,33 @@
+<div class="row" *ngIf="collections.length > 0">
+  <div class="col-md-12">
+    <div class="main-card mb-3 card">
+      <div class="card-body">
+        <h5>खण्डहरु</h5>
+        <div class="row">
+          <div class="col-md-3" *ngFor="let collection of collections">
+            <a (click)="addFilterToTabulator(collection.nepali_name)">
+              <div class="font-icon-wrapper float-left">
+                <div class="loader-wrapper d-flex justify-content-center align-items-center">
+                  <div class="loader">
+                    <img src="{{collection.icon_path}}" alt="" width="40">
+                    <p>{{collection.nepali_name}}</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="card main-card mb-3">
   <div class="card-header">
     {{ pageTitle }}
     <div class="btn-actions-pane-right text-capitalize">
       <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm" (click)="exportTabulatorTable()" >Export Data</button>
+      <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm" (click)="resetFilter()" *ngIf="collections.length > 0" >Reset Filter</button>
     </div>
   </div>
   <div class="card-body">
