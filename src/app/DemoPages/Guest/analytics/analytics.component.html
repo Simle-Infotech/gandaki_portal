@@ -14,23 +14,22 @@
 
 <div class="row">
   <div class="col-md-12">
-          <div class="main-card mb-3 card">
-            <div class="card-body">
-              <h5>खण्डहरु</h5>
-              <ng-container *ngFor="let menuItem of menuItems">
-              <div class="font-icon-wrapper float-left mr-3 mb-3">
-                <div class="loader-wrapper d-flex justify-content-center align-items-center">
-                  <div class="loader">
-                    <img src="{{menuItem.icon_path}}" alt="" width="80">
-                  </div>
-                </div>
-                <p>{{menuItem.nepali_name}}</p>
+    <div class="main-card mb-3 card">
+      <div class="card-body">
+        <h5>खण्डहरु</h5>
+        <ng-container *ngFor="let menuItem of menuItems">
+          <div class="font-icon-wrapper float-left mr-3 mb-3">
+            <div class="loader-wrapper d-flex justify-content-center align-items-center">
+              <div class="loader">
+                <img src="{{menuItem.icon_path}}" alt="" width="80">
               </div>
-              </ng-container>
-
             </div>
+            <p>{{menuItem.nepali_name}}</p>
           </div>
-        </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
   <div class="col-sm-12 col-md-6 col-xl-4">
     <div class="card mb-3 widget-chart">
       <div class="widget-chart-content">
