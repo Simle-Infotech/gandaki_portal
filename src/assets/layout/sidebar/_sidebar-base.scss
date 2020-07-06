@@ -121,7 +121,7 @@ $sidebar-box-shadow: 7px 0 60px rgba(0, 0, 0, 0.05);
     text-align: left;
     cursor: pointer;
     font-weight: 600;
-
+    font-size: $font-size-sm;
 
     &:hover {
       @extend %side-link-hover;
@@ -222,7 +222,7 @@ $sidebar-box-shadow: 7px 0 60px rgba(0, 0, 0, 0.05);
 
   & .vsm-header {
     text-transform: uppercase;
-    font-size: $font-size-xs;
+    font-size: $font-size-sm;
     margin: ($layout-spacer-x / 2) 0;
     font-weight: bold;
     color: $primary;
