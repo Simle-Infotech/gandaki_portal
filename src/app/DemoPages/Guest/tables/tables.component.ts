@@ -64,7 +64,7 @@ export class TablesComponent implements OnInit {
   tabulatorTable : any;
   collections;
 
-  icon; tableID;
+  icon; tableID; activeFilter=false; collect_title; collect_icon_path; collect_sub_title;
 
   @Input() tableData: any[] = [
   ];
@@ -164,6 +164,8 @@ export class TablesComponent implements OnInit {
     if(this.groups.length > 1){
       this.formService.getCollectionList(this.tableID).subscribe((response: CollectionResponse) => {
         this.collections = response.data;
+        this.tabulatorTable.options.groupBy=false;
+        console.log(this.tabulatorTable.options.groupBy);
         // console.log(this.collections, this.id);
       })
     }
@@ -186,6 +188,7 @@ export class TablesComponent implements OnInit {
     });
     this.tabulatorTable.redraw();
   }
+
 
   renderTable(isOnInit) {
     this.formService.getDataHeaders(this.id).subscribe((response: DataHeaderResponse) => {
