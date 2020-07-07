@@ -21,7 +21,8 @@
               activeIds="{{extraParameter}}">
               <ngb-panel>
                 <ng-template ngbPanelHeader>
-                  <div class="vsm-header">नेभिगेसन</div>
+                  <div class="vsm-header"></div>
+<!--                  <div class="vsm-header">नेभिगेसन</div>-->
                 </ng-template>
               </ngb-panel>
 
@@ -46,9 +47,15 @@
                       </div>
                       <div class="vsm-item" *ngIf="is_logged == true">
                         <a routerLink="/admin/forms" routerLinkActive="active-item" [routerLinkActiveOptions]="{exact: true}" class="vsm-link">
-                          <span class="vsm-title">फारामहरू</span>
+                          <span class="vsm-title">खण्डहरू</span>
                         </a>
                       </div>
+                      <div class="vsm-item" *ngIf="is_logged == false">
+                        <a routerLink="/guest/forms" routerLinkActive="active-item" [routerLinkActiveOptions]="{exact: true}" class="vsm-link">
+                          <span class="vsm-title">खण्डहरू</span>
+                        </a>
+                      </div>
+
                     </div>
                   </div>
                 </ng-template>
