@@ -99,14 +99,14 @@ export class TableDesignerComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(paramsId => {
       this.id = paramsId.id;
+
+      this.generalService.getTableDetails(this.id).subscribe((response: TableDetailsResponse) => {
+        this.pageTitle = response.data.nepali_name;
+        console.log(this.pageTitle);
+      })
+
+      this.renderTable(true);
     });
-
-    this.generalService.getTableDetails(this.id).subscribe((response: TableDetailsResponse) => {
-      this.pageTitle = response.data.nepali_name;
-      console.log(this.pageTitle);
-    })
-
-    this.renderTable(true);
   }
 
   renderTable(isOnInit) {
