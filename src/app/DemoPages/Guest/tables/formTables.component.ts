@@ -42,6 +42,10 @@ export class FormTablesComponent implements OnInit {
     })
   }
 
+  navigateToTableList(tableId){
+    this.router.navigate(['/guest/tables/'+tableId]);
+  }
+
   navigateToTable(tableId){
     this.router.navigate(['/guest/tables/details/'+tableId]);
   }

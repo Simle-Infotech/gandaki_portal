@@ -569,7 +569,7 @@ export class TablesComponent implements OnInit {
         if(cell.getValue() == ""){
           return cell.getValue();
         }
-        return "<span style='font-family: Fontasy Himali;float:right'>"+ cell.getValue() +"</span>";
+        return "<span style='font-family: Fontasy Himali;float:right'>"+ parseFloat(cell.getValue()).toFixed(2) +"</span>";
       }
       else if(obj.type == 'Dollars'){
         obj.align = "right";

@@ -7,7 +7,7 @@
         <ng-container *ngFor="let menuItem of responseData.sub_forms">
           <div class="font-icon-wrapper float-left mr-3 mb-3">
             <div class="loader-wrapper d-flex justify-content-center align-items-center">
-              <div class="loader"><a href ng-click="navigateToTable(menuItem.id)">
+              <div class="loader"><a (click)="navigateToTableList(menuItem.id)">
                   <img src="{{menuItem.icon_path}}" alt="" width="80"></a>
               </div>
             </div>
