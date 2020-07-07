@@ -50,6 +50,8 @@ export class TableDetailsResponse {
   data: {
     name: string,
     nepali_name: string,
+    id: string,
+    icon_path: string
   };
 }
 

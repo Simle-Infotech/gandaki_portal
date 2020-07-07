@@ -4,7 +4,7 @@
       <div>
         गण्डकी प्रदेशको तथ्याङ्क पोर्टल
         <div class="page-title-subheading">
-          प्रदेश सरकारो नीति तथा योजना आयोगद्वारा निर्माणमा ल्याइएको यस प्रणालीमा विभिन्न विकस क्षेत्रहरुको आर्थिक, राजनैनितक, भोगोलिक, र अन्न सुचनाहरु समावेश गरिएको छ ।
+          <!-- प्रदेश सरकारो नीति तथा योजना आयोगद्वारा निर्माणमा ल्याइएको यस प्रणालीमा विभिन्न विकस क्षेत्रहरुको आर्थिक, राजनैनितक, भोगोलिक, र अन्न सुचनाहरु समावेश गरिएको छ । -->
         </div>
       </div>
     </div>
@@ -20,8 +20,8 @@
         <ng-container *ngFor="let menuItem of menuItems">
           <div class="font-icon-wrapper float-left mr-3 mb-3">
             <div class="loader-wrapper d-flex justify-content-center align-items-center">
-              <div class="loader">
-                <img src="{{menuItem.icon_path}}" alt="" width="80">
+              <div class="loader"><a href="/#/guest/tables/{{menuItem.id}}">
+                <img src="{{menuItem.icon_path}}" alt="" width="80"></a>
               </div>
             </div>
             <p>{{menuItem.nepali_name}}</p>

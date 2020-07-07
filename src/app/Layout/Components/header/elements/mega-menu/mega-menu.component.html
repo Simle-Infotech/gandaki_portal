@@ -2,11 +2,15 @@
   <app-search-box (click)="hideMegamenu()"></app-search-box>
   <ul [ngStyle]="{'opacity': value ? '0' : '1'}" class="header-megamenu nav">
     <li class="nav-item">
+      <a href="/#" class="btn btn-link">
+        <span>गृहपृष्ठ</span></a>
+    </li>
+    <li class="nav-item">
       <button [ngbPopover]="headerMegaPopover" [autoClose]="'outside'" placement="bottom-left"
         popoverClass="rm-max-width" type="button" class="btn btn-link dropdown-toggle">
         <span>
 <!--          <i class="nav-link-icon pe-7s-gift"></i>-->
-          गृहपृष्ठ
+          डाटा पोर्टल जानकारी
         </span>
       </button>
     </li>

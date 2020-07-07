@@ -64,6 +64,8 @@ export class TablesComponent implements OnInit {
   tabulatorTable : any;
   collections;
 
+  icon; tableID;
+
   @Input() tableData: any[] = [
   ];
   @Input() columnNames: any[] = [ //Define Table Columns
@@ -140,7 +142,8 @@ export class TablesComponent implements OnInit {
 
       this.generalService.getTableDetails(this.id).subscribe((response: TableDetailsResponse) => {
         this.pageTitle = response.data.nepali_name;
-
+        this.icon = response.data.icon_path;
+        this.tableID = response.data.id;
         this.generalService.getSingleTableState(this.id).subscribe((response: singleTableStateResponse) => {
           this.colState = response.data.colState;
           this.groupState = response.data.groupState;
@@ -158,11 +161,10 @@ export class TablesComponent implements OnInit {
       this.handleVisibility(columnName);
     })
 
-    console.log(this.groups.length);
     if(this.groups.length > 1){
-      this.formService.getCollectionList().subscribe((response: CollectionResponse) => {
+      this.formService.getCollectionList(this.tableID).subscribe((response: CollectionResponse) => {
         this.collections = response.data;
-        console.log(this.collections);
+        // console.log(this.collections, this.id);
       })
     }
 
@@ -213,7 +215,7 @@ export class TablesComponent implements OnInit {
           this.colIds.push('group'+i);
         }
 
-        console.log(this.groups);
+        // console.log(this.groups);
 
 /*        this.colData.push(
           {headerName: 'group', field: 'group', title: 'group', pinned: 'left', visible: false}

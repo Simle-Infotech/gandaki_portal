@@ -38,6 +38,7 @@ export class FormTablesComponent implements OnInit {
 
     this.formService.getFormDetails(this.id).subscribe((response: SingleObjectResponse) => {
       this.responseData = response.data;
+      console.log(response.data);
     })
   }
 
