@@ -7,11 +7,11 @@ import {GeneralService} from "../../../../services/general.service";
 import {CheckboxRenderer} from "../../checkBox-renderer.component";
 
 @Component({
-  selector: 'app-table-designer',
-  templateUrl: './table-designer.component.html',
-  styleUrls: ['./table-designer.component.css']
+  selector: 'app-table-indicators',
+  templateUrl: './table-indicators.component.html',
+  styleUrls: ['./table-indicators.component.css']
 })
-export class TableDesignerComponent implements OnInit {
+export class TableIndicatorsComponent implements OnInit {
   id;
   private gridApi;
   private gridColumnApi;
@@ -105,6 +105,8 @@ export class TableDesignerComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(paramsId => {
       this.id = paramsId.id;
+      console.log("Id is here");
+      console.log(this.id);
 
       this.generalService.getTableDetails(this.id).subscribe((response: TableDetailsResponse) => {
         this.pageTitle = response.data.nepali_name;
@@ -116,51 +118,38 @@ export class TableDesignerComponent implements OnInit {
   }
 
   renderTable(isOnInit) {
-    this.formService.getQuestionColumns(this.id).subscribe((response: ListResponse) => {
+    this.formService.getIndicators(this.id).subscribe((response: ListResponse) => {
       console.log(response);
       this.fields = response.fields;
       this.rowDefs = response.data;
       console.log(response);
       if (isOnInit == true) {
-        //Hardcode the fields to be shown in the designer page
-
-        this.colData.push(
-          {headerName: 'id', field: 'id', sortable: false, hide: true},
-          {headerName: 'name', field: 'name', sortable: true, hide: false, filter: true, editable: true},
-          {headerName: 'nepali_name', field: 'nepali_name', sortable: true, hide: false, filter: true, editable: true},
-          {headerName: 'ordering', field: 'ordering', sortable: true, hide: false, filter: true, editable: true},
-          {headerName: 'unit_description', field: 'unit_description', sortable: true, hide: false, filter: true, editable: true},
-          {headerName: 'question_required', field: 'question_required', sortable: true, hide: false, filter: true, editable: true,  cellRenderer: 'checkboxRenderer'},
-          {headerName: 'uri', field: 'uri', sortable: true, hide: false, filter: true, editable: true},
-          {headerName: 'is_row_index', field: 'is_row_index', sortable: true, hide: false, filter: true, editable: true, cellRenderer: 'checkboxRenderer'},
-          {headerName: 'js_code', field: 'js_code', sortable: true, hide: false, filter: true, editable: true},
-          {headerName: 'is_indexed', field: 'is_indexed', sortable: true, hide: false, filter: true, editable: true, cellRenderer: 'checkboxRenderer'},
-          {headerName: 'index_method', field: 'index_method', sortable: true, hide: false, filter: true, editable: true},
-          {headerName: 'is_extra', field: 'is_extra', sortable: true, hide: false, filter: true, editable: true, cellRenderer: 'checkboxRenderer'},
-          {headerName: 'question_type', field: 'question_type', sortable: true, hide: false, filter: true, editable: true},
-          {headerName: 'table', field: 'table', sortable: true, hide: false, filter: true, editable: true},
-          {headerName: 'unit', field: 'unit', sortable: true, hide: false, filter: true, editable: true},
-          {headerName: 'same_options_questions', field: 'same_options_questions', sortable: true, hide: false, filter: true, editable: true},
-          {headerName: 'validation_rule', field: 'validation_rule', sortable: true, hide: true, filter: true, editable: true},
-        )
-
-        this.colData.push({
-          headerName: 'Indicators',
-          field: 'id',
-          cellRenderer: (invNum) => {
-            return  `<a href="/#/admin/tables/indicators/${invNum.value}" class="btn btn-sm">view</a>`;
-          }
-        });
-
-        /*this.columnDefs = response.columns;
+        this.columnDefs = response.columns;
 
         this.columnDefs.forEach(value => {
-          if (value != 'table' || value != id) {
+          if (value == 'id') {
             this.colData.push(
-                {headerName: value, field: value, sortable: true, filter: true, editable: true}
+              {headerName: value, field: value, sortable: true, filter: true, editable: true, hide: true}
             )
+            return;
           }
-        });*/
+
+          if(value == 'column'){
+            this.colData.push(
+              {headerName: value, field: value, sortable: true, filter: true, editable: true, hide: true}
+            )
+            return;
+          }
+
+          if(value == 'restricted_to_question'){
+            return;
+          }
+
+          this.colData.push(
+            {headerName: value, field: value, sortable: true, filter: true, editable: true}
+          )
+
+        });
       }
       this.rowData = [];
       this.gridApi.setRowData(this.rowData);
@@ -177,7 +166,6 @@ export class TableDesignerComponent implements OnInit {
       this.gridColumnApi.getAllColumns().forEach(function(column) {
         allColumnIds.push(column.colId);
       });
-      this.gridColumnApi.autoSizeColumns(allColumnIds, false);
     })
   }
 
@@ -217,16 +205,15 @@ export class TableDesignerComponent implements OnInit {
     const currentData = {
       'data': $event.data
     };
+    currentData.data.column = this.id;
+    currentData.data.restricted_to_question = [];
 
-    currentData.data.table = this.id;
+    console.log("Saved data");
+    console.log(currentData);
 
-    this.formService.saveQuestionColumns(currentData).subscribe((response: FormResponse) => {
+    this.formService.saveIndicators(currentData).subscribe((response: FormResponse) => {
       this.renderTable(false);
     })
-  }
-
-  navigateToDetailsTables(){
-    this.router.navigate(['admin/tables/details/'+this.id])
   }
 
 }

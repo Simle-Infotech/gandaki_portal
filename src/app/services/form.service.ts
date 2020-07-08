@@ -78,4 +78,14 @@ export class FormService {
     return this.httpClient.get(`${environment.apiUrl}/portal/form?name=collectionInTable&id=` + id)
       .pipe(retry(3), catchError(this.handleError));
   }
+
+  getIndicators(id) {
+    return this.httpClient.get(`${environment.apiUrl}/portal/form?name=indicators&design=1&id=` + id)
+      .pipe(retry(3), catchError(this.handleError));
+  }
+
+  saveIndicators(data) {
+    return this.httpClient.post(`${environment.apiUrl}/portal/form?name=indicators`, data)
+      .pipe(retry(3), catchError(this.handleError));
+  }
 }

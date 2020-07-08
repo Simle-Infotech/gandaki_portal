@@ -17,6 +17,8 @@ import {TableDetailsComponent} from "./table-details/table-details.component";
 import {MatCardModule} from "@angular/material/card";
 import {MatTabsModule} from "@angular/material/tabs";
 import {MatIconModule} from "@angular/material/icon";
+import {CheckboxRenderer} from "../checkBox-renderer.component";
+import {TableIndicatorsComponent} from "./table-indicators/table-indicators.component";
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -25,12 +27,12 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 @NgModule({
   imports: [
     CommonModule, AngularFontAwesomeModule, ChartsModule, PerfectScrollbarModule,
-    TablesRoutingModule, PageTitleModule, NgApexchartsModule,AgGridModule.withComponents([]),
+    TablesRoutingModule, PageTitleModule, NgApexchartsModule,AgGridModule.withComponents([CheckboxRenderer]),
     MatCardModule,
     MatTabsModule,
     MatIconModule,
   ],
-  declarations: [TablesComponent, TableDataEntryComponent, TableDesignerComponent, TableDetailsComponent],
+  declarations: [TablesComponent, TableDataEntryComponent, TableDesignerComponent, TableDetailsComponent, CheckboxRenderer, TableIndicatorsComponent],
   providers: [
     {
       provide:

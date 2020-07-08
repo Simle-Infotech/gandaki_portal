@@ -4,6 +4,7 @@ import {TablesComponent} from "./tables.component";
 import {TableDesignerComponent} from "./table-designer/table-designer.component";
 import {TableDetailsComponent} from "./table-details/table-details.component";
 import {TableDataEntryComponent} from "./table-data-entry/table-data-entry.component";
+import {TableIndicatorsComponent} from "./table-indicators/table-indicators.component";
 
 const routes: Routes = [
   {
@@ -32,6 +33,13 @@ const routes: Routes = [
     component: TableDataEntryComponent,
     data: {
       title: 'Tables'
+    },
+  },
+  {
+    path: 'indicators/:id',
+    component: TableIndicatorsComponent,
+    data: {
+      title: 'Indicators'
     },
   },
 
