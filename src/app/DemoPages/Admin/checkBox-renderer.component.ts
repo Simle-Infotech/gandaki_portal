@@ -11,7 +11,7 @@ import { Component, OnDestroy } from '@angular/core';
 `,
 })
 export class CheckboxRenderer implements OnDestroy {
-  private params: any;
+  public params: any;
 
   agInit(params: any): void {
     this.params = params;
