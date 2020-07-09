@@ -182,10 +182,16 @@ export class TableDetailsComponent implements OnInit {
         });
         this.colIds.push('_id');
 
-        this.colData.push(
+        /*this.colData.push(
           {headerName: '', field: 'group', pinned: 'left',  cellStyle: {color: 'white', 'background-color': '#1c77b9'}}
         )
-        this.colIds.push('group');
+        this.colIds.push('group');*/
+        for(let i = 0; i < this.row_headers.indicators[0].group.length; i++ ){
+          this.colData.push(
+            {headerName: '', field: 'group' + i, pinned: 'left', cellStyle: {color: 'white', 'background-color': '#1c77b9'}}
+          )
+          this.colIds.push('group' + i);
+        }
 
         this.colData.push(
           {headerName: this.row_headers.title, field: 'row', pinned: 'left', cellStyle: {color: 'white', 'background-color': '#1c77b9'}}
@@ -232,27 +238,42 @@ export class TableDetailsComponent implements OnInit {
           this.colData.push(items)
         })
         this.gridApi.setColumnDefs(this.colData);
+<<<<<<< HEAD
         this.gridApi.setHeaderHeight(30);
         this.restoreState();
+=======
+        console.log(this.colData);
+        this.gridApi.setHeaderHeight(50);
+        // this.restoreState();
+>>>>>>> 1ace3bb6d69d71e27572f93ed8183da96cf5032b
       }
 
 
       this.empty_table.forEach(row => {
+        const usedKeys = [];
         const rowValue = {};
         let currentRowValue = '';
         let currentGroupValue = '';
         this.row_headers.indicators.forEach(indicator => {
           if (indicator.id == row.row) {
             currentRowValue = indicator.title;
+<<<<<<< HEAD
             currentGroupValue = indicator.group[0];
 
+=======
+            for( let i = 0; i < indicator.group.length; i ++){
+              rowValue['group' + i] = indicator.group[i];
+              usedKeys.push('group' + i);
+            }
+
+            // currentGroupValue = indicator.group[0];
+>>>>>>> 1ace3bb6d69d71e27572f93ed8183da96cf5032b
           }
         });
-        rowValue['group'] = currentGroupValue;
+        // rowValue['group'] = currentGroupValue;
         rowValue['row'] = currentRowValue;
 
-        const usedKeys = [];
-        usedKeys.push('group');
+        // usedKeys.push('group');
         usedKeys.push('row');
 
         const keys = Object.keys(row);
@@ -262,6 +283,10 @@ export class TableDetailsComponent implements OnInit {
           }
 
           if(key == 'group'){
+            return;
+          }
+
+          if(usedKeys.indexOf(key) > -1){
             return;
           }
 
@@ -378,19 +403,23 @@ export class TableDetailsComponent implements OnInit {
           const rowValue = {};
           currentRowValue = '';
           let currentGroupValue = '';
+          usedKeys = [];
           this.row_headers.indicators.forEach(indicator => {
             if (indicator.id == row.row) {
               currentRowValue = indicator.title;
-              currentGroupValue = indicator.group[0];
+              for( let i = 0; i < indicator.group.length; i ++){
+                row['group' + i] = indicator.group[i];
+                usedKeys.push('group' + i);
+              }
+              // currentGroupValue = indicator.group[0];
             }
           });
 
-          row['group'] = currentGroupValue;
+          // row['group'] = currentGroupValue;
           row['row'] = currentRowValue;
           //
-          usedKeys = [];
           usedKeys.push('_id');
-          usedKeys.push('group')
+          // usedKeys.push('group')
           usedKeys.push('row');
           //
           this.indexIds.forEach(key => {
@@ -399,6 +428,10 @@ export class TableDetailsComponent implements OnInit {
             }
 
             if(key == 'group'){
+              return;
+            }
+
+            if(usedKeys.indexOf(key) > -1){
               return;
             }
 
@@ -443,6 +476,7 @@ export class TableDetailsComponent implements OnInit {
         })
         this.gridApi.setRowData([]);
         this.gridApi.setRowData(this.rowData);
+        // console.log(this.rowData);
 
         var allColumnIds = [];
         this.gridColumnApi.getAllColumns().forEach(function(column) {
@@ -462,7 +496,7 @@ export class TableDetailsComponent implements OnInit {
   onGridReady(params) {
     this.gridApi = params.api;
     this.gridColumnApi  = params.columnApi;
-    this.gridApi.setColumnDefs([]);
+    // this.gridApi.setColumnDefs([]);
     this.renderTable(false);
   }
 
@@ -605,6 +639,8 @@ export class TableDetailsComponent implements OnInit {
     };
     let responseId = '';
 
+    console.log("Saved data");
+    console.log(currentData);
     this.formService.saveData(this.id, currentData).subscribe((response: FormResponse) => {
       responseId = response.data[0]._id;
       this.buttonText = 'Saved';
@@ -637,13 +673,13 @@ export class TableDetailsComponent implements OnInit {
   restoreState() {
     this.generalService.getTableState(this.id).subscribe((response: TableStateResponse) => {
       if(response.data[0]){
-        console.log(response.data[0]);
+        // console.log(response.data[0]);
         this.tableState._id = response.data[0]._id;
         this.tableState.tableID = response.data[0].tableID;
         this.tableState.colState = response.data[0].colState;
         this.tableState.groupState = response.data[0].groupState;
         this.tableState.filterState = response.data[0].filterState;
-        console.log(this.tableState.filterState);
+        // console.log(this.tableState.filterState);
 
         this.gridColumnApi.setColumnState(this.tableState.colState);
         this.gridColumnApi.setColumnGroupState(this.tableState.groupState);
