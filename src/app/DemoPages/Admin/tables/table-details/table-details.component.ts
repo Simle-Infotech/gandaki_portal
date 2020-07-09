@@ -232,7 +232,7 @@ export class TableDetailsComponent implements OnInit {
           this.colData.push(items)
         })
         this.gridApi.setColumnDefs(this.colData);
-        this.gridApi.setHeaderHeight(50);
+        this.gridApi.setHeaderHeight(30);
         this.restoreState();
       }
 
@@ -245,6 +245,7 @@ export class TableDetailsComponent implements OnInit {
           if (indicator.id == row.row) {
             currentRowValue = indicator.title;
             currentGroupValue = indicator.group[0];
+
           }
         });
         rowValue['group'] = currentGroupValue;
