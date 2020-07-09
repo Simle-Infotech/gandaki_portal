@@ -238,14 +238,11 @@ export class TableDetailsComponent implements OnInit {
           this.colData.push(items)
         })
         this.gridApi.setColumnDefs(this.colData);
-<<<<<<< HEAD
         this.gridApi.setHeaderHeight(30);
         this.restoreState();
-=======
         console.log(this.colData);
-        this.gridApi.setHeaderHeight(50);
+
         // this.restoreState();
->>>>>>> 1ace3bb6d69d71e27572f93ed8183da96cf5032b
       }
 
 
@@ -257,17 +254,13 @@ export class TableDetailsComponent implements OnInit {
         this.row_headers.indicators.forEach(indicator => {
           if (indicator.id == row.row) {
             currentRowValue = indicator.title;
-<<<<<<< HEAD
-            currentGroupValue = indicator.group[0];
 
-=======
             for( let i = 0; i < indicator.group.length; i ++){
               rowValue['group' + i] = indicator.group[i];
               usedKeys.push('group' + i);
             }
 
             // currentGroupValue = indicator.group[0];
->>>>>>> 1ace3bb6d69d71e27572f93ed8183da96cf5032b
           }
         });
         // rowValue['group'] = currentGroupValue;
