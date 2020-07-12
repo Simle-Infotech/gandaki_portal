@@ -15,6 +15,8 @@ import {forEach} from "ag-grid-community/dist/lib/utils/array";
 import {save} from "ionicons/icons";
 import {ToastrService} from "ngx-toastr";
 import Swal from "sweetalert2";
+import { ClientSideRowModel } from "ag-grid";
+import {Module} from "ag-grid-community";
 
 @Component({
   selector: 'app-table-details',
@@ -26,6 +28,7 @@ export class TableDetailsComponent implements OnInit {
   id;
   private gridApi;
   private gridColumnApi;
+
   rowClassRules;
   colClassRules;
   defaultColDef;
@@ -79,6 +82,7 @@ export class TableDetailsComponent implements OnInit {
       sortable: true,
       resizable: true,
       filter: true,
+      rowDrag: true,
       filterParams: {newRowsAction: 'keep'}
       // valueFormatter: 'currencyDollarFormatter'
     };
@@ -188,7 +192,7 @@ export class TableDetailsComponent implements OnInit {
         this.colIds.push('group');*/
         for(let i = 0; i < this.row_headers.indicators[0].group.length; i++ ){
           this.colData.push(
-            {headerName: '', field: 'group' + i, pinned: 'left', cellStyle: {color: 'white', 'background-color': '#1c77b9'}}
+            {headerName: '', field: 'group' + i, pinned: 'left', cellStyle: {color: 'white', 'background-color': '#1c77b9'}, rowDrag: true}
           )
           this.colIds.push('group' + i);
         }
@@ -496,6 +500,10 @@ export class TableDetailsComponent implements OnInit {
 
   navigateToDesignTables(){
     this.router.navigate(['admin/tables/design/'+this.id])
+  }
+
+  navigateToCharts(){
+    this.router.navigate(['admin/tables/charts/'+this.id])
   }
 
   onCellClicked($event) {

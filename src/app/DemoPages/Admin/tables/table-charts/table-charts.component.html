@@ -1,0 +1,54 @@
+<div class="card main-card mb-3">
+  <div class="card-header">
+    Charts
+    <div class="btn-actions-pane-right text-capitalize">
+      <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm" (click)="navigateToDetailsTables()">Back to Data Entry</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <div style="margin-top: 20px;">
+      <div class="mb-3 card">
+        <div class="no-gutters row">
+          <div class="col-sm-6 col-md-6">
+            <canvas baseChart
+                    [datasets]="barChartData"
+                    [labels]="barChartLabels"
+                    [options]="barChartOptions"
+                    [legend]="barChartLegend"
+                    [chartType]="barChartType">
+            </canvas>
+          </div>
+          <div class="col-sm-6 col-md-6">
+            <canvas baseChart
+                    [datasets]="lineChartData"
+                    [labels]="lineChartLabels"
+                    [colors]="lineChartColors"
+                    [legend]="lineChartLegend"
+                    [chartType]="lineChartType"
+                    [plugins]="lineChartPlugins">
+            </canvas>
+          </div>
+        </div>
+      </div>
+      <div class="mb-3 card">
+        <div class="no-gutters row">
+          <div class="col-sm-6 col-md-6">
+            <canvas baseChart
+                    [data]="pieChartData"
+                    [labels]="pieChartLabels"
+                    [chartType]="pieChartType"></canvas>
+          </div>
+
+          <div class="col-sm-6 col-md-6">
+            <canvas baseChart
+                    [data]="doughnutChartData"
+                    [labels]="doughnutChartLabels"
+                    [chartType]="doughnutChartType"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

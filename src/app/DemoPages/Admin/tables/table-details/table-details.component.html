@@ -5,6 +5,7 @@
       <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm" (click)="navigateToDesignTables()">Design Tables</button>
       <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm {{ btnClass }}" (click)="onSaveButtonClicked()">{{ buttonText }}</button>
       <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm" (click)="saveTableConfiguration()" >Save Table Configuration</button>
+      <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm" (click)="navigateToCharts()" >Show graphs</button>
     </div>
   </div>
   <div class="card-body">
@@ -36,6 +37,7 @@
               [enableCharts]="true"
               [rowClassRules]="rowClassRules"
               (pasteEnd)="onPasteEnd($event)"
+              [rowDragManaged]="true"
             >
             </ag-grid-angular>
           </div>
