@@ -242,8 +242,10 @@ export class TableDetailsComponent implements OnInit {
           this.colData.push(items)
         })
         this.gridApi.setColumnDefs(this.colData);
+        this.gridApi.setHeaderHeight(30);
+        this.restoreState();
         console.log(this.colData);
-        this.gridApi.setHeaderHeight(50);
+
         // this.restoreState();
       }
 
@@ -256,6 +258,7 @@ export class TableDetailsComponent implements OnInit {
         this.row_headers.indicators.forEach(indicator => {
           if (indicator.id == row.row) {
             currentRowValue = indicator.title;
+
             for( let i = 0; i < indicator.group.length; i ++){
               rowValue['group' + i] = indicator.group[i];
               usedKeys.push('group' + i);

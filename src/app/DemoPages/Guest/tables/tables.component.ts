@@ -16,7 +16,17 @@ import Tabulator from 'tabulator-tables';
 @Component({
   selector: 'app-tables',
   templateUrl: './tables.component.html',
-  styles: []
+  styles: [`
+    .tabulator-group-level-0{
+      background: red !important;
+      color: white;
+    }
+    .tabulator-group-level-1{
+    background: #2873b9 !important;
+    color: white;
+    }
+
+    `]
 })
 export class TablesComponent implements OnInit {
   gridId;
@@ -164,8 +174,8 @@ export class TablesComponent implements OnInit {
     if(this.groups.length > 1){
       this.formService.getCollectionList(this.tableID).subscribe((response: CollectionResponse) => {
         this.collections = response.data;
-        this.tabulatorTable.options.groupBy=false;
-        console.log(this.tabulatorTable.options.groupBy);
+        this.tabulatorTable.options.groupBy=this.groups;
+        // console.log(this.tabulatorTable.options.groupBy);
         // console.log(this.collections, this.id);
       })
     }
