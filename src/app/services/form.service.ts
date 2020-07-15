@@ -69,7 +69,7 @@ export class FormService {
             .pipe(retry(3), catchError(this.handleError));
     }
 
-    saveData(id, data) {
+    saveData(id, data){
         return this.httpClient.post(`${environment.apiUrl}/portal/data?id=` + id, data)
             .pipe(retry(3), catchError(this.handleError));
     }

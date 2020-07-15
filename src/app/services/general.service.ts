@@ -51,5 +51,15 @@ export class GeneralService {
       .pipe(retry(3), catchError(this.handleError));
   }
 
+  getOptionGroups(){
+    return this.httpClient.get(`${environment.apiUrl}/portal/form?name=optionGroup&list`)
+      .pipe(retry(3), catchError(this.handleError));
+  }
+
+  saveOptionGroup(data){
+    return this.httpClient.post(`${environment.apiUrl}/portal/form?name=optionGroup`, data)
+      .pipe(retry(3), catchError(this.handleError));
+  }
+
 
 }

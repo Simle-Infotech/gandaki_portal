@@ -489,8 +489,8 @@ export class TableDataEntryComponent implements OnInit {
       'data': rowValue
     };
     console.log(currentData);
-    this.formService.saveData(this.id, currentData).subscribe((response: FormResponse) => {
+    /*this.formService.saveData(this.id, currentData).subscribe((response: FormResponse) => {
       this.renderTable(false);
-    })
+    })*/
   }
 }

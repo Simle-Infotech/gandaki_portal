@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormService} from "../../../../services/form.service";
-import {FormResponse, ListResponse, TableDetailsResponse} from "../../../../models/user";
+import {DataResponse, FormResponse, ListResponse, TableDetailsResponse} from "../../../../models/user";
 import {GeneralService} from "../../../../services/general.service";
 import {CheckboxRenderer} from "../../checkBox-renderer.component";
 
@@ -40,6 +40,7 @@ export class TableIndicatorsComponent implements OnInit {
   subFormObjects;
   pageTitle;
   frameworkComponents;
+  groups = [];
 
   constructor(
       private activatedRoute: ActivatedRoute,
@@ -56,6 +57,8 @@ export class TableIndicatorsComponent implements OnInit {
       sortable: true,
       resizable: true,
       filter: true,
+      rowDrag: true,
+      minWidth: 100,
     };
     this.sideBar = {
       toolPanels: [
@@ -105,12 +108,9 @@ export class TableIndicatorsComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(paramsId => {
       this.id = paramsId.id;
-      console.log("Id is here");
-      console.log(this.id);
 
       this.generalService.getTableDetails(this.id).subscribe((response: TableDetailsResponse) => {
         this.pageTitle = response.data.nepali_name;
-        console.log(this.pageTitle);
       })
 
       this.renderTable(true);
@@ -122,7 +122,6 @@ export class TableIndicatorsComponent implements OnInit {
       console.log(response);
       this.fields = response.fields;
       this.rowDefs = response.data;
-      console.log(response);
       if (isOnInit == true) {
         this.columnDefs = response.columns;
 
@@ -145,27 +144,53 @@ export class TableIndicatorsComponent implements OnInit {
             return;
           }
 
-          this.colData.push(
-            {headerName: value, field: value, sortable: true, filter: true, editable: true}
-          )
+          if(value !== 'nepali_name'){
+            this.colData.push(
+              {headerName: value, field: value, sortable: true, filter: true, editable: true, hide: true}
+            )
+          }
+          else{
+            this.colData.push(
+              {headerName: value, field: value, sortable: true, filter: true, editable: true}
+            )
+          }
 
         });
       }
       this.rowData = [];
       this.gridApi.setRowData(this.rowData);
 
-      this.rowDefs.forEach(value => {
-        this.rowData.push(
-            value
-        )
-      });
-      this.gridApi.setColumnDefs(this.colData);
-      this.gridApi.setRowData(this.rowData);
+      this.generalService.getOptionGroups().subscribe((response: DataResponse) => {
+        this.groups = response.data;
 
-      var allColumnIds = [];
-      this.gridColumnApi.getAllColumns().forEach(function(column) {
-        allColumnIds.push(column.colId);
-      });
+        this.rowDefs.forEach(value => {
+          this.rowData.push(
+            value
+          )
+        });
+
+        this.groups.forEach(group => {
+          group.rowData = [];
+          group.options.forEach(option => {
+            this.rowDefs.forEach(value => {
+              if(value.id == option){
+                group.rowData.push(value);
+              }
+            })
+          })
+        })
+
+        console.log(this.groups);
+
+
+        this.gridApi.setColumnDefs(this.colData);
+        this.gridApi.setRowData(this.rowData);
+
+        var allColumnIds = [];
+        this.gridColumnApi.getAllColumns().forEach(function(column) {
+          allColumnIds.push(column.colId);
+        });
+      })
     })
   }
 

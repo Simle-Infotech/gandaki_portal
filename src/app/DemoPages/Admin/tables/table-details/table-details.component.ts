@@ -82,7 +82,6 @@ export class TableDetailsComponent implements OnInit {
       sortable: true,
       resizable: true,
       filter: true,
-      rowDrag: true,
       filterParams: {newRowsAction: 'keep'}
       // valueFormatter: 'currencyDollarFormatter'
     };
@@ -192,7 +191,7 @@ export class TableDetailsComponent implements OnInit {
         this.colIds.push('group');*/
         for(let i = 0; i < this.row_headers.indicators[0].group.length; i++ ){
           this.colData.push(
-            {headerName: '', field: 'group' + i, pinned: 'left', cellStyle: {color: 'white', 'background-color': '#1c77b9'}, rowDrag: true}
+            {headerName: '', field: 'group' + i, pinned: 'left', cellStyle: {color: 'white', 'background-color': '#1c77b9'}}
           )
           this.colIds.push('group' + i);
         }
@@ -533,15 +532,15 @@ export class TableDetailsComponent implements OnInit {
     this.showAlert("Data saved successfully");
   }
 
-  onRowEditingStopped($event, fromRow=true) {
-    const row = $event.data;
-    $event.data._id = this.saveRowData(row, !fromRow);
+  async onRowEditingStopped($event, fromRow=true) {
+    await this.saveRowData($event, !fromRow);
+    // $event.data._id = this.saveRowData(row, !fromRow);
   }
 
   onPasteEnd(params){
     var self = this;
-    this.gridApi.forEachNode(function(node) {
-      node.data._id = self.saveRowData(node.data, false);
+    this.gridApi.forEachNode(async function(node) {
+      await self.saveRowData(node, false);
     });
   }
 
@@ -604,7 +603,10 @@ export class TableDetailsComponent implements OnInit {
     return formatter.format(number);
   }
 
-  saveRowData(row, showAlert=true){
+  saveRowData($event, showAlert=true){
+    let row = $event.data;
+    console.log("Data to be saved");
+    console.log(row);
     let saveColData = {};
     this.gridColumnApi.getAllColumns().forEach(column => {
       let userColumnDef = column.getUserProvidedColDef();
@@ -640,15 +642,22 @@ export class TableDetailsComponent implements OnInit {
     };
     let responseId = '';
 
-    console.log("Saved data");
+    console.log("Modified data from API");
     console.log(currentData);
-    this.formService.saveData(this.id, currentData).subscribe((response: FormResponse) => {
-      responseId = response.data[0]._id;
-      this.buttonText = 'Saved';
-      this.btnClass = 'btn-success';
-      return responseId;
+    return new Promise(resolve => {
+      this.formService.saveData(this.id, currentData).subscribe((response: FormResponse) => {
+        responseId = response.data[0]._id;
+        this.buttonText = 'Saved';
+        this.btnClass = 'btn-success';
+        $event.data._id = responseId;
+        resolve();
+      }, err => {
+          resolve();
+      })
     })
   }
+
+
 
   showAlert(message){
     this.swalSuccess(message);
