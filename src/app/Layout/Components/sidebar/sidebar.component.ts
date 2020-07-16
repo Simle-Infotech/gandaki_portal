@@ -128,7 +128,7 @@ export class SidebarComponent implements OnInit {
 
   navigateToSubForms(tableId){
     if(this.is_logged == true){
-      this.router.navigate(['/guest/tables/'+tableId]);
+      this.router.navigate(['/admin/tables/'+tableId]);
     } else{
       this.router.navigate(['/guest/tables/'+tableId]);
     }

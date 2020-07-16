@@ -6,11 +6,12 @@ import {TableDetailsComponent} from "./table-details/table-details.component";
 import {TableDataEntryComponent} from "./table-data-entry/table-data-entry.component";
 import {TableIndicatorsComponent} from "./table-indicators/table-indicators.component";
 import {TableChartsComponent} from "./table-charts/table-charts.component";
+import {FormTablesComponent} from "./table-forms/formTables.component";
 
 const routes: Routes = [
   {
     path: ':id',
-    component: TablesComponent,
+    component: FormTablesComponent,
     data: {
       title: 'Tables'
     },
