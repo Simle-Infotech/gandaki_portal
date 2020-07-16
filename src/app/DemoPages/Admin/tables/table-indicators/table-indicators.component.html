@@ -10,7 +10,7 @@
     <div style="margin-top: 20px;">
       <div class="mb-3 card">
         <div class="no-gutters row">
-          <div class="col-sm-6 col-md-6" style="padding: 10px;">
+          <div class="col-sm-6 col-md-6" style="padding: 10px;" (dragover)="gridDragOver($event)" (drop)="gridDrop($event,'left')">
             <p class="text-muted" style="text-align: center;">वर्गीकृत</p>
             <ag-grid-angular
               #agGrid
@@ -30,12 +30,13 @@
               [enterMovesDownAfterEdit]="true"
               [editType]="editType"
               [frameworkComponents]="frameworkComponents"
+              [rowDragManaged]="true"
             >
             </ag-grid-angular>
           </div>
           <div class="col-sm-6 col-md-6" style="padding: 10px;">
             <ng-container *ngFor="let group of groups">
-              <ng-container *ngIf="group.rowData.length > 0" style="margin-top: 10px;">
+              <ng-container *ngIf="group.rowData.length > 0" style="margin-top: 10px;" (dragover)="gridDragOver($event)"  (drop)="gridDrop($event,'left')">
                 <p class="text-muted" style="text-align: center;"> {{ group.nepali_name }} </p>
                 <ag-grid-angular
                   #agGrid
@@ -51,6 +52,7 @@
                   [enterMovesDownAfterEdit]="true"
                   [editType]="editType"
                   [frameworkComponents]="frameworkComponents"
+                  [rowDragManaged]="true"
                 >
                 </ag-grid-angular>
               </ng-container>

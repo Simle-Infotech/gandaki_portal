@@ -204,9 +204,46 @@ export class TableIndicatorsComponent implements OnInit {
     console.log("Saved data");
     console.log(currentData);
 
-    this.formService.saveIndicators(currentData).subscribe((response: FormResponse) => {
+    /*this.formService.saveIndicators(currentData).subscribe((response: FormResponse) => {
       this.renderTable(false);
-    })
+    })*/
+  }
+
+  gridDragOver(event) {
+    var dragSupported = event.dataTransfer.types.length;
+
+    if (dragSupported) {
+      event.dataTransfer.dropEffect = "copy";
+      event.preventDefault();
+    }
+  }
+
+  gridDrop(event, grid) {
+    event.preventDefault();
+
+    var userAgent = window.navigator.userAgent;
+    var isIE = userAgent.indexOf('Trident/') >= 0;
+    var jsonData = event.dataTransfer.getData(isIE ? 'text' : 'application/json');
+    var data = JSON.parse(jsonData);
+
+    // if data missing or data has no it, do nothing
+    if (!data || data.id == null) {
+      return;
+    }
+    console.log(data);
+    /*var gridApi = grid == 'left' ? this.leftGridOptions.api : this.rightGridOptions.api;
+
+    // do nothing if row is already in the grid, otherwise we would have duplicates
+    var rowAlreadyInGrid = !!gridApi.getRowNode(data.id);
+    if (rowAlreadyInGrid) {
+      console.log('not adding row to avoid duplicates in the grid');
+      return;
+    }
+
+    var transaction = {
+      add: [data]
+    };
+    gridApi.applyTransaction(transaction);*/
   }
 
 }
