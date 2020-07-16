@@ -60,41 +60,6 @@ export class TableIndicatorsComponent implements OnInit {
       rowDrag: true,
       minWidth: 100,
     };
-    this.sideBar = {
-      toolPanels: [
-        'filters',
-        {
-          id: 'columns',
-          labelDefault: 'Columns',
-          labelKey: 'columns',
-          iconKey: 'columns',
-          toolPanel: 'agColumnsToolPanel',
-          toolPanelParams: { suppressSyncLayoutWithGrid: true },
-        },
-      ],
-    };
-    this.statusBar = {
-      statusPanels: [
-        {
-          statusPanel: 'agTotalRowCountComponent',
-          align: 'left',
-          key: 'totalRowComponent',
-        },
-        {
-          statusPanel: 'agFilteredRowCountComponent',
-          align: 'left',
-        },
-        {
-          statusPanel: 'agSelectedRowCountComponent',
-          align: 'center',
-        },
-        {
-          statusPanel: 'agAggregationComponent',
-          align: 'right',
-        },
-      ],
-    };
-
     this.ColumnAddForm = this.formBuilder.group({
       newcolumn: ''
     });
@@ -169,19 +134,22 @@ export class TableIndicatorsComponent implements OnInit {
           )
         });
 
+
         this.groups.forEach(group => {
           group.rowData = [];
           group.options.forEach(option => {
-            this.rowDefs.forEach(value => {
+            this.rowData.forEach(value => {
               if(value.id == option){
                 group.rowData.push(value);
+                this.rowData.splice(this.rowData.indexOf(value),1);
               }
             })
           })
         })
+        console.log("Row definitions");
+        console.log(this.rowDefs);
 
-        console.log(this.groups);
-
+        // console.log(this.groups);
 
         this.gridApi.setColumnDefs(this.colData);
         this.gridApi.setRowData(this.rowData);

@@ -125,4 +125,12 @@ export class SidebarComponent implements OnInit {
       this.router.navigate(['/guest/tables/details/'+tableId]);
     }
   }
+
+  navigateToSubForms(tableId){
+    if(this.is_logged == true){
+      this.router.navigate(['/guest/tables/'+tableId]);
+    } else{
+      this.router.navigate(['/guest/tables/'+tableId]);
+    }
+  }
 }

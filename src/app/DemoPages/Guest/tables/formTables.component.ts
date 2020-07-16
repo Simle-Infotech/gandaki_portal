@@ -34,12 +34,12 @@ export class FormTablesComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(paramsId => {
       this.id = paramsId.id;
-    });
 
-    this.formService.getFormDetails(this.id).subscribe((response: SingleObjectResponse) => {
-      this.responseData = response.data;
-      console.log(response.data);
-    })
+      this.formService.getFormDetails(this.id).subscribe((response: SingleObjectResponse) => {
+        this.responseData = response.data;
+        console.log(response.data);
+      })
+    });
   }
 
   navigateToTableList(tableId){

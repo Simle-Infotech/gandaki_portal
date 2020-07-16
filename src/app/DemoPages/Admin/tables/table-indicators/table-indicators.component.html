@@ -10,8 +10,8 @@
     <div style="margin-top: 20px;">
       <div class="mb-3 card">
         <div class="no-gutters row">
-          <div class="col-sm-6 col-md-6">
-            <h3>वर्गीकृत</h3>
+          <div class="col-sm-6 col-md-6" style="padding: 10px;">
+            <p class="text-muted" style="text-align: center;">वर्गीकृत</p>
             <ag-grid-angular
               #agGrid
               id="tableDesignerGrid"
@@ -22,9 +22,6 @@
               [columnDefs]="colData"
               [defaultColDef]="defaultColDef"
               [animateRows]="true"
-              [sideBar]="sideBar"
-              [statusBar]="statusBar"
-              [enableRangeSelection]="true"
               (cellClicked)="onCellClicked($event)"
               (cellEditingStopped)="onCellEditingStopped($event)"
               (rowEditingStopped)="onRowEditingStopped($event)"
@@ -32,38 +29,33 @@
               [enterMovesDown]="true"
               [enterMovesDownAfterEdit]="true"
               [editType]="editType"
-              [enableCharts]="true"
               [frameworkComponents]="frameworkComponents"
             >
             </ag-grid-angular>
           </div>
-          <ng-container *ngFor="let group of groups">
-            <div class="col-sm-6 col-md-6" *ngIf="group.rowData.length > 0">
-              {{ group.nepali_name }}
-            </div>
-<!--            <div class="col-sm-6 col-md-6" *ngIf="group.rowData.length > 0">-->
-<!--              <h3>{{ group.nepali_name }}</h3>-->
-<!--              <ag-grid-angular-->
-<!--                #agGrid-->
-<!--                style="height: 600px;"-->
-<!--                class="ag-theme-alpine"-->
-<!--                [autoGroupColumnDef]="autoGroupColumnDef"-->
-<!--                [columnDefs]="colData"-->
-<!--                [defaultColDef]="defaultColDef"-->
-<!--                [animateRows]="true"-->
-<!--                [sideBar]="sideBar"-->
-<!--                [statusBar]="statusBar"-->
-<!--                [enableRangeSelection]="true"-->
-<!--                (gridReady)="onGridReady($event)"-->
-<!--                [enterMovesDown]="true"-->
-<!--                [enterMovesDownAfterEdit]="true"-->
-<!--                [editType]="editType"-->
-<!--                [enableCharts]="true"-->
-<!--                [frameworkComponents]="frameworkComponents"-->
-<!--              >-->
-<!--              </ag-grid-angular>-->
-<!--            </div>-->
-          </ng-container>
+          <div class="col-sm-6 col-md-6" style="padding: 10px;">
+            <ng-container *ngFor="let group of groups">
+              <ng-container *ngIf="group.rowData.length > 0" style="margin-top: 10px;">
+                <p class="text-muted" style="text-align: center;"> {{ group.nepali_name }} </p>
+                <ag-grid-angular
+                  #agGrid
+                  style="height: 200px;"
+                  class="ag-theme-alpine"
+                  [rowData]="group.rowData"
+                  [autoGroupColumnDef]="autoGroupColumnDef"
+                  [columnDefs]="colData"
+                  [defaultColDef]="defaultColDef"
+                  [animateRows]="true"
+                  (gridReady)="onGridReady($event)"
+                  [enterMovesDown]="true"
+                  [enterMovesDownAfterEdit]="true"
+                  [editType]="editType"
+                  [frameworkComponents]="frameworkComponents"
+                >
+                </ag-grid-angular>
+              </ng-container>
+            </ng-container>
+          </div>
         </div>
       </div>
     </div>

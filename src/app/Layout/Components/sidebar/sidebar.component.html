@@ -79,7 +79,7 @@
                         </a>
                       </div>
                       <div class="vsm-item" *ngFor="let menuSubForms of menuItem.subForms">
-                        <a [routerLink]="menuSubForms.url" routerLinkActive="active-item" [routerLinkActiveOptions]="{exact: true}" class="vsm-link">
+                        <a (click)="navigateToSubForms(menuSubForms.id)" routerLinkActive="active-item" [routerLinkActiveOptions]="{exact: true}" class="vsm-link">
                           <span class="vsm-title">{{menuSubForms.nepali_name }}</span>
                         </a>
                       </div>
