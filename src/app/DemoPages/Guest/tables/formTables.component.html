@@ -1,34 +1,23 @@
 <div style="margin-top: 20px;" class="row">
   <ng-container *ngIf="responseData.length != 0">
-    <div *ngIf="responseData.sub_forms.length != 0">
-      <div class="col-md-12">
-        <div class="main-card mb-3 card">
-          <div class="card-body">
-            <h5>खण्डहरु</h5>
-            <ng-container *ngFor="let menuItem of responseData.sub_forms">
-              <div class="font-icon-wrapper float-left mr-3 mb-3">
-                <div class="loader-wrapper d-flex justify-content-center align-items-center">
-                  <div class="loader"><a (click)="navigateToTableList(menuItem.id)">
-                    <img src="{{menuItem.icon_path}}" alt="" width="80"></a>
-                  </div>
-                </div>
-                <p>{{menuItem.nepali_name}}</p>
-              </div>
-            </ng-container>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-12" *ngIf="responseData.tables.length != 0">
-      <div class="mb-3 card">
-        <div class="card-header-tab card-header">
-          <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
+    <div class="col-md-12">
+      <div class="mb-3 card main-card">
+        <div class="card-header" style="background-color: #2873b9;">
             <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
-            शिर्षकहरू
-          </div>
+            <h2 style="color:white; text-align:center;">{{responseData.nepali_name}}</h2>
         </div>
         <div class="card-body">
+          <p *ngIf="responseData.tables.length == 0 && responseData.sub_forms.length == 0" style="text-align:center;"> कुनै शीर्षक उपलब्ध छैन </p>
+          <div *ngFor="let menuItem of responseData.sub_forms">
+            <div class="font-icon-wrapper float-left mr-3 mb-3">
+              <div class="loader-wrapper d-flex justify-content-center align-items-center">
+                <div class="loader"><a (click)="navigateToTableList(menuItem.id)">
+                  <img src="{{menuItem.icon_path}}" alt="" width="80"></a>
+                </div>
+              </div>
+              <p>{{menuItem.nepali_name}}</p>
+            </div>
+          </div>
           <ng-container *ngFor="let menuItem of responseData.tables">
             <div class="font-icon-wrapper float-left mr-3 mb-3">
               <div class="loader-wrapper d-flex justify-content-center align-items-center">
@@ -43,67 +32,8 @@
             </div>
           </ng-container>
         </div>
-        <!--<div class="no-gutters row">
-          <div class="col-sm-12 col-md-12">
-            <div class="table-responsive">
-              <table class="align-middle mb-0 table table-borderless table-striped table-hover">
-                <thead>
-                  <tr>
-                    <th class="text-center">#</th>
-                    <th class="text-center">शिर्षक</th>
-                    <th class="text-center">कार्यहरू</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let menuTable of responseData.tables; index as i">
-                    <td class="text-center text-muted" style="font-family: 'Fontasy Himali'">{{ i + 1 }}</td>
-                    <td class="text-center">{{ menuTable.nepali_name }}</td>
-                    <td class="text-center">
-                      <button (click)="navigateToTable(menuTable.id)" type="button" class="btn btn-primary btn-sm">विवरण</button>
-                    </td>
-                  </tr>
-
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>-->
-      </div>
-    </div>
-
-    <div class="col-md-12" *ngIf="responseData.tables.length == 0 && responseData.sub_forms.length == 0">
-      <div class="mb-3 card">
-        <div class="card-header-tab card-header">
-          <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
-            <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
-            शिर्षकहरू
-          </div>
-        </div>
-        <div class="card-body">
-          <p style="text-align: center;" class="text-muted">
-            कुनै शीर्षक उपलब्ध छैन
-          </p>
-        </div>
-      </div>
-    </div>
-
-  </ng-container>
-
-  <ng-container *ngIf="responseData.length == 0">
-    <div class="col-md-12">
-      <div class="mb-3 card">
-        <div class="card-header-tab card-header">
-          <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
-            <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
-            शिर्षकहरू
-          </div>
-        </div>
-        <div class="card-body">
-          <p style="text-align: center;" class="text-muted">
-            कुनै शीर्षक उपलब्ध छैन
-          </p>
-        </div>
       </div>
     </div>
   </ng-container>
+
 </div>
