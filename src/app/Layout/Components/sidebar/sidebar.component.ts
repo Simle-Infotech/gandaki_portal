@@ -126,11 +126,27 @@ export class SidebarComponent implements OnInit {
     }
   }
 
+  giveLink(tableId){
+    if(this.is_logged == true){
+      return('/admin/tables/details/'+tableId);
+    } else{
+      return('/guest/tables/details/'+tableId);
+    }
+  }
+
   navigateToSubForms(tableId){
     if(this.is_logged == true){
       this.router.navigate(['/admin/tables/'+tableId]);
     } else{
       this.router.navigate(['/guest/tables/'+tableId]);
+    }
+  }
+
+  giveLinkForm(tableId){
+    if(this.is_logged == true){
+      return('/admin/tables/'+tableId);
+    } else{
+      return('/guest/tables/'+tableId);
     }
   }
 }
