@@ -17,9 +17,12 @@ export class GeneralService {
     let errorMessage = 'Unknown error!';
     if (error.error instanceof ErrorEvent) {
       // Client-side errors
+      console.log("Client side error ");
       errorMessage = `Error: ${error.error.message}`;
     } else {
       // Server-side errors
+      console.log("Error");
+      console.log(error);
       errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
     window.alert(errorMessage);

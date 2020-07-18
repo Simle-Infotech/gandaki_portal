@@ -21,6 +21,7 @@ import {CheckboxRenderer} from "../checkBox-renderer.component";
 import {TableIndicatorsComponent} from "./table-indicators/table-indicators.component";
 import {TableChartsComponent} from "./table-charts/table-charts.component";
 import {FormTablesComponent} from "./table-forms/formTables.component";
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -33,7 +34,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     MatCardModule,
     MatTabsModule,
     MatIconModule,
-    ChartsModule
+    ChartsModule,
+    NgbModule
   ],
   declarations: [TablesComponent, TableDataEntryComponent, TableDesignerComponent, TableDetailsComponent, CheckboxRenderer, TableIndicatorsComponent, TableChartsComponent, FormTablesComponent],
   providers: [
