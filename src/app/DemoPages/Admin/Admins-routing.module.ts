@@ -29,6 +29,10 @@ const routes: Routes = [
         path: 'sub_forms/:id',
         loadChildren: () => import('./subForms/subForms.module').then(m => m.SubFormsModule)
       },
+      {
+        path: 'user',
+        loadChildren: () => import('./user/user.module').then(m => m.UserModule)
+      },
     ]
   }
 ];
