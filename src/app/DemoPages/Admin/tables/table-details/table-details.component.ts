@@ -17,6 +17,7 @@ import {ToastrService} from "ngx-toastr";
 import Swal from "sweetalert2";
 import { ClientSideRowModel } from "ag-grid";
 import {Module} from "ag-grid-community";
+import {environment} from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-table-details',
@@ -65,6 +66,7 @@ export class TableDetailsComponent implements OnInit {
   buttonText = 'Saved';
   btnClass = 'btn-success';
   tableState;
+  adminUrl = environment.adminUrl;
 
   constructor(
     private activatedRoute: ActivatedRoute,

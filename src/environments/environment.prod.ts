@@ -5,5 +5,6 @@
 
 export const environment = {
   production: true,
-  apiUrl: 'http://202.45.146.221'
+  apiUrl: 'http://202.45.146.221',
+  adminUrl: 'http://202.45.146.221:8000'
 };
