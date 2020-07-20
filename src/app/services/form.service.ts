@@ -60,12 +60,12 @@ export class FormService {
     }
 
     getDataHeaders(id) {
-        return this.httpClient.get(`${environment.apiUrl}/portal/parser?id=` + id)
+        return this.httpClient.get(`${environment.apiUrl}/portal/parserApi?id=` + id)
             .pipe(retry(3), catchError(this.handleError));
     }
 
     getData(id) {
-        return this.httpClient.get(`${environment.apiUrl}/portal/data?id=` + id)
+        return this.httpClient.get(`${environment.apiUrl}/portal/data?custom=1&id=` + id)
             .pipe(retry(3), catchError(this.handleError));
     }
 
