@@ -7,6 +7,7 @@ import {GeneralService} from "../../../../services/general.service";
 import {CheckboxRenderer} from "../../checkBox-renderer.component";
 import {ChartDataSets, ChartOptions} from "chart.js";
 import {Color, Label} from "ng2-charts";
+import {parse} from "date-fns";
 
 @Component({
   selector: 'app-table-charts',
@@ -168,10 +169,10 @@ export class TableChartsComponent implements OnInit {
         chartsInitialData.forEach(x => {
           if(indicator.id == x['row']){
             if(this.aggregate_function == 'sum'){
-              chartValue += parseFloat(x[col_header.id]);
+              chartValue +=  +x[col_header.id];
             }
             else if(this.aggregate_function == 'mean'){
-              chartValue += parseFloat(x[col_header.id]);
+              chartValue += +x[col_header.id];
               count++;
             }
             else if(this.aggregate_function == 'count'){
@@ -179,16 +180,16 @@ export class TableChartsComponent implements OnInit {
             }
             else if(this.aggregate_function == 'min'){
               if(chartValue == 0){
-                chartValue = parseInt(x[col_header.id]);
+                chartValue = parseFloat(x[col_header.id]);
               }
 
-              if(chartValue > parseInt(x[col_header.id])){
-                chartValue = parseInt(x[col_header.id]);
+              if(chartValue > parseFloat(x[col_header.id])){
+                chartValue = parseFloat(x[col_header.id]);
               }
             }
             else if(this.aggregate_function == 'max'){
-              if(chartValue < parseInt(x[col_header.id])){
-                chartValue = parseInt(x[col_header.id]);
+              if(chartValue < parseFloat(x[col_header.id])){
+                chartValue = parseFloat(x[col_header.id]);
               }
             }
             is_row_match = true;
