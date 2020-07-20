@@ -36,4 +36,16 @@ export class UserBoxComponent implements OnInit {
     this.router.navigate(['login']);
   }
 
+  navigateToProfile(){
+    this.router.navigate(['/admin/user/profile']);
+  }
+
+  navigateToUpdateProfile(){
+    this.router.navigate(['/admin/user/update']);
+  }
+
+  navigateToChangePassword(){
+    this.router.navigate(['/admin/user/updatePassword']);
+  }
+
 }

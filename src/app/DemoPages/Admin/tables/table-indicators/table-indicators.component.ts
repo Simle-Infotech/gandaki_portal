@@ -5,6 +5,7 @@ import {FormService} from "../../../../services/form.service";
 import {DataResponse, FormResponse, ListResponse, TableDetailsResponse} from "../../../../models/user";
 import {GeneralService} from "../../../../services/general.service";
 import {CheckboxRenderer} from "../../checkBox-renderer.component";
+import {ClientSideRowModelModule} from "@ag-grid-community/client-side-row-model/dist/es6/clientSideRowModelModule";
 
 @Component({
   selector: 'app-table-indicators',
@@ -41,6 +42,10 @@ export class TableIndicatorsComponent implements OnInit {
   pageTitle;
   frameworkComponents;
   groups = [];
+  displayed_groups = [];
+  displayed_group_grid_options = [];
+  uncategorized_grid_options;
+  modules = [ClientSideRowModelModule];
 
   constructor(
       private activatedRoute: ActivatedRoute,
@@ -57,7 +62,6 @@ export class TableIndicatorsComponent implements OnInit {
       sortable: true,
       resizable: true,
       filter: true,
-      rowDrag: true,
       minWidth: 100,
     };
     this.ColumnAddForm = this.formBuilder.group({
@@ -109,14 +113,15 @@ export class TableIndicatorsComponent implements OnInit {
             return;
           }
 
-          if(value !== 'nepali_name'){
+          if((value !== 'nepali_name') && (value !== 'value')){
             this.colData.push(
               {headerName: value, field: value, sortable: true, filter: true, editable: true, hide: true}
             )
           }
           else{
+            let rowDragStatus = (value === 'nepali_name');
             this.colData.push(
-              {headerName: value, field: value, sortable: true, filter: true, editable: true}
+              {headerName: value, field: value, sortable: true, filter: true, editable: true, rowDrag: rowDragStatus}
             )
           }
 
@@ -133,23 +138,21 @@ export class TableIndicatorsComponent implements OnInit {
             value
           )
         });
-
-
+        this.displayed_groups = [];
         this.groups.forEach(group => {
           group.rowData = [];
           group.options.forEach(option => {
             this.rowData.forEach(value => {
               if(value.id == option){
                 group.rowData.push(value);
-                this.rowData.splice(this.rowData.indexOf(value),1);
+                // this.rowData.splice(this.rowData.indexOf(value),1);
               }
             })
           })
+          if(group.rowData.length > 0){
+            this.displayed_groups.push(group);
+          }
         })
-        console.log("Row definitions");
-        console.log(this.rowDefs);
-
-        // console.log(this.groups);
 
         this.gridApi.setColumnDefs(this.colData);
         this.gridApi.setRowData(this.rowData);
@@ -168,9 +171,19 @@ export class TableIndicatorsComponent implements OnInit {
   }
 
   onGridReady(params) {
+    this.uncategorized_grid_options = params.gridOptions;
+    console.log(this.uncategorized_grid_options);
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
     this.gridApi.setColumnDefs(this.colData);
+  }
+
+  onCategorizedGroupGridReady(params, group, is_last){
+    group.gridOptions = params.gridOptions;
+    group.gridApi = params.api;
+    group.gridColumnApi = params.columnApi;
+    this.displayed_group_grid_options.push(group);
+    this.addGridDropZone(params, group);
   }
 
   onBtStopEditing() {
@@ -204,46 +217,83 @@ export class TableIndicatorsComponent implements OnInit {
     console.log("Saved data");
     console.log(currentData);
 
-    /*this.formService.saveIndicators(currentData).subscribe((response: FormResponse) => {
+    this.formService.saveIndicators(currentData).subscribe((response: FormResponse) => {
       this.renderTable(false);
-    })*/
+    })
   }
 
-  gridDragOver(event) {
-    var dragSupported = event.dataTransfer.types.length;
-
-    if (dragSupported) {
-      event.dataTransfer.dropEffect = "copy";
-      event.preventDefault();
+  onRowDragEnd($event, group){
+    console.log("Group");
+    if(group.options.indexOf($event.node.data.id) == -1){
+      group.options.push($event.node.data.id);
     }
+
+    let updatedGroup = group;
+    updatedGroup.gridApi = '';
+    updatedGroup.gridColumnApi = '';
+    updatedGroup.gridOptions = '';
+    updatedGroup.params = '';
+    this.updateOptionGroup(updatedGroup);
+    console.log("Grpup");
+    console.log(group);
+    console.log("Updated group");
+    console.log(updatedGroup);
   }
 
-  gridDrop(event, grid) {
-    event.preventDefault();
+  getRowNodeId(data) {
+    return data.id;
+  }
 
-    var userAgent = window.navigator.userAgent;
-    var isIE = userAgent.indexOf('Trident/') >= 0;
-    var jsonData = event.dataTransfer.getData(isIE ? 'text' : 'application/json');
-    var data = JSON.parse(jsonData);
+  addGridDropZone(params, side) {
+    var is_completed = true;
 
-    // if data missing or data has no it, do nothing
-    if (!data || data.id == null) {
-      return;
-    }
-    console.log(data);
-    /*var gridApi = grid == 'left' ? this.leftGridOptions.api : this.rightGridOptions.api;
-
-    // do nothing if row is already in the grid, otherwise we would have duplicates
-    var rowAlreadyInGrid = !!gridApi.getRowNode(data.id);
-    if (rowAlreadyInGrid) {
-      console.log('not adding row to avoid duplicates in the grid');
+    if(side == 'uncategorized') {
+      this.gridApi.params = params;
       return;
     }
 
-    var transaction = {
-      add: [data]
+    this.displayed_groups.forEach(group => {
+      if(group.id == side.id){
+        group.params = params;
+      }
+      if(!group.gridApi){
+        is_completed = false;
+      }
+    })
+
+    // @ts-ignore
+    if(is_completed == false){
+      return;
+    }
+
+    this.displayed_groups.forEach(group => {
+      this.displayed_groups.forEach(initialGroup => {
+        if(group.id == initialGroup.id){
+          return;
+        }
+
+        var initialGridApi = initialGroup.gridApi;
+        var dropZone = initialGridApi.getRowDropZoneParams();
+        group.params.api.addRowDropZone(dropZone);
+
+      })
+
+      var initialGridApi = group.gridApi;
+      var dropZone = initialGridApi.getRowDropZoneParams();
+      this.gridApi.addRowDropZone(dropZone);
+
+    })
+  }
+
+  updateOptionGroup(data){
+    const currentData = {
+      'data': data
     };
-    gridApi.applyTransaction(transaction);*/
+    console.log(currentData);
+
+    this.generalService.saveOptionGroup(currentData).subscribe((response: DataResponse) => {
+      console.log(response);
+    })
   }
 
 }

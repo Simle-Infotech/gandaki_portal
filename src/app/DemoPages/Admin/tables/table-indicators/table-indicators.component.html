@@ -10,49 +10,83 @@
     <div style="margin-top: 20px;">
       <div class="mb-3 card">
         <div class="no-gutters row">
-          <div class="col-sm-6 col-md-6" style="padding: 10px;" (dragover)="gridDragOver($event)" (drop)="gridDrop($event,'left')">
+          <div class="col-sm-6 col-md-6" style="padding: 10px;">
             <p class="text-muted" style="text-align: center;">वर्गीकृत</p>
-            <ag-grid-angular
-              #agGrid
-              id="tableDesignerGrid"
-              style="height: 600px;"
-              class="ag-theme-alpine"
-              [rowData]="rowData"
-              [autoGroupColumnDef]="autoGroupColumnDef"
-              [columnDefs]="colData"
-              [defaultColDef]="defaultColDef"
-              [animateRows]="true"
-              (cellClicked)="onCellClicked($event)"
-              (cellEditingStopped)="onCellEditingStopped($event)"
-              (rowEditingStopped)="onRowEditingStopped($event)"
-              (gridReady)="onGridReady($event)"
-              [enterMovesDown]="true"
-              [enterMovesDownAfterEdit]="true"
-              [editType]="editType"
-              [frameworkComponents]="frameworkComponents"
-              [rowDragManaged]="true"
-            >
-            </ag-grid-angular>
+            <div class="inner-col">
+              <ag-grid-angular
+                style="height: 600px;"
+                class="ag-theme-alpine"
+                [rowData]="rowData"
+                [autoGroupColumnDef]="autoGroupColumnDef"
+                [columnDefs]="colData"
+                [defaultColDef]="defaultColDef"
+                [animateRows]="true"
+                (cellClicked)="onCellClicked($event)"
+                (cellEditingStopped)="onCellEditingStopped($event)"
+                (rowEditingStopped)="onRowEditingStopped($event)"
+                (gridReady)="onGridReady($event)"
+                [enterMovesDown]="true"
+                [enterMovesDownAfterEdit]="true"
+                [editType]="editType"
+                [frameworkComponents]="frameworkComponents"
+                [rowDragManaged]="true"
+                [modules]="modules"
+                [getRowNodeId]="getRowNodeId"
+                [suppressMoveWhenRowDragging]="true"
+              >
+              </ag-grid-angular>
+            </div>
           </div>
           <div class="col-sm-6 col-md-6" style="padding: 10px;">
-            <ng-container *ngFor="let group of groups">
-              <ng-container *ngIf="group.rowData.length > 0" style="margin-top: 10px;" (dragover)="gridDragOver($event)"  (drop)="gridDrop($event,'left')">
+
+            <!--<ngb-accordion activeIds="static-0">
+              <ngb-panel id="static-{{i}}" *ngFor="let group of groups; let i=index">
+                <ng-container *ngIf="group.rowData.length > 0">
+                  <ng-template ngbPanelTitle>
+                    <span class="card-header&#45;&#45;title">{{ group.nepali_name }}</span>
+                  </ng-template>
+                  <ng-template ngbPanelContent>
+                    <ag-grid-angular
+                      style="height: 200px;"
+                      id="{{ group.id }}"
+                      class="ag-theme-alpine"
+                      [rowData]="group.rowData"
+                      [columnDefs]="colData"
+                      [defaultColDef]="defaultColDef"
+                      [animateRows]="true"
+                      (gridReady)="onCategorizedGroupGridReady($event, group, i)"
+                      [editType]="editType"
+                      [frameworkComponents]="frameworkComponents"
+                      [rowDragManaged]="true"
+                      [modules]="modules"
+                      [getRowNodeId]="getRowNodeId"
+                      [suppressMoveWhenRowDragging]="true"
+                    >
+                    </ag-grid-angular>
+                  </ng-template>
+                </ng-container>
+              </ngb-panel>
+            </ngb-accordion>-->
+
+            <ng-container *ngFor="let group of displayed_groups; let i=index">
+              <ng-container *ngIf="group.rowData.length > 0">
                 <p class="text-muted" style="text-align: center;"> {{ group.nepali_name }} </p>
                 <ag-grid-angular
-                  #agGrid
                   style="height: 200px;"
+                  id="{{ group.id }}"
                   class="ag-theme-alpine"
                   [rowData]="group.rowData"
-                  [autoGroupColumnDef]="autoGroupColumnDef"
                   [columnDefs]="colData"
                   [defaultColDef]="defaultColDef"
                   [animateRows]="true"
-                  (gridReady)="onGridReady($event)"
-                  [enterMovesDown]="true"
-                  [enterMovesDownAfterEdit]="true"
+                  (gridReady)="onCategorizedGroupGridReady($event, group, i)"
                   [editType]="editType"
                   [frameworkComponents]="frameworkComponents"
                   [rowDragManaged]="true"
+                  [modules]="modules"
+                  [getRowNodeId]="getRowNodeId"
+                  [suppressMoveWhenRowDragging]="true"
+                  (rowDragEnd)="onRowDragEnd($event, group)"
                 >
                 </ag-grid-angular>
               </ng-container>
