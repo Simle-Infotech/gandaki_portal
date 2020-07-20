@@ -64,5 +64,8 @@ export class GeneralService {
       .pipe(retry(3), catchError(this.handleError));
   }
 
-
+  getTableCharts(id){
+    return this.httpClient.get(`${environment.apiUrl}/portal/data?id=` + id + `&charts=1`)
+      .pipe(retry(3), catchError(this.handleError));
+  }
 }

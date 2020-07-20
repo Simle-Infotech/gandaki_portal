@@ -6,44 +6,56 @@
     </div>
   </div>
   <div class="card-body">
-    <div style="margin-top: 20px;">
-      <div class="mb-3 card">
-        <div class="no-gutters row">
-          <div class="col-sm-6 col-md-6">
-            <canvas baseChart
-                    [datasets]="barChartData"
-                    [labels]="barChartLabels"
-                    [options]="barChartOptions"
-                    [legend]="barChartLegend"
-                    [chartType]="barChartType">
-            </canvas>
-          </div>
-          <div class="col-sm-6 col-md-6">
-            <canvas baseChart
-                    [datasets]="lineChartData"
-                    [labels]="lineChartLabels"
-                    [colors]="lineChartColors"
-                    [legend]="lineChartLegend"
-                    [chartType]="lineChartType"
-                    [plugins]="lineChartPlugins">
-            </canvas>
-          </div>
+    <div class="row">
+      <div class="col-md-2">
+        <div class="btn-actions-pane-right text-capitalize mb-3 card">
+          <ng-container *ngFor="let index_col of index_cols">
+            <mat-form-field style="padding: 5px;">
+              <mat-select placeholder="Select a {{ index_col.title }}" (selectionChange)="changeFilters(index_col, $event)">
+                <mat-option *ngFor="let option of index_col.options" value="{{ option.id }}">{{ option.nepali_name }} </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <br>
+          </ng-container>
+
+          <!--<mat-form-field style="margin: 10px;" *ngFor="let index_col of index_cols">
+            <mat-select placeholder="Select a option" [(ngModel)]="selectedIndexCol" (selectionChange)="buildOptions($event)">
+              <mat-option *ngFor="let index_col of index_cols" [value]="index_col" >{{ index_col.title }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-select placeholder="Select sub option" [(ngModel)]="selectedOption" (selectionChange)="renderCharts()">
+              <mat-option *ngFor="let option of subOptions" [value]="option">
+                {{ option.nepali_name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>-->
+<!--          <br>-->
+          <mat-form-field style="padding: 5px;">
+            <mat-select  placeholder="Select a aggregate function" [(value)]="aggregate_function" (selectionChange)="renderCharts()">
+              <mat-option value="sum" selected="true">Sum</mat-option>
+              <mat-option value="mean">Mean</mat-option>
+              <mat-option value="min">Minimum</mat-option>
+              <mat-option value="max">Maximum</mat-option>
+              <mat-option value="count">Count</mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
       </div>
-      <div class="mb-3 card">
-        <div class="no-gutters row">
-          <div class="col-sm-6 col-md-6">
-            <canvas baseChart
-                    [data]="pieChartData"
-                    [labels]="pieChartLabels"
-                    [chartType]="pieChartType"></canvas>
-          </div>
-
-          <div class="col-sm-6 col-md-6">
-            <canvas baseChart
-                    [data]="doughnutChartData"
-                    [labels]="doughnutChartLabels"
-                    [chartType]="doughnutChartType"></canvas>
+      <div class="col-md-10">
+        <div style="margin-top: 20px;">
+          <div class="mb-3 card">
+            <div class="no-gutters row">
+              <div class="col-sm-12 col-md-12" *ngFor="let col_header of col_headers">
+                <canvas baseChart
+                        [datasets]="col_header.chartsData"
+                        [labels]="barChartLabels"
+                        [options]="barChartOptions"
+                        [legend]="barChartLegend"
+                        [chartType]="barChartType">
+                </canvas>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -66,6 +66,18 @@ export class DataResponse {
   data: [];
 }
 
+export class ChartsResponse {
+  data: [];
+  config: {
+    rows_headers: {
+      title: string,
+      indicators: []
+    },
+    index_cols:[],
+    col_headers: []
+  }
+}
+
 export class TableStateResponse {
   data: {
     _id: string

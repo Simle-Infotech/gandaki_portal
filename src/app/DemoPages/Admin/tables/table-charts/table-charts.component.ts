@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormService} from "../../../../services/form.service";
-import {FormResponse, ListResponse, TableDetailsResponse} from "../../../../models/user";
+import {ChartsResponse, DataResponse, FormResponse, ListResponse, TableDetailsResponse} from "../../../../models/user";
 import {GeneralService} from "../../../../services/general.service";
 import {CheckboxRenderer} from "../../checkBox-renderer.component";
 import {ChartDataSets, ChartOptions} from "chart.js";
@@ -22,50 +22,208 @@ export class TableChartsComponent implements OnInit {
   ) {
   }
 
-  public lineChartData: ChartDataSets[] = [
-    { data: [65, 59, 80, 81, 56, 55, 40], label: 'Province A' },
-  ];
-  public lineChartLabels: Label[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-  public lineChartColors: Color[] = [
-    {
-      borderColor: 'black',
-      backgroundColor: 'rgba(255,0,0,0.3)',
-    },
-  ];
-  public lineChartLegend = true;
-  public lineChartType = 'line';
-  public lineChartPlugins = [];
-
+  apiData;
+  row_headers;
+  index_cols;
+  col_headers = [];
+  filter_data = [];
+  aggregate_function='sum';
+  subOptions = [];
+  selectedIndexCol;
+  selectedOption;
 
   public barChartOptions = {
     scaleShowVerticalLines: false,
     responsive: true
   };
-  public barChartLabels = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
+  public barChartLabels = [];
   public barChartType = 'bar';
   public barChartLegend = true;
   public barChartData = [
     {data: [65, 59, 80, 81, 56, 55, 40], label: 'Municipality A'},
-    {data: [28, 48, 40, 19, 86, 27, 90], label: 'Municipality B'}
+    // {data: [28, 48, 40, 19, 86, 27, 90], label: 'Municipality B'}
   ];
-
-  public pieChartLabels = ['Municipality M1', 'Municipality M2', 'Municipality M3', 'Municipality M4'];
-  public pieChartData = [120, 150, 180, 90];
-  public pieChartType = 'pie';
-
-  public doughnutChartLabels = ['Municipality Q1', 'Municipality Q2', 'Municipality Q3', 'Municipality Q4'];
-  public doughnutChartData = [120, 150, 180, 90];
-  public doughnutChartType = 'doughnut';
 
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(paramsId => {
       this.id = paramsId.id;
+
+      this.generalService.getTableCharts(this.id).subscribe((response: ChartsResponse) => {
+        this.row_headers = response.config.rows_headers;
+        this.index_cols  = response.config.index_cols;
+        this.col_headers = response.config.col_headers;
+        this.apiData      = response.data;
+        this.row_headers.indicators.forEach(indicator => {
+          this.barChartLabels.push(indicator.title);
+        })
+
+        this.col_headers.forEach(col_header => {
+          col_header.chartsData = [];
+        })
+
+        this.renderCharts();
+      })
     });
   }
 
   navigateToDetailsTables(){
     this.router.navigate(['admin/tables/details/'+this.id])
+  }
+
+  changeFilters(index_col, selectedValue){
+    let exists = false;
+    this.filter_data.forEach(data => {
+      if(data.col_id == index_col.col_id){
+        data.value = selectedValue.value;
+        exists = true;
+      }
+    })
+
+    if(exists == false){
+      this.filter_data.push({
+        col_id: index_col.col_id,
+        value: selectedValue.value
+      })
+    }
+
+    this.renderCharts();
+
+  }
+
+  processDataForCharts(){
+    var result = this.apiData.filter((x) => {
+      let match_status = false;
+      /*if((this.selectedIndexCol == null) && (this.selectedOption == null)){
+        return x;
+      }
+
+      if(this.selectedIndexCol != null){
+        if(x[this.selectedIndexCol.col_id]){
+          match_status = true;
+        }
+      }
+
+      if(match_status == true){
+        if(this.selectedOption != null){
+          if(x[this.selectedIndexCol.col_id] == this.selectedOption.id){
+            match_status = true;
+          }
+          else{
+            match_status = false;
+          }
+        }
+      }
+
+      if(match_status == true){
+        return x;
+      }*/
+
+
+      // console.log(this.selectedOption);
+      // if(this.selectedIndexCol)
+
+      if(this.filter_data.length == 0){
+        return x;
+      }
+
+      this.filter_data.forEach(datum => {
+        if(match_status == true){
+          return;
+        }
+
+        if(x[datum.col_id] == parseInt(datum.value)){
+          match_status = true;
+        }
+      })
+
+      // @ts-ignore
+      if(match_status == true){
+        return x;
+      }
+    })
+
+    return result;
+  }
+
+  renderCharts(){
+    let chartsInitialData = this.processDataForCharts();
+    this.col_headers.forEach(col_header => {
+
+    })
+    // this.row_headers.indicators
+    console.log(chartsInitialData);
+    this.col_headers.forEach(col_header => {
+      let chartsFinalData = [];
+      col_header.chartsData = [];
+
+      if(col_header.type == 'string'){
+        return;
+      }
+
+      this.row_headers.indicators.forEach(indicator => {
+        let is_row_match = false;
+        let chartValue = 0;
+        let count = 0;
+        chartsInitialData.forEach(x => {
+          if(indicator.id == x['row']){
+            if(this.aggregate_function == 'sum'){
+              chartValue += parseFloat(x[col_header.id]);
+            }
+            else if(this.aggregate_function == 'mean'){
+              chartValue += parseFloat(x[col_header.id]);
+              count++;
+            }
+            else if(this.aggregate_function == 'count'){
+              chartValue++;
+            }
+            else if(this.aggregate_function == 'min'){
+              if(chartValue == 0){
+                chartValue = parseInt(x[col_header.id]);
+              }
+
+              if(chartValue > parseInt(x[col_header.id])){
+                chartValue = parseInt(x[col_header.id]);
+              }
+            }
+            else if(this.aggregate_function == 'max'){
+              if(chartValue < parseInt(x[col_header.id])){
+                chartValue = parseInt(x[col_header.id]);
+              }
+            }
+            is_row_match = true;
+          }
+        })
+
+        if(this.aggregate_function == 'mean'){
+          if(count != 0){
+            chartValue = chartValue/count;
+          }
+        }
+
+        if(is_row_match == false){
+          chartsFinalData.push(0);
+        }
+        else {
+          chartsFinalData.push(chartValue);
+        }
+      })
+      col_header.chartsData.push({
+        'data': chartsFinalData,
+        'label': col_header.title
+      })
+    })
+  }
+
+  buildOptions($event){
+    this.subOptions = [];
+    this.index_cols.forEach(index_col => {
+      if(index_col.col_id == this.selectedIndexCol.col_id){
+        this.subOptions = index_col.options;
+      }
+    })
+
+    this.renderCharts();
   }
 
 }
