@@ -68,4 +68,14 @@ export class GeneralService {
     return this.httpClient.get(`${environment.apiUrl}/portal/data?id=` + id + `&charts=1`)
       .pipe(retry(3), catchError(this.handleError));
   }
+
+  savePage(data) {
+    return this.httpClient.post(`${environment.apiUrl}/portal/extra/pages`, data)
+      .pipe(retry(3), catchError(this.handleError));
+  }
+
+  getPage(slug) {
+    return this.httpClient.get(`${environment.apiUrl}/portal/extra/pages?query={"slug":"` + slug + `"}&single=1`)
+      .pipe(retry(3), catchError(this.handleError));
+  }
 }

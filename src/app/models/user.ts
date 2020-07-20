@@ -111,6 +111,14 @@ export class singleTableStateResponse {
   }
 }
 
+export class SinglePageResponse {
+  data: {
+    _id: string,
+    slug: string,
+    content: string
+  }
+}
+
 
 export class CollectionResponse {
   data:[

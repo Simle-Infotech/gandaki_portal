@@ -510,6 +510,10 @@ export class TableDetailsComponent implements OnInit {
     this.router.navigate(['admin/tables/charts/'+this.id])
   }
 
+  navigateToPreview(){
+    this.router.navigate(['guest/tables/details/'+this.id])
+  }
+
   onCellClicked($event) {
     // check whether the current row is already opened in edit or not
     if (this.editingRowIndex != $event.rowIndex) {

@@ -1,0 +1,37 @@
+<div style="margin-top: 20px;">
+  <div class="mb-3 card">
+    <div class="card-header-tab card-header">
+      <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
+        <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
+        पृष्ठ
+      </div>
+      <!--<div class="btn-actions-pane-right text-capitalize">
+        <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm" >Add new row</button>
+        <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm">Save data</button>
+      </div>-->
+    </div>
+    <div class="no-gutters row">
+    <div class="col-sm-12 col-md-12">
+      <br>
+      <mat-form-field style="padding: 15px;">
+        <mat-select  placeholder="Select a Page" [(value)]="selectedPage" (selectionChange)="changePage()">
+          <mat-option value="data" selected="true">Data</mat-option>
+          <mat-option value="insights">Insights</mat-option>
+          <mat-option value="organization-structure">Organization Structure</mat-option>
+          <mat-option value="publications">Publications</mat-option>
+          <mat-option value="recent-publications">Recent Publications</mat-option>
+          <mat-option value="news">News</mat-option>
+          <mat-option value="recent-news">Recent News</mat-option>
+          <mat-option value="introduction">Introduction</mat-option>
+          <mat-option value="about-us">About us</mat-option>
+          <mat-option value="others">Others</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <br>
+      <angular-editor [(ngModel)]="selectedPageContent" [config]="editorConfig"></angular-editor>
+      <br>
+      <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm" (click)="saveData()" >Save</button>
+    </div>
+  </div>
+  </div>
+</div>
