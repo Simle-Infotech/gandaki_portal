@@ -88,13 +88,13 @@ export class SidebarComponent implements OnInit {
       this.responseData.forEach(value => {
         value.tables.forEach(table => {
           if(this.is_logged == true){
-            table.url = '/admin/tables/details/'+table.id;
+            table.url = '/guest/tables/details/'+table.id;
           } else{
             table.url = '/guest/tables/details/'+table.id;
           }
         })
         this.menuItems.push({
-          path: '/admin/',
+          path: '/guest/',
           title: value.nepali_name,
           icon: 'list',
           class: '',
@@ -120,7 +120,7 @@ export class SidebarComponent implements OnInit {
 
   navigateToTable(tableId){
     if(this.is_logged == true){
-      this.router.navigate(['/admin/tables/details/'+tableId]);
+      this.router.navigate(['/guest/tables/details/'+tableId]);
     } else{
       this.router.navigate(['/guest/tables/details/'+tableId]);
     }
@@ -128,7 +128,7 @@ export class SidebarComponent implements OnInit {
 
   giveLink(tableId){
     if(this.is_logged == true){
-      return('/admin/tables/details/'+tableId);
+      return('/guest/tables/details/'+tableId);
     } else{
       return('/guest/tables/details/'+tableId);
     }
@@ -136,7 +136,7 @@ export class SidebarComponent implements OnInit {
 
   navigateToSubForms(tableId){
     if(this.is_logged == true){
-      this.router.navigate(['/admin/tables/'+tableId]);
+      this.router.navigate(['/guest/tables/'+tableId]);
     } else{
       this.router.navigate(['/guest/tables/'+tableId]);
     }
@@ -144,7 +144,7 @@ export class SidebarComponent implements OnInit {
 
   giveLinkForm(tableId){
     if(this.is_logged == true){
-      return('/admin/tables/'+tableId);
+      return('/guest/tables/'+tableId);
     } else{
       return('/guest/tables/'+tableId);
     }

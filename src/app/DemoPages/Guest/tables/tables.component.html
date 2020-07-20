@@ -2,6 +2,7 @@
   <div class="card-header">
     <h2>{{ pageTitle }}</h2>
     <div class="btn-actions-pane-right text-capitalize">
+      <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm" *ngIf="is_logged == true" (click)="goToDataEntry()">Data Entry</button>
       <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm" (click)="exportTabulatorTable()">Export Data</button>
 
     </div>

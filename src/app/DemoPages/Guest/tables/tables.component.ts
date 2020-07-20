@@ -12,6 +12,7 @@ import {
   TableDetailsResponse
 } from "../../../models/user";
 import Tabulator from 'tabulator-tables';
+import {AuthenticationService} from "../../../services/authentication.service";
 
 @Component({
   selector: 'app-tables',
@@ -73,6 +74,7 @@ export class TablesComponent implements OnInit {
   groups = [];
   tabulatorTable : any;
   collections;
+  is_logged = false;
 
   icon; tableID; activeFilter=false; collect_title; collect_icon_path; collect_sub_title;
 
@@ -90,7 +92,8 @@ export class TablesComponent implements OnInit {
     private formBuilder: FormBuilder,
     private formService: FormService,
     private router: Router,
-    private generalService: GeneralService
+    private generalService: GeneralService,
+    private authenticationService: AuthenticationService
   ) {
     this.autoGroupColumnDef = { minWidth: 200 };
     this.defaultColDef = {
@@ -161,6 +164,10 @@ export class TablesComponent implements OnInit {
           this.filterState = response.data.filterState;
         })
       })
+
+      if (this.authenticationService.CurrentUserValue) {
+        this.is_logged = true;
+      }
 
       this.renderTable(true);
     });
@@ -653,6 +660,10 @@ export class TablesComponent implements OnInit {
 
   resetFilter(){
     this.tabulatorTable.clearFilter();
+  }
+
+  goToDataEntry(){
+    this.router.navigate(['/admin/tables/details/'+this.id])
   }
 
 }
