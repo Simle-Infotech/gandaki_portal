@@ -181,7 +181,7 @@ export class TablesComponent implements OnInit {
     }
 
     this.tabulatorTable = new Tabulator("#my-tabular-table", {
-      data:this.rowData,           //load row data from array
+      data:this.apiData,           //load row data from array
       layout:"fitColumns",      //fit columns to width of table
       responsiveLayout:"hide",  //hide columns that dont fit on the table
       tooltips:true,            //show tool tips on cells
@@ -282,10 +282,11 @@ export class TablesComponent implements OnInit {
         })
         this.columnNames = this.colData;
         // this.gridApi.setColumnDefs(this.colData);
+        console.log(this.columnNames);
       }
 
 
-      this.empty_table.forEach(row => {
+      /*this.empty_table.forEach(row => {
         const rowValue = {};
         let currentRowValue = '';
         let currentGroupValue = '';
@@ -326,9 +327,9 @@ export class TablesComponent implements OnInit {
             return;
           }
 
-          /*if(key == 'group'){
+          /!*if(key == 'group'){
             return;
-          }*/
+          }*!/
 
           let indexValue = '';
           this.index_cols.forEach(index_col => {
@@ -363,145 +364,155 @@ export class TablesComponent implements OnInit {
           rowValue[key] = row[key];
         })
         this.rowData.push(rowValue);
-      })
+      })*/
 
       this.formService.getData(this.id).subscribe((dataResponse: DataResponse) => {
         this.apiData = dataResponse.data;
-        this.rowData.forEach(row => {
-
-          let currentRowValue = '';
+        this.apiData.forEach(apiDatum => {
           this.row_headers.indicators.forEach(indicator => {
-            if (indicator.title == row.row) {
-              currentRowValue = indicator.id;
-            }
-          });
-
-          row['row'] = currentRowValue;
-
-          let usedKeys = [];
-          usedKeys.push('row');
-
-          const keys = Object.keys(row);
-          keys.forEach(key => {
-            if (key == 'row') {
-              return;
-            }
-            let indexValue = '';
-            this.index_cols.forEach(index_col => {
-              if (index_col.col_id == key) {
-                index_col.options.forEach(option => {
-                  if (option.nepali_name == row[key]) {
-                    indexValue = option.id;
-                    usedKeys.push(key);
-                  }
-                })
-              }
-            })
-
-            row[key] = indexValue;
-          })
-
-
-          this.apiData.forEach(apiDatum => {
-            let matchStatus = true;
-            this.indexIds.forEach(indexId => {
-              if (matchStatus ==  false) {
-                return;
-              }
-
-              if (row[indexId] ==  apiDatum[indexId]) {
-                matchStatus = true;
-              } else {
-                matchStatus = false;
-              }
-            })
-
-            if (matchStatus == true) {
-              const apiDataKeys = Object.keys(apiDatum);
-              apiDataKeys.forEach(apiDataKey => {
-                let isIndexKey = false;
-                this.indexIds.forEach(indexId => {
-                  if (indexId == apiDataKey) {
-                    isIndexKey = true;
-                    return;
-                  }
-                });
-
-                // tslint:disable-next-line:triple-equals
-                // @ts-ignore
-                if (isIndexKey == true) {
-                  return;
-                }
-
-                row[apiDataKey] = apiDatum[apiDataKey];
-              })
-              // console.log(row);
+            if(indicator.id == apiDatum.row){
+              apiDatum.row = indicator.title;
             }
           })
-
-          //  Modify data to get the headers
-
-          const rowValue = {};
-          currentRowValue = '';
-          let currentGroupValue = '';
-          usedKeys = [];
-          this.row_headers.indicators.forEach(indicator => {
-            if (indicator.id == row.row) {
-              currentRowValue = indicator.title;
-              for(let i = 0;i<indicator.group.length; i++){
-                row['group'+i] = indicator.group[i];
-                usedKeys.push('group'+i);
-              }
-/*              indicator.group.forEach(singleGroup => {
-                row[singleGroup] = singleGroup;
-                usedKeys.push(singleGroup);
-              })*/
-              // currentGroupValue = indicator.group[0];
-            }
-          });
-
-          // row['group'] = currentGroupValue;
-          row['row'] = currentRowValue;
-          let lookup = {};
-          let uniqueArr = [];
-          for(let i=0; i<usedKeys.length; i++) {
-            if(!lookup[usedKeys[i]]) {
-              lookup[usedKeys[i]] = true;
-              uniqueArr.push(usedKeys[i]);
-            }
-          }
-
-          usedKeys = uniqueArr;
-
-          //
-
-          // usedKeys.push('group')
-          usedKeys.push('row');
-          //
-          this.indexIds.forEach(key => {
-            if (key == 'row') {
-              return;
-            }
-
-            if(key == 'group'){
-              return;
-            }
-
-            let indexValue = '';
-            this.index_cols.forEach(index_col => {
-              if (index_col.col_id == key) {
-                index_col.options.forEach(option => {
-                  if (option.id == row[key]) {
-                    indexValue = option.nepali_name;
-                    usedKeys.push(key);
-                  }
-                })
-              }
-            })
-
-            row[key] = indexValue;
-          })
+          console.log(this.row_headers);
+          console.log(apiDatum);
         })
+
+//         this.rowData.forEach(row => {
+//
+//           let currentRowValue = '';
+//           this.row_headers.indicators.forEach(indicator => {
+//             if (indicator.title == row.row) {
+//               currentRowValue = indicator.id;
+//             }
+//           });
+//
+//           row['row'] = currentRowValue;
+//
+//           let usedKeys = [];
+//           usedKeys.push('row');
+//
+//           const keys = Object.keys(row);
+//           keys.forEach(key => {
+//             if (key == 'row') {
+//               return;
+//             }
+//             let indexValue = '';
+//             this.index_cols.forEach(index_col => {
+//               if (index_col.col_id == key) {
+//                 index_col.options.forEach(option => {
+//                   if (option.nepali_name == row[key]) {
+//                     indexValue = option.id;
+//                     usedKeys.push(key);
+//                   }
+//                 })
+//               }
+//             })
+//
+//             row[key] = indexValue;
+//           })
+//
+//
+//           this.apiData.forEach(apiDatum => {
+//             let matchStatus = true;
+//             this.indexIds.forEach(indexId => {
+//               if (matchStatus ==  false) {
+//                 return;
+//               }
+//
+//               if (row[indexId] ==  apiDatum[indexId]) {
+//                 matchStatus = true;
+//               } else {
+//                 matchStatus = false;
+//               }
+//             })
+//
+//             if (matchStatus == true) {
+//               const apiDataKeys = Object.keys(apiDatum);
+//               apiDataKeys.forEach(apiDataKey => {
+//                 let isIndexKey = false;
+//                 this.indexIds.forEach(indexId => {
+//                   if (indexId == apiDataKey) {
+//                     isIndexKey = true;
+//                     return;
+//                   }
+//                 });
+//
+//                 // tslint:disable-next-line:triple-equals
+//                 // @ts-ignore
+//                 if (isIndexKey == true) {
+//                   return;
+//                 }
+//
+//                 row[apiDataKey] = apiDatum[apiDataKey];
+//               })
+//               // console.log(row);
+//             }
+//           })
+//
+//           //  Modify data to get the headers
+//
+//           const rowValue = {};
+//           currentRowValue = '';
+//           let currentGroupValue = '';
+//           usedKeys = [];
+//           this.row_headers.indicators.forEach(indicator => {
+//             if (indicator.id == row.row) {
+//               currentRowValue = indicator.title;
+//               for(let i = 0;i<indicator.group.length; i++){
+//                 row['group'+i] = indicator.group[i];
+//                 usedKeys.push('group'+i);
+//               }
+// /*              indicator.group.forEach(singleGroup => {
+//                 row[singleGroup] = singleGroup;
+//                 usedKeys.push(singleGroup);
+//               })*/
+//               // currentGroupValue = indicator.group[0];
+//             }
+//           });
+//
+//           // row['group'] = currentGroupValue;
+//           row['row'] = currentRowValue;
+//           let lookup = {};
+//           let uniqueArr = [];
+//           for(let i=0; i<usedKeys.length; i++) {
+//             if(!lookup[usedKeys[i]]) {
+//               lookup[usedKeys[i]] = true;
+//               uniqueArr.push(usedKeys[i]);
+//             }
+//           }
+//
+//           usedKeys = uniqueArr;
+//
+//           //
+//
+//           // usedKeys.push('group')
+//           usedKeys.push('row');
+//           //
+//           this.indexIds.forEach(key => {
+//             if (key == 'row') {
+//               return;
+//             }
+//
+//             if(key == 'group'){
+//               return;
+//             }
+//
+//             let indexValue = '';
+//             this.index_cols.forEach(index_col => {
+//               if (index_col.col_id == key) {
+//                 index_col.options.forEach(option => {
+//                   if (option.id == row[key]) {
+//                     indexValue = option.nepali_name;
+//                     usedKeys.push(key);
+//                   }
+//                 })
+//               }
+//             })
+//
+//             row[key] = indexValue;
+//           })
+//         })
         /*this.gridApi.setRowData([]);
         this.gridApi.setRowData(this.rowData);
 
