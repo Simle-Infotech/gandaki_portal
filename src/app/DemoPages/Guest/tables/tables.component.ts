@@ -13,6 +13,7 @@ import {
 } from "../../../models/user";
 import Tabulator from 'tabulator-tables';
 import {AuthenticationService} from "../../../services/authentication.service";
+import {options} from "ionicons/icons";
 
 @Component({
   selector: 'app-tables',
@@ -381,8 +382,16 @@ export class TablesComponent implements OnInit {
               apiDatum.row = indicator.title;
             }
           })
-          console.log(this.row_headers);
-          console.log(apiDatum);
+
+          this.index_cols.forEach(index_col => {
+            if(index_col.options){
+              index_col.options.forEach(option => {
+                if(apiDatum[index_col.col_id] == option.id){
+                  apiDatum[index_col.col_id] = option.nepali_name;
+                }
+              })
+            }
+          })
         })
 
 //         this.rowData.forEach(row => {
