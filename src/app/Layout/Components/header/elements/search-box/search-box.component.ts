@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {GeneralService} from "../../../../../services/general.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-search-box',
@@ -7,10 +9,19 @@ import { Component, OnInit } from '@angular/core';
 export class SearchBoxComponent implements OnInit {
 
   public isActive: any;
+  public searchValue;
 
-  constructor() { }
+  constructor(
+    private generalService: GeneralService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
+  }
+
+
+  getSearch(search_text){
+    this.router.navigate(['guest/search/'+search_text])
   }
 
 }

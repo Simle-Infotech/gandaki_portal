@@ -78,4 +78,9 @@ export class GeneralService {
     return this.httpClient.get(`${environment.apiUrl}/portal/extra/pages?query={"slug":"` + slug + `"}&single=1`)
       .pipe(retry(3), catchError(this.handleError));
   }
+
+  getSearchDetails(search_value){
+    return this.httpClient.get(`${environment.apiUrl}/portal/xml/search?query=` + search_value)
+      .pipe(retry(3), catchError(this.handleError));
+  }
 }

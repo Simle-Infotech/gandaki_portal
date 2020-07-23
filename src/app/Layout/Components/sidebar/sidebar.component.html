@@ -66,7 +66,36 @@
                 </ng-template>
               </ngb-panel>
 
-              <ngb-panel>
+              <ng-container *ngFor="let menuItem of menuItems">
+                <ngb-panel>
+                  <ng-template ngbPanelHeader>
+                    <div class="vsm-header"></div>
+                    <div class="vsm-header">{{ menuItem.title }}</div>
+                  </ng-template>
+                </ngb-panel>
+
+                <ngb-panel *ngFor="let menuTables of menuItem.tables">
+                  <ng-template ngbPanelHeader class="vsm-item">
+                    <a (click)="navigateToTable(menuTables.id)" routerLinkActive="active-item" routerLink="{{giveLink(menuTables.id)}}">
+                      <button class="vsm-link">
+                        <span class="vsm-title">{{ menuTables.nepali_name }}</span>
+                      </button>
+                    </a>
+                  </ng-template>
+                </ngb-panel>
+
+                <ngb-panel *ngFor="let menuSubForms of menuItem.subForms">
+                  <ng-template ngbPanelHeader class="vsm-item">
+                    <a routerLink="{{giveLinkForm(menuSubForms.id)}}" (click)="navigateToSubForms(menuSubForms.id)" routerLinkActive="active-item" >
+                      <button class="vsm-link">
+                        <span class="vsm-title">{{ menuSubForms.nepali_name }}</span>
+                      </button>
+                    </a>
+                  </ng-template>
+                </ngb-panel>
+              </ng-container>
+
+              <!--<ngb-panel>
                 <ng-template ngbPanelHeader>
                   <div class="vsm-header"></div>
                  <div class="vsm-header">मुख्य शिर्षकहरु</div>
@@ -98,7 +127,7 @@
                     </div>
                   </div>
                 </ng-template>
-              </ngb-panel>
+              </ngb-panel>-->
 
               <!--<ngb-panel id="pagesMenu">
                 <ng-template ngbPanelHeader>

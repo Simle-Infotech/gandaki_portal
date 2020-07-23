@@ -141,7 +141,6 @@ export class TableDetailsComponent implements OnInit {
       '.align-text-center' : function (params) {
         return true;
       }
-
     };
 
   }
