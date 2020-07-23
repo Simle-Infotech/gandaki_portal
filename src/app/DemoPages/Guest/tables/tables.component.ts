@@ -380,6 +380,11 @@ export class TablesComponent implements OnInit {
           this.row_headers.indicators.forEach(indicator => {
             if(indicator.id == apiDatum.row){
               apiDatum.row = indicator.title;
+
+              for (let i =0; i<indicator.group.length;i++){
+                apiDatum['group'+i] = indicator.group[i];
+              }
+
             }
           })
 
