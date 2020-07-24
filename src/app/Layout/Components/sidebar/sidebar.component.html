@@ -70,30 +70,108 @@
                 <ngb-panel>
                   <ng-template ngbPanelHeader>
                     <div class="vsm-header"></div>
-                    <div class="vsm-header">{{ menuItem.title }}</div>
+                    <div class="vsm-header">
+                      {{ menuItem.title }}
+                    </div>
                   </ng-template>
                 </ngb-panel>
+
+                <ng-container *ngFor="let menuSubForms of menuItem.subForms">
+                  <ngb-panel id="{{menuSubForms.id}}">
+                    <!--<ng-template ngbPanelHeader class="vsm-item">
+                      &lt;!&ndash;<a routerLink="{{giveLinkForm(menuSubForms.id)}}" (click)="navigateToSubForms(menuSubForms.id)" routerLinkActive="active-item" >
+                        <button class="vsm-link">
+                          <img class="vsm-icon" src="{{ menuSubForms.icon_path }}" style="opacity: 1;"/>
+                          <span class="vsm-title">{{ menuSubForms.nepali_name }}</span>
+                        </button>
+                      </a>&ndash;&gt;
+                      <div class="vsm-header"></div>
+                      <div class="vsm-link vsm-header">
+                        <img class="vsm-icon" src="{{ menuSubForms.icon_path }}" style="opacity: 1;"/>
+                        {{ menuSubForms.nepali_name }}
+                      </div>
+
+                    </ng-template>-->
+
+                    <ng-template ngbPanelHeader class="vsm-item">
+                      <button ngbPanelToggle class="vsm-link">
+                        <img class="vsm-icon" src="{{ menuSubForms.icon_path }}" style="opacity: 1;"/>
+                        <span class="vsm-title">{{ menuSubForms.nepali_name }}</span>
+                        <i class="vsm-arrow"></i>
+                      </button>
+                    </ng-template>
+
+                    <ng-template ngbPanelContent>
+                      <div class="vsm-dropdown">
+                        <div class="vsm-list">
+                          <div class="vsm-item" *ngFor="let menuSubSubForms of menuSubForms.subForms">
+                            <a routerLink="{{giveLinkForm(menuSubSubForms.id)}}" (click)="navigateToSubForms(menuSubSubForms.id)" routerLinkActive="active-item"  class="vsm-link">
+                              <img class="vsm-icon" src="{{ menuSubSubForms.icon_path }}" style="opacity: 1;position: unset;"/>
+                              <span class="vsm-title">{{menuSubSubForms.nepali_name }}</span>
+                            </a>
+                          </div>
+
+                          <div class="vsm-item" *ngFor="let menuTables of menuSubForms.tables">
+                            <a (click)="navigateToTable(menuTables.id)" routerLinkActive="active-item"  class="vsm-link" routerLink="{{giveLink(menuTables.id)}}">
+                              <img class="vsm-icon" src="{{ menuTables.icon_path }}" style="opacity: 1;position: unset;"/>
+                              <span class="vsm-title">{{menuTables.nepali_name }}</span>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-template>
+                  </ngb-panel>
+
+
+                </ng-container>
+
 
                 <ngb-panel *ngFor="let menuTables of menuItem.tables">
                   <ng-template ngbPanelHeader class="vsm-item">
                     <a (click)="navigateToTable(menuTables.id)" routerLinkActive="active-item" routerLink="{{giveLink(menuTables.id)}}">
                       <button class="vsm-link">
+                        <img class="vsm-icon" src="{{ menuTables.icon_path }}" style="opacity: 1;"/>
                         <span class="vsm-title">{{ menuTables.nepali_name }}</span>
                       </button>
                     </a>
                   </ng-template>
                 </ngb-panel>
 
-                <ngb-panel *ngFor="let menuSubForms of menuItem.subForms">
-                  <ng-template ngbPanelHeader class="vsm-item">
-                    <a routerLink="{{giveLinkForm(menuSubForms.id)}}" (click)="navigateToSubForms(menuSubForms.id)" routerLinkActive="active-item" >
-                      <button class="vsm-link">
-                        <span class="vsm-title">{{ menuSubForms.nepali_name }}</span>
-                      </button>
-                    </a>
-                  </ng-template>
-                </ngb-panel>
               </ng-container>
+
+              <ngb-panel>
+                <ng-template ngbPanelHeader>
+                  <div class="vsm-header"></div>
+                  <div class="vsm-header">मुख्य शिर्षकहरु</div>
+                </ng-template>
+              </ngb-panel>
+
+              <ngb-panel *ngFor="let menuItem of menuItems" id="{{menuItem.id}}">
+                <ng-template ngbPanelHeader class="vsm-item">
+                  <button ngbPanelToggle class="vsm-link">
+                    <i class="vsm-icon pe-7s-rocket"></i>
+                    <span class="vsm-title">{{ menuItem.title }}</span>
+                    <i class="vsm-arrow"></i>
+                  </button>
+                </ng-template>
+
+                <ng-template ngbPanelContent>
+                  <div class="vsm-dropdown">
+                    <div class="vsm-list">
+                      <div class="vsm-item" *ngFor="let menuTables of menuItem.tables">
+                        <a (click)="navigateToTable(menuTables.id)" routerLinkActive="active-item"  class="vsm-link" routerLink="{{giveLink(menuTables.id)}}">
+                          <span class="vsm-title">{{menuTables.nepali_name }}</span>
+                        </a>
+                      </div>
+                      <div class="vsm-item" *ngFor="let menuSubForms of menuItem.subForms">
+                        <a routerLink="{{giveLinkForm(menuSubForms.id)}}" (click)="navigateToSubForms(menuSubForms.id)" routerLinkActive="active-item"  class="vsm-link">
+                          <span class="vsm-title">{{menuSubForms.nepali_name }}</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </ngb-panel>
 
               <!--<ngb-panel>
                 <ng-template ngbPanelHeader>
