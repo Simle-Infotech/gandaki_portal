@@ -163,14 +163,13 @@ export class TablesComponent implements OnInit {
           this.groupState = response.data.groupState;
           this.sortState = response.data.sortState;
           this.filterState = response.data.filterState;
+          this.renderTable(true);
         })
       })
 
       if (this.authenticationService.CurrentUserValue) {
         this.is_logged = true;
       }
-
-      this.renderTable(true);
     });
   }
 
@@ -191,7 +190,6 @@ export class TablesComponent implements OnInit {
     this.tabulatorTable = new Tabulator("#my-tabular-table", {
       data:this.apiData,           //load row data from array
       layout:"fitColumns",      //fit columns to width of table
-      responsiveLayout:"hide",  //hide columns that dont fit on the table
       tooltips:true,            //show tool tips on cells
       addRowPos:"top",          //when adding a new row, add it to the top of the table
       history:true,             //allow undo and redo actions on the table
@@ -288,10 +286,29 @@ export class TablesComponent implements OnInit {
           this.modifyColumnHeadersForTabulator(items);
           this.colData.push(items)
         })
+
+        //Modify the columns as per the col state
+        this.colState.forEach(columnState => {
+          this.colData.forEach(columnData => {
+            if(columnData.columns){
+              columnData.columns.forEach(column => {
+                if(column.id == columnState.colId){
+                  column.width = columnState.width
+                }
+              })
+            }
+            else if(columnData.field == columnState.colId){
+              columnData.width = columnState.width;
+            }
+          })
+        })
         this.columnNames = this.colData;
         // this.gridApi.setColumnDefs(this.colData);
         console.log(this.columnNames);
       }
+
+      console.log("Column state");
+      console.log(this.colState);
 
 
       /*this.empty_table.forEach(row => {

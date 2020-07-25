@@ -557,11 +557,10 @@ export class TableDetailsComponent implements OnInit {
 
   onSaveButtonClicked(){
     this.gridApi.stopEditing();
-    this.showAlert("Data saved successfully");
   }
 
   async onRowEditingStopped($event, fromRow=true) {
-    await this.saveRowData($event, !fromRow);
+    await this.saveRowData($event, true);
     // $event.data._id = this.saveRowData(row, !fromRow);
   }
 
@@ -670,14 +669,18 @@ export class TableDetailsComponent implements OnInit {
     };
     let responseId = '';
 
-    console.log("Modified data from API");
-    console.log(currentData);
+
     return new Promise(resolve => {
       this.formService.saveData(this.id, currentData).subscribe((response: FormResponse) => {
         responseId = response.data[0]._id;
         this.buttonText = 'Saved';
         this.btnClass = 'btn-success';
         $event.data._id = responseId;
+
+        if(showAlert){
+          this.showAlert("Data saved successfully");
+        }
+
         resolve();
       }, err => {
           resolve();
