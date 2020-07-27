@@ -120,7 +120,6 @@ export class SinglePageResponse {
 }
 
 export class searchResponse {
-
 }
 
 

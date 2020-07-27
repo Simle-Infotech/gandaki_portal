@@ -13,7 +13,7 @@ export class SearchComponent implements OnInit {
   selectedTableSlug;
   selectedContent;
   searchData;
-  searchResults: searchResponse = [];
+  searchResults;
 
   constructor( private generalService: GeneralService, private router: Router, private activatedRoute: ActivatedRoute) {}
 
@@ -21,7 +21,7 @@ export class SearchComponent implements OnInit {
     this.searchResults = [];
     this.activatedRoute.params.subscribe(paramsId => {
       this.selectedTableSlug = paramsId.slug;
-      this.generalService.getSearchDetails(this.selectedTableSlug).subscribe((response : searchResponse) => {
+      this.generalService.getSearchDetails(this.selectedTableSlug).subscribe(response => {
         this.searchResults = response;
       });
     });
