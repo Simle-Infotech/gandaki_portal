@@ -1,12 +1,64 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">घर</a></li>
+    <li class="breadcrumb-item "><a [routerLink]="" (click)="navigateToPreview()"> {{ pageTitle }} </a></li>
+    <li class="breadcrumb-item active">Data Entry</li>
+  </ol>
+</nav>
+
 <div class="card main-card mb-3">
   <div class="card-header" style="background-color: #2873b9;">
     <h2 style="color:white">{{ pageTitle }}</h2>
     <div class="btn-actions-pane-right text-capitalize">
-      <a class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm" href="{{ adminUrl }}/admin/portal_form/table_group/{{id}}/change/" target="_blank">Design Tables</a>
-      <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm {{ btnClass }}" (click)="onSaveButtonClicked()">{{ buttonText }}</button>
-      <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm" (click)="saveTableConfiguration()" >Save Table Configuration</button>
-      <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm" (click)="navigateToCharts()" >Show graphs</button>
-      <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm" (click)="navigateToPreview()" >Preview</button>
+<!--      <a class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm" href="{{ adminUrl }}/admin/portal_form/table_group/{{id}}/change/" target="_blank">Design Tables</a>-->
+<!--      <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm {{ btnClass }}" (click)="onSaveButtonClicked()">{{ buttonText }}</button>-->
+<!--      <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm" (click)="saveTableConfiguration()" >Save Table Configuration</button>-->
+<!--      <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm" (click)="navigateToCharts()" >Show graphs</button>-->
+<!--      <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm" (click)="navigateToPreview()" >Preview</button>-->
+
+      <div class="d-inline-block pull-right" ngbDropdown>
+        <button class="btn btn-info btn-icon" ngbDropdownToggle>
+          <span class="pr-2 opacity-7">
+            <fa name="cog"></fa>
+          </span>
+        </button>
+        <div ngbDropdownMenu>
+          <div>
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link" (click)="navigateToDesignTables()">
+                  <i class="nav-link-icon lnr-pencil"></i>
+                  <span>Design Tables</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" (click)="onSaveButtonClicked()">
+                  <i class="nav-link-icon lnr-store"></i>
+                  <span> {{ buttonText }} </span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" (click)="saveTableConfiguration()">
+                  <i class="nav-link-icon lnr-file-add"></i>
+                  <span> Save Table Configuration </span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" (click)="navigateToCharts()">
+                  <i class="nav-link-icon lnr-chart-bars"></i>
+                  <span> Show graphs </span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" (click)="navigateToPreview()">
+                  <i class="nav-link-icon lnr-eye"></i>
+                  <span> Preview </span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <div class="card-body">

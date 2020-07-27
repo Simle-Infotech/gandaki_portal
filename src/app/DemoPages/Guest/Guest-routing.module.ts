@@ -11,18 +11,6 @@ const routes: Routes = [
     },
     children: [
       {
-        path: 'chat',
-        loadChildren: () => import('./chat/chat.module').then(m => m.ChatModule)
-      },
-      {
-        path: 'mailbox',
-        loadChildren: () => import('./mailbox/mailbox.module').then(m => m.MailBoxModule)
-      },
-      {
-        path: 'material-tabs',
-        loadChildren: () => import('./material-tabs/material-tabs.module').then(m => m.MaterialTabsModule)
-      },
-      {
         path: 'analytics',
         loadChildren: () => import('./analytics/analytics.module').then(m => m.AnalyticsModule)
       },

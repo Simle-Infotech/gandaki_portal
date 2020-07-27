@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   apiUrl: 'http://localhost:8010',
-  adminUrl: 'http://localhost:8000'
+  adminUrl: 'http://localhost:4200'
 };
 
 /*

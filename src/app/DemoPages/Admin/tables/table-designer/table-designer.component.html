@@ -1,10 +1,53 @@
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">घर</a></li>
+    <li class="breadcrumb-item "><a [routerLink]="" (click)="navigateToPreview()"> {{ pageTitle }} </a></li>
+    <li class="breadcrumb-item"><a [routerLink]="" (click)="navigateToDetailsTables()"> Data Entry </a></li>
+    <li class="breadcrumb-item active">Design</li>
+  </ol>
+</nav>
+
 <div class="card main-card mb-3">
   <div class="card-header">
     {{ pageTitle }}
     <div class="btn-actions-pane-right text-capitalize">
-      <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm" (click)="navigateToDetailsTables()">Back to Data Entry</button>
-      <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm" (click)="addNewRow()">Add new row</button>
-      <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm" (click)="onBtStopEditing()">Save data</button>
+<!--      <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm" (click)="navigateToDetailsTables()">Back to Data Entry</button>-->
+<!--      <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm" (click)="addNewRow()">Add new row</button>-->
+<!--      <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm" (click)="onBtStopEditing()">Save data</button>-->
+
+      <div class="d-inline-block pull-right" ngbDropdown>
+        <button class="btn btn-info btn-icon" ngbDropdownToggle>
+          <span class="pr-2 opacity-7">
+            <fa name="cog"></fa>
+          </span>
+        </button>
+        <div ngbDropdownMenu>
+          <div>
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link" (click)="navigateToDetailsTables()">
+                  <i class="nav-link-icon lnr-pencil"></i>
+                  <span>Back to Data Entry</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" (click)="addNewRow()">
+                  <i class="nav-link-icon lnr-file-add"></i>
+                  <span>Add new row</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" (click)="onBtStopEditing()">
+                  <i class="nav-link-icon lnr-store"></i>
+                  <span>Save data</span>
+                </a>
+              </li>
+
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <div class="card-body">

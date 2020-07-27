@@ -32,6 +32,7 @@ export class TableChartsComponent implements OnInit {
   subOptions = [];
   selectedIndexCol;
   selectedOption;
+  pageTitle;
 
   public barChartOptions = {
     scaleShowVerticalLines: false,
@@ -65,11 +66,21 @@ export class TableChartsComponent implements OnInit {
 
         this.renderCharts();
       })
+
+      this.generalService.getTableDetails(this.id).subscribe((response: TableDetailsResponse) => {
+        this.pageTitle = response.data.nepali_name;
+        console.log(this.pageTitle);
+      })
+
     });
   }
 
   navigateToDetailsTables(){
     this.router.navigate(['admin/tables/details/'+this.id])
+  }
+
+  navigateToPreview(){
+    this.router.navigate(['guest/tables/details/'+this.id])
   }
 
   changeFilters(index_col, selectedValue){

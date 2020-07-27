@@ -1,10 +1,41 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">घर</a></li>
+    <li class="breadcrumb-item active">{{ pageTitle }}</li>
+  </ol>
+</nav>
+
 <div class="card main-card mb-3">
   <div class="card-header">
     <h2>{{ pageTitle }}</h2>
     <div class="btn-actions-pane-right text-capitalize">
-      <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm" *ngIf="is_logged == true" (click)="goToDataEntry()">Data Entry</button>
-      <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm" (click)="exportTabulatorTable()">Export Data</button>
-
+<!--      <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm" *ngIf="is_logged == true" (click)="goToDataEntry()">Data Entry</button>-->
+<!--      <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm" (click)="exportTabulatorTable()">Export Data</button>-->
+      <div class="d-inline-block pull-right" ngbDropdown>
+        <button class="btn btn-info btn-icon" ngbDropdownToggle>
+          <span class="pr-2 opacity-7">
+            <fa name="cog"></fa>
+          </span>
+        </button>
+        <div ngbDropdownMenu>
+          <div>
+            <ul class="nav flex-column">
+              <li class="nav-item" *ngIf="is_logged == true">
+                <a class="nav-link" (click)="goToDataEntry()">
+                  <i class="nav-link-icon lnr-pencil"></i>
+                  <span>Data Entry</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" (click)="exportTabulatorTable()">
+                  <i class="nav-link-icon lnr-drop"></i>
+                  <span>Export Data</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 

@@ -229,4 +229,8 @@ export class TableDesignerComponent implements OnInit {
     this.router.navigate(['admin/tables/details/'+this.id])
   }
 
+  navigateToPreview(){
+    this.router.navigate(['guest/tables/details/'+this.id])
+  }
+
 }

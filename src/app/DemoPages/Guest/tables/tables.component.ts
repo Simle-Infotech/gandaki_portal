@@ -150,6 +150,7 @@ export class TablesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     this.activatedRoute.params.subscribe(paramsId => {
       this.id = paramsId.id;
       this.gridId = '#agGridTable'+this.id;
@@ -163,9 +164,10 @@ export class TablesComponent implements OnInit {
           this.groupState = response.data.groupState;
           this.sortState = response.data.sortState;
           this.filterState = response.data.filterState;
-          this.renderTable(true);
         })
       })
+
+      this.renderTable(true);
 
       if (this.authenticationService.CurrentUserValue) {
         this.is_logged = true;
@@ -207,12 +209,16 @@ export class TablesComponent implements OnInit {
 
 
   renderTable(isOnInit) {
+    this.columnNames = [];
+    this.apiData = [];
     this.formService.getDataHeaders(this.id).subscribe((response: DataHeaderResponse) => {
+      console.log(response);
       this.row_headers = response.rows_headers;
       this.col_headers = response.col_headers;
       this.index_cols = response.index_cols;
       this.empty_table = response.empty_table;
-      this.rowData = [];
+      this.rowData = []
+
       // this.gridApi.setRowData([]);
 
       if (isOnInit == true) {
@@ -225,13 +231,14 @@ export class TablesComponent implements OnInit {
         });
         this.colIds.push('_id');
 
-
-        for(let i = 0; i< this.row_headers.indicators[0].group.length; i++){
-          this.colData.push(
-            {headerName: 'group'+i, field: 'group'+i, title: 'group'+i, pinned: 'left', visible: false}
-          )
-          this.groups.push('group'+i);
-          this.colIds.push('group'+i);
+        if(this.row_headers.indicators[0]){
+          for(let i = 0; i< this.row_headers.indicators[0].group.length; i++){
+            this.colData.push(
+              {headerName: 'group'+i, field: 'group'+i, title: 'group'+i, pinned: 'left', visible: false}
+            )
+            this.groups.push('group'+i);
+            this.colIds.push('group'+i);
+          }
         }
 
         // console.log(this.groups);
@@ -288,20 +295,23 @@ export class TablesComponent implements OnInit {
         })
 
         //Modify the columns as per the col state
-        this.colState.forEach(columnState => {
-          this.colData.forEach(columnData => {
-            if(columnData.columns){
-              columnData.columns.forEach(column => {
-                if(column.id == columnState.colId){
-                  column.width = columnState.width
-                }
-              })
-            }
-            else if(columnData.field == columnState.colId){
-              columnData.width = columnState.width;
-            }
+        console.log(this.colState);
+        if(this.colState != null){
+          this.colState.forEach(columnState => {
+            this.colData.forEach(columnData => {
+              if(columnData.columns){
+                columnData.columns.forEach(column => {
+                  if(column.id == columnState.colId){
+                    column.width = columnState.width
+                  }
+                })
+              }
+              else if(columnData.field == columnState.colId){
+                columnData.width = columnState.width;
+              }
+            })
           })
-        })
+        }
         this.columnNames = this.colData;
         // this.gridApi.setColumnDefs(this.colData);
         console.log(this.columnNames);
@@ -563,14 +573,6 @@ export class TablesComponent implements OnInit {
       });
     })
   }
-
-  onGridReady(params) {
-    this.gridApi = params.api;
-    this.gridColumnApi = params.columnApi;
-    this.gridApi.setColumnDefs([]);
-    this.renderTable(false);
-  }
-
 
   modifyColumnHeaders(obj){
     obj.editable = false;
