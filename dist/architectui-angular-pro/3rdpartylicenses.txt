@@ -192,8 +192,6 @@ THE SOFTWARE.
 
 @angular/material/select
 
-@angular/material/tabs
-
 @angular/platform-browser
 MIT
 

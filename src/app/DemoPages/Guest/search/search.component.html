@@ -6,16 +6,26 @@
 </nav>
 
 <div style="margin-top: 20px;">
-  <div class="mb-3 card">
-    <!--<div class="card-header-tab card-header">
-      <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
-        <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
-        पृष्ठ
+  <div class="mb-3 card" *ngFor="let searchResult of searchResults">
+    <a (click)="navigateToTable(searchResult._source.table.id)" style="cursor: pointer;">
+      <div class="card-header-tab card-header">
+        <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
+          <i class="header-icon lnr-chart-bars"> </i>
+          <!--        <img class="header-icon" src="{{ searchResult._source.table.icon_path }}" style="opacity: 1;"/>-->
+          {{ searchResult._source.table.nepali_name }}
+        </div>
       </div>
-    </div>-->
+      <div class="no-gutters row card-body">
+        <div class="col-sm-12 col-md-12">
+          {{ searchResult._source.options.nepali_name }}
+        </div>
+      </div>
+    </a>
+  </div>
+  <div class="mb-3 card" *ngIf="searchResults.length == 0">
     <div class="no-gutters row card-body">
       <div class="col-sm-12 col-md-12">
-        Hello world
+        कुनै खोज परिणामहरू फेला परेनन्
       </div>
     </div>
   </div>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {GeneralService} from "../../../services/general.service";
-import {ListResponse, SinglePageResponse} from "../../../models/user";
+import {ListResponse, searchResponse, SinglePageResponse} from "../../../models/user";
 
 
 @Component({
@@ -13,18 +13,22 @@ export class SearchComponent implements OnInit {
   selectedTableSlug;
   selectedContent;
   searchData;
+  searchResults: searchResponse = [];
+
   constructor( private generalService: GeneralService, private router: Router, private activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
+    this.searchResults = [];
     this.activatedRoute.params.subscribe(paramsId => {
       this.selectedTableSlug = paramsId.slug;
-      this.generalService.getSearchDetails(this.selectedTableSlug).subscribe((response : SinglePageResponse) => {
-        console.log(response);
+      this.generalService.getSearchDetails(this.selectedTableSlug).subscribe((response : searchResponse) => {
+        this.searchResults = response;
       });
     });
   }
 
   navigateToTable(tableId){
+    console.log("Navigating to table");
     this.router.navigate(['/guest/tables/'+tableId]);
   }
 

@@ -119,6 +119,10 @@ export class SinglePageResponse {
   }
 }
 
+export class searchResponse {
+
+}
+
 
 export class CollectionResponse {
   data:[
