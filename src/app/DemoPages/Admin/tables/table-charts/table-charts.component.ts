@@ -1,13 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {FormService} from "../../../../services/form.service";
 import {ChartsResponse, DataResponse, FormResponse, ListResponse, TableDetailsResponse} from "../../../../models/user";
 import {GeneralService} from "../../../../services/general.service";
-import {CheckboxRenderer} from "../../checkBox-renderer.component";
-import {ChartDataSets, ChartOptions} from "chart.js";
-import {Color, Label} from "ng2-charts";
-import {parse} from "date-fns";
+import * as Chart from "chart.js";
 
 @Component({
   selector: 'app-table-charts',
@@ -33,13 +28,15 @@ export class TableChartsComponent implements OnInit {
   selectedIndexCol;
   selectedOption;
   pageTitle;
+  chartType = 'line';
+  renderingChart;
 
   public barChartOptions = {
     scaleShowVerticalLines: false,
     responsive: true
   };
   public barChartLabels = [];
-  public barChartType = 'bar';
+  public barChartType = 'line';
   public barChartLegend = true;
   public barChartData = [
     {data: [65, 59, 80, 81, 56, 55, 40], label: 'Municipality A'},
@@ -63,7 +60,7 @@ export class TableChartsComponent implements OnInit {
         this.col_headers.forEach(col_header => {
           col_header.chartsData = [];
         })
-
+        this.chartType = 'line';
         this.renderCharts();
       })
 
@@ -161,11 +158,6 @@ export class TableChartsComponent implements OnInit {
   renderCharts(){
     let chartsInitialData = this.processDataForCharts();
     this.col_headers.forEach(col_header => {
-
-    })
-    // this.row_headers.indicators
-    console.log(chartsInitialData);
-    this.col_headers.forEach(col_header => {
       let chartsFinalData = [];
       col_header.chartsData = [];
 
@@ -224,8 +216,44 @@ export class TableChartsComponent implements OnInit {
         'data': chartsFinalData,
         'label': col_header.title
       })
+
+      col_header.myChartType = this.chartType;
+      console.log(col_header);
     })
+
+    // this.buildCharts();
   }
+  ngOnChanges(changes: any) {
+    this.buildCharts();
+  }
+
+  buildCharts(){
+    let indexValue = 0;
+
+    this.col_headers.forEach(col_header => {
+      let currentDivId = "myChart"+indexValue;
+      var ctx = document.getElementById(currentDivId);
+      // @ts-ignore
+      console.log(ctx);
+      // @ts-ignore
+      this.renderingChart = new Chart(ctx,{
+        datasets: col_header.chartsData,
+        labels: this.barChartLabels,
+        options: this.barChartOptions,
+        legend: this.barChartLegend,
+        chartType: this.chartType
+      });
+      this.renderingChart.update();
+      indexValue++;
+    });
+  }
+
+  changeCharts(){
+
+
+
+  }
+
 
   buildOptions($event){
     this.subOptions = [];

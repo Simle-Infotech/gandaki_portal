@@ -70,20 +70,33 @@
               <mat-option value="count">Count</mat-option>
             </mat-select>
           </mat-form-field>
+
+          <mat-form-field style="padding: 5px;">
+            <mat-select  placeholder="Select a chart type" [(value)]="chartType">
+              <mat-option value="bar">Bar</mat-option>
+              <mat-option value="line">Line</mat-option>
+              <mat-option value="pie">Pie</mat-option>
+              <mat-option value="doughnut">Doughnut</mat-option>
+              <mat-option value="radar">Radar</mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
       </div>
       <div class="col-md-10">
         <div style="margin-top: 20px;">
           <div class="mb-3 card">
             <div class="no-gutters row">
-              <div class="col-sm-12 col-md-12" *ngFor="let col_header of col_headers">
-                <canvas baseChart
-                        [datasets]="col_header.chartsData"
-                        [labels]="barChartLabels"
-                        [options]="barChartOptions"
-                        [legend]="barChartLegend"
-                        [chartType]="barChartType">
-                </canvas>
+              <div class="col-sm-12 col-md-12" *ngFor="let col_header of col_headers;let i = index;">
+                <div id="myChart{{i}}">
+                  <canvas baseChart style="height: auto;"
+                          [datasets]="col_header.chartsData"
+                          [labels]="barChartLabels"
+                          [options]="barChartOptions"
+                          [legend]="barChartLegend"
+                          [chartType]="chartType"
+                  >
+                  </canvas>
+                </div>
               </div>
             </div>
           </div>
