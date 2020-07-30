@@ -188,6 +188,8 @@ export class TablesComponent implements OnInit {
         // console.log(this.tabulatorTable.options.groupBy);
         // console.log(this.collections, this.id);
       })
+    } else{
+      this.collections = [];
     }
 
     this.tabulatorTable = new Tabulator("#my-tabular-table", {
