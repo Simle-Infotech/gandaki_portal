@@ -150,6 +150,7 @@ export class TablesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.collections = [];
 
     this.activatedRoute.params.subscribe(paramsId => {
       this.id = paramsId.id;
