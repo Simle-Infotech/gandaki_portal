@@ -630,7 +630,7 @@ export class TableDetailsComponent implements OnInit {
     return formatter.format(number);
   }
 
-  saveRowData($event, showAlert=true){
+  saveRowData($event, showAlert=false){
     let row = $event.data;
     console.log("Data to be saved");
     console.log(row);

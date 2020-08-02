@@ -97,53 +97,53 @@ export class TablesComponent implements OnInit {
     private authenticationService: AuthenticationService
   ) {
     this.autoGroupColumnDef = { minWidth: 200 };
-    this.defaultColDef = {
-      enableRowGroup: true,
-      enablePivot: true,
-      enableValue: true,
-      sortable: true,
-      resizable: true,
-      filter: true,
-    };
-    this.sideBar = {
-      toolPanels: [
-        'filters',
-        {
-          id: 'columns',
-          labelDefault: 'Columns',
-          labelKey: 'columns',
-          iconKey: 'columns',
-          toolPanel: 'agColumnsToolPanel',
-          toolPanelParams: { suppressSyncLayoutWithGrid: true },
-        },
-      ],
-    };
-    this.statusBar = {
-      statusPanels: [
-        {
-          statusPanel: 'agTotalRowCountComponent',
-          align: 'left',
-          key: 'totalRowComponent',
-        },
-        {
-          statusPanel: 'agFilteredRowCountComponent',
-          align: 'left',
-        },
-        {
-          statusPanel: 'agSelectedRowCountComponent',
-          align: 'center',
-        },
-        {
-          statusPanel: 'agAggregationComponent',
-          align: 'right',
-        },
-      ],
-    };
+    // this.defaultColDef = {
+    //   enableRowGroup: true,
+    //   enablePivot: true,
+    //   enableValue: true,
+    //   sortable: true,
+    //   resizable: true,
+    //   filter: true,
+    // };
+    // this.sideBar = {
+    //   toolPanels: [
+    //     'filters',
+    //     {
+    //       id: 'columns',
+    //       labelDefault: 'Columns',
+    //       labelKey: 'columns',
+    //       iconKey: 'columns',
+    //       toolPanel: 'agColumnsToolPanel',
+    //       toolPanelParams: { suppressSyncLayoutWithGrid: true },
+    //     },
+    //   ],
+    // };
+    // this.statusBar = {
+    //   statusPanels: [
+    //     {
+    //       statusPanel: 'agTotalRowCountComponent',
+    //       align: 'left',
+    //       key: 'totalRowComponent',
+    //     },
+    //     {
+    //       statusPanel: 'agFilteredRowCountComponent',
+    //       align: 'left',
+    //     },
+    //     {
+    //       statusPanel: 'agSelectedRowCountComponent',
+    //       align: 'center',
+    //     },
+    //     {
+    //       statusPanel: 'agAggregationComponent',
+    //       align: 'right',
+    //     },
+    //   ],
+    // };
 
-    this.ColumnAddForm = this.formBuilder.group({
-      newcolumn: ''
-    });
-    this.editType = 'fullRow';
+    // this.ColumnAddForm = this.formBuilder.group({
+    //   newcolumn: ''
+    // });
+    // this.editType = 'fullRow';
     this.colIds = [];
     this.indexIds = [];
     this.collections = [];
@@ -160,19 +160,19 @@ export class TablesComponent implements OnInit {
         this.pageTitle = response.data.nepali_name;
         this.icon = response.data.icon_path;
         this.tableID = response.data.id;
-        this.generalService.getSingleTableState(this.id).subscribe((response: singleTableStateResponse) => {
-          this.colState = response.data.colState;
-          this.groupState = response.data.groupState;
-          this.sortState = response.data.sortState;
-          this.filterState = response.data.filterState;
-        })
+        // this.generalService.getSingleTableState(this.id).subscribe((response: singleTableStateResponse) => {
+        //   this.colState = response.data.colState;
+        //   this.groupState = response.data.groupState;
+        //   this.sortState = response.data.sortState;
+        //   this.filterState = response.data.filterState;
+        // })
       })
 
       this.renderTable(true);
 
-      if (this.authenticationService.CurrentUserValue) {
-        this.is_logged = true;
-      }
+    //   if (this.authenticationService.CurrentUserValue) {
+    //     this.is_logged = true;
+    //   }
     });
   }
 
@@ -194,14 +194,14 @@ export class TablesComponent implements OnInit {
 
     this.tabulatorTable = new Tabulator("#my-tabular-table", {
       data:this.apiData,           //load row data from array
-      layout:"fitColumns",      //fit columns to width of table
+      // layout:"fitColumns",      //fit columns to width of table
       tooltips:true,            //show tool tips on cells
       addRowPos:"top",          //when adding a new row, add it to the top of the table
       history:true,             //allow undo and redo actions on the table
       movableColumns:true,      //allow column order to be changed
       resizableRows:true,
       groupBy:this.groups,
-      columnVertAlign: "bottom", //allow row order to be changed
+      columnHeaderVertAlign: "bottom", //allow row order to be changed
       initialSort:[             //set the initial sort order of the data
         {column:"name", dir:"asc"},
       ],
@@ -230,14 +230,14 @@ export class TablesComponent implements OnInit {
         // this.gridApi.setColumnDefs(this.colData);
 
         this.colData.push({
-          headerName: '_id', value: '_id',title: '_id', field: '_id', hide: true, suppressToolPanel: true
+          title: '_id', field: '_id'
         });
         this.colIds.push('_id');
 
         if(this.row_headers.indicators[0]){
           for(let i = 0; i< this.row_headers.indicators[0].group.length; i++){
             this.colData.push(
-              {headerName: 'group'+i, field: 'group'+i, title: 'group'+i, pinned: 'left', visible: false}
+              {field: 'group'+i, title: 'group'+i}
             )
             this.groups.push('group'+i);
             this.colIds.push('group'+i);
@@ -252,14 +252,14 @@ export class TablesComponent implements OnInit {
         this.colIds.push('group');*/
 
         this.colData.push(
-          {headerName: this.row_headers.title, field: 'row', title: this.row_headers.title, pinned: 'left'}
+          {field: 'row', title: this.row_headers.title}
         )
         this.colIds.push(this.row_headers.title);
         this.indexIds.push('row');
 
         this.index_cols.forEach(value => {
 
-          if (value.options.length > 0) {
+          if (value.options.length != 0) {
             const currentOptions = [];
             value.options.forEach(option => {
               currentOptions.push(option.nepali_name);
@@ -267,12 +267,12 @@ export class TablesComponent implements OnInit {
 
             this.colData.push(
               {
-                headerName: value.title,
+                // headerName: value.title,
                 field: value.col_id,
-                sortable: true,
-                filter: true,
+                // sortable: true,
+                // filter: true,
                 title: value.title,
-                cellEditor: 'agSelectCellEditor',
+                // cellEditor: 'agSelectCellEditor',
                 cellEditorParams: {
                   values: currentOptions,
                 },
@@ -280,10 +280,10 @@ export class TablesComponent implements OnInit {
           } else {
             this.colData.push(
               {
-                headerName: value.title,
+                // headerName: value.title,
                 field: value.col_id,
-                sortable: true,
-                filter: true,
+                // sortable: true,
+                // filter: true,
                 title: value.title
               });
           }
@@ -298,7 +298,7 @@ export class TablesComponent implements OnInit {
         })
 
         //Modify the columns as per the col state
-        console.log(this.colState);
+        // console.log(this.colState);
         if(this.colState != null){
           this.colState.forEach(columnState => {
             this.colData.forEach(columnData => {
@@ -317,11 +317,11 @@ export class TablesComponent implements OnInit {
         }
         this.columnNames = this.colData;
         // this.gridApi.setColumnDefs(this.colData);
-        console.log(this.columnNames);
+        // console.log(this.columnNames);
       }
 
-      console.log("Column state");
-      console.log(this.colState);
+      // console.log("Column state");
+      // console.log(this.colState);
 
 
       /*this.empty_table.forEach(row => {
@@ -592,7 +592,7 @@ export class TablesComponent implements OnInit {
           })
 
           columnChildren.editable = false;
-          columnChildren.cellEditor =  'agSelectCellEditor';
+          // columnChildren.cellEditor =  'agSelectCellEditor';
           columnChildren.cellEditorParams = {
             values: currentOptions,
           };
@@ -609,13 +609,23 @@ export class TablesComponent implements OnInit {
       obj.children.forEach(child => {
         this.modifyColumnHeadersForTabulator(child);
       })
-    }
+      
+    } 
+    delete(obj.headerName);
+    delete(obj.type);
+    delete(obj.sortable);
+    delete(obj.filter);
+    delete(obj.options);
+    delete(obj.children);
+    delete(obj.id)
+    
     return null;
   }
 
   handleVisibility(obj){
     if(obj.field == '_id'){
       obj.visible = false;
+      obj.download = false
     }
 
     obj.formatter = function (cell, formatterParams, onRendered) {
