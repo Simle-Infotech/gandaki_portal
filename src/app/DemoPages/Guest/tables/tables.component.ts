@@ -160,12 +160,12 @@ export class TablesComponent implements OnInit {
         this.pageTitle = response.data.nepali_name;
         this.icon = response.data.icon_path;
         this.tableID = response.data.id;
-        // this.generalService.getSingleTableState(this.id).subscribe((response: singleTableStateResponse) => {
-        //   this.colState = response.data.colState;
+        this.generalService.getSingleTableState(this.id).subscribe((response: singleTableStateResponse) => {
+          this.colState = response.data.colState;
         //   this.groupState = response.data.groupState;
         //   this.sortState = response.data.sortState;
         //   this.filterState = response.data.filterState;
-        // })
+        })
       })
 
       this.renderTable(true);
