@@ -202,10 +202,11 @@ export class TablesComponent implements OnInit {
       resizableRows:true,
       groupBy:this.groups,
       columnHeaderVertAlign: "bottom", //allow row order to be changed
-      initialSort:[             //set the initial sort order of the data
-        {column:"name", dir:"asc"},
-      ],
+      // initialSort:[             //set the initial sort order of the data
+      //   {column:"name", dir:"asc"},
+      // ],
       columns:this.columnNames,
+      invalidOptionWarnings: false
     });
     this.tabulatorTable.redraw();
   }
@@ -215,7 +216,7 @@ export class TablesComponent implements OnInit {
     this.columnNames = [];
     this.apiData = [];
     this.formService.getDataHeaders(this.id).subscribe((response: DataHeaderResponse) => {
-      console.log(response);
+      // console.log(response);
       this.row_headers = response.rows_headers;
       this.col_headers = response.col_headers;
       this.index_cols = response.index_cols;
@@ -230,14 +231,14 @@ export class TablesComponent implements OnInit {
         // this.gridApi.setColumnDefs(this.colData);
 
         this.colData.push({
-          title: '_id', field: '_id'
+          title: '_id', field: '_id', visible: false
         });
         this.colIds.push('_id');
 
         if(this.row_headers.indicators[0]){
           for(let i = 0; i< this.row_headers.indicators[0].group.length; i++){
             this.colData.push(
-              {field: 'group'+i, title: 'group'+i}
+              {field: 'group'+i, title: 'group'+i, visible: false}
             )
             this.groups.push('group'+i);
             this.colIds.push('group'+i);
@@ -612,7 +613,7 @@ export class TablesComponent implements OnInit {
       
     } 
     delete(obj.headerName);
-    delete(obj.type);
+    // delete(obj.type);
     delete(obj.sortable);
     delete(obj.filter);
     delete(obj.options);
