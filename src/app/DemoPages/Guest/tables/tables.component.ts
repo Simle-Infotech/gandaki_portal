@@ -170,9 +170,9 @@ export class TablesComponent implements OnInit {
 
       this.renderTable(true);
 
-    //   if (this.authenticationService.CurrentUserValue) {
-    //     this.is_logged = true;
-    //   }
+      if (this.authenticationService.CurrentUserValue) {
+        this.is_logged = true;
+      }
     });
   }
 
