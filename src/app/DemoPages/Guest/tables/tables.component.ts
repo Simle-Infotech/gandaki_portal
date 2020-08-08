@@ -306,13 +306,13 @@ export class TablesComponent implements OnInit {
               if(columnData.columns){
                 columnData.columns.forEach(column => {
                   if(column.id == columnState.colId){
-                    column.setwidth(columnState.width);
+                    column.width = (columnState.width);
                     // console.log(column.getWidth());
                   }
                 })
               }
               else if(columnData.field == columnState.colId){
-                columnData.setwidth( columnState.width);
+                columnData.width = ( columnState.width);
               }
             })
           })
