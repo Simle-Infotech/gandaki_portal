@@ -106,15 +106,15 @@
                         <div class="vsm-list">
                           <div class="vsm-item" *ngFor="let menuSubSubForms of menuSubForms.subForms">
                             <a routerLink="{{giveLinkForm(menuSubSubForms.id)}}" (click)="navigateToSubForms(menuSubSubForms.id)" routerLinkActive="active-item"  class="vsm-link">
-                              <img class="vsm-icon" src="{{ menuSubSubForms.icon_path }}" style="opacity: 1;position: unset;"/>
-                              <span class="vsm-title">{{menuSubSubForms.nepali_name }}</span>
+                              
+                              <span class="vsm-title"><img class="vsm-icon" src="{{ menuSubSubForms.icon_path }}" style="opacity: 1;position: unset;"/>{{menuSubSubForms.nepali_name }}</span>
                             </a>
                           </div>
 
                           <div class="vsm-item" *ngFor="let menuTables of menuSubForms.tables">
                             <a (click)="navigateToTable(menuTables.id)" routerLinkActive="active-item"  class="vsm-link" routerLink="{{giveLink(menuTables.id)}}">
-                              <img class="vsm-icon" src="{{ menuTables.icon_path }}" style="opacity: 1;position: unset;"/>
-                              <span class="vsm-title">{{menuTables.nepali_name }}</span>
+                              
+                              <span class="vsm-title"><img class="vsm-icon" src="{{ menuTables.icon_path }}" style="opacity: 1;position: unset;"/>{{menuTables.nepali_name }}</span>
                             </a>
                           </div>
                         </div>

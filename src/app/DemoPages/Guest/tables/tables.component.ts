@@ -306,12 +306,13 @@ export class TablesComponent implements OnInit {
               if(columnData.columns){
                 columnData.columns.forEach(column => {
                   if(column.id == columnState.colId){
-                    column.width = columnState.width
+                    column.setwidth(columnState.width);
+                    // console.log(column.getWidth());
                   }
                 })
               }
               else if(columnData.field == columnState.colId){
-                columnData.width = columnState.width;
+                columnData.setwidth( columnState.width);
               }
             })
           })
@@ -610,8 +611,8 @@ export class TablesComponent implements OnInit {
       obj.children.forEach(child => {
         this.modifyColumnHeadersForTabulator(child);
       })
-      
-    } 
+
+    }
     delete(obj.headerName);
     // delete(obj.type);
     delete(obj.sortable);
@@ -619,7 +620,7 @@ export class TablesComponent implements OnInit {
     delete(obj.options);
     delete(obj.children);
     delete(obj.id)
-    
+
     return null;
   }
 

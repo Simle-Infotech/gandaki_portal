@@ -30,7 +30,10 @@
               "src/styles.scss",
               "src/style.css",
               "./node_modules/font-awesome/scss/font-awesome.scss",
-              "src/tabulator.min.css"
+              "src/tabulator.min.css",
+              "./node_modules/primeicons/primeicons.css",
+              "./node_modules/primeng/resources/themes/saga-blue/theme.css",
+              "./node_modules/primeng/resources/primeng.min.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
@@ -93,7 +96,10 @@
             "styles": [
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "./node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
-              "src/styles.sass"
+              "src/styles.sass",
+              "./node_modules/primeicons/primeicons.css",
+              "./node_modules/primeng/resources/themes/saga-blue/theme.css",
+              "./node_modules/primeng/resources/primeng.min.css"
             ],
             "scripts": {
               "fix-memory-limit": "cross-env LIMIT=2048 increase-memory-limit"
